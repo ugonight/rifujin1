@@ -103,3 +103,13 @@ void Control::showMsg(std::string s) {
 bool Control::getExistObject(std::string field, std::string obj) {
 	return mFieldList[field]->getExistObject(obj);
 }
+
+void Control::pauseField() {
+	auto field = (Field*)getChildByName("field");
+	field->pauseEventListener();
+}
+
+void Control::resumeField() {
+	auto field = (Field*)getChildByName("field");
+	field->resumeEventListener();
+}

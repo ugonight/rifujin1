@@ -15,6 +15,9 @@ public:
 	void setCursor(int num);
 	void changeField(std::string field);
 	void showMsg(std::string msg);
+	
+	void pauseField();
+	void resumeField();
 
 	bool getExistObject(std::string field, std::string obj);
 

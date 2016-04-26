@@ -34,9 +34,12 @@ private:
 
 	bool mShowWindow;
 	int mWindowW;
+	int mTouchTime;
 	std::string mSelectedItem;
 
 	bool touchEvent(cocos2d::Touch* touch, cocos2d::Event* event);
 	void moveEvent(cocos2d::Touch* touch, cocos2d::Event* event);
 	void endEvent(cocos2d::Touch* touch, cocos2d::Event* event);
+
+	void showAboutItem();
 };

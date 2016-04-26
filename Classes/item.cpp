@@ -1,5 +1,7 @@
 #include "item.h"
 
+#include "control.h"
+
 USING_NS_CC;
 
 static Item* instanceOfItem;
@@ -19,6 +21,7 @@ bool Item::init() {
 
 	mShowWindow = 0;
 	mWindowW = 0;
+	mTouchTime = 0;
 	mSelectedItem = "";
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -86,6 +89,11 @@ void Item::update(float delta) {
 		i++;
 	}
 
+	//AI•\Ž¦
+	if (mTouchTime > 0) mTouchTime++;
+	if (mTouchTime == 30 && mSelectedItem != "") {
+		showAboutItem();
+	}
 }
 
 void Item::getItem(std::string s, Point p) {
@@ -167,10 +175,14 @@ bool Item::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 		mShowWindow = 1;
 	}
 
+	mTouchTime = 1;
+
 	return true;
 }
 
 void Item::moveEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
+	mTouchTime = 0;
+
 	if (mShowWindow) {
 		auto possession = getChildByName("possession");
 		auto frame = getChildByName("frame");
@@ -188,6 +200,7 @@ void Item::moveEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 
 void Item::endEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 	mShowWindow = 0;
+	mTouchTime = 0;
 
 	auto window = getChildByName("window");
 	auto frame = getChildByName("frame");
@@ -195,4 +208,17 @@ void Item::endEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 
 	frame->setPositionX(window->getPositionX());
 	if (mSelectedItem != "") item->setTexture(mItemList[mSelectedItem]->getImage());
+
+}
+
+void Item::showAboutItem() {
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	Control::me->pauseField();
+
+	auto aboutItem = Sprite::create("aboutItem.png");
+	aboutItem->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+	addChild(aboutItem, 2);
+
 }

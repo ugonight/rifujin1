@@ -11,8 +11,8 @@ protected:
 	std::map<std::string, ObjectN*> mObjectList;
 	void addObject(ObjectN* obj,std::string objName, int ZOder, bool addChild);
 
-	void pauseEventListener();
-	void resumeEventListener();
+	//void pauseEventListener();
+	//void resumeEventListener();
 
 public:
 	//virtual bool init() override;
@@ -23,7 +23,10 @@ public:
 	void FadeOut();
 	void FadeIn();
 
-	virtual void chengedField();	//現在のフィールドに切り替わった時のイベント
+	void pauseEventListener();
+	void resumeEventListener();
 
+	virtual void chengedField();	//現在のフィールドに切り替わった時のイベント
+	
 	CREATE_FUNC(Field);
 };
