@@ -20,6 +20,7 @@ bool Item::init() {
 	instanceOfItem = this;
 
 	mShowWindow = 0;
+	mShowAboutItem = 0;
 	mWindowW = 0;
 	mTouchTime = 0;
 	mSelectedItem = "";
@@ -91,8 +92,9 @@ void Item::update(float delta) {
 
 	//AI•\Ž¦
 	if (mTouchTime > 0) mTouchTime++;
-	if (mTouchTime == 30 && mSelectedItem != "") {
+	if (mTouchTime == 30 && mSelectedItem != "" && !mShowAboutItem) {
 		showAboutItem();
+		mShowAboutItem = 1;
 	}
 }
 

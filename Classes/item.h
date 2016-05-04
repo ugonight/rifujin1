@@ -33,6 +33,7 @@ private:
 	void initItem();
 
 	bool mShowWindow;
+	bool mShowAboutItem;
 	int mWindowW;
 	int mTouchTime;
 	std::string mSelectedItem;

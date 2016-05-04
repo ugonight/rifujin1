@@ -25,10 +25,11 @@ USING_NS_CC;
 
 void Field::update(float delta) {
 	//ノベルの表示が終わっていたらタッチイベントを有効にする
-	Novel* novel = (Novel*)(this->getChildByName("novel"));
+	Novel* novel = (Novel*)(this->getChildByTag(10));	//ノベルのタグ:10
 	if (novel) {
 		if (novel->getEndFlag()) {
 			resumeEventListener();
+			removeChild(novel);
 		}
 	}
 }
