@@ -41,7 +41,7 @@ bool Control::init() {
 //	this->addChild(menu, 1);
 
 	auto cursor = Cursor::create();
-	this->addChild(cursor, 1, "cursor");
+	this->addChild(cursor, 4, "cursor");
 
 	auto resetCursor = Layer::create();
 	this->addChild(resetCursor, 10);

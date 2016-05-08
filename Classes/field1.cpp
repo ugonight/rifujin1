@@ -46,7 +46,7 @@ bool Field1::init() {
 		novel->addSentence("継「あそこの樹に張り付いてる画用紙に使えないかな？」");
 
 		novel->setEndTask();
-		this->addChild(novel, 0, 10);
+		this->addChild(novel, 0, "novel");
 	}));
 	addObject(area, "crayon_g", 1, true);
 
@@ -88,7 +88,7 @@ void Field1::chengedField() {
 			novel->addSentence("継「この調子で辺りを散策してみよう」");
 
 			novel->setEndTask();
-			this->addChild(novel, 0, 10);
+			this->addChild(novel, 0, "novel");
 
 		/*}), NULL)));*/
 	}
