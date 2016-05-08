@@ -1,6 +1,8 @@
 #pragma once
 #include "cocos2d.h"
 
+#include "object.h"
+
 class Item : public cocos2d::Layer {
 public:
 	virtual bool init();
@@ -20,6 +22,8 @@ private:
 	class ItemObj{
 		std::string imgName;
 		bool getFlag = 0;
+		cocos2d::Layer* aiLayer;	//AIで表示するオブジェクトを配置するレイヤー
+
 	public:
 		ItemObj(std::string imageName) {
 			imgName = imageName;
@@ -27,6 +31,10 @@ private:
 
 		std::string getImage() { return imgName; };
 		void setGetFlag(bool i) { getFlag = i; };
+		
+		//aiLayerのinit()を定義する関数（？）を作る
+		//わざわざアイテムごとにクラスを作るのがめんどうなので、簡単に定義できるようにしたい。
+
 	};
 
 	std::map<std::string, ItemObj*> mItemList;

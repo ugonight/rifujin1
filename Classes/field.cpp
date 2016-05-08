@@ -23,6 +23,23 @@ USING_NS_CC;
 //	return true;
 //}
 
+
+bool Field::init() {
+	if (!Layer::init())
+	{
+		return false;
+	}
+	scheduleUpdate();
+
+	initField();
+
+	return true;
+}
+
+void Field::initField() {
+	//オブジェクトを配置したり
+}
+
 void Field::update(float delta) {
 	//ノベルの表示が終わっていたらタッチイベントを有効にする
 	Novel* novel = (Novel*)(this->getChildByName("novel"));

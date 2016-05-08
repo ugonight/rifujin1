@@ -4,13 +4,13 @@
 
 class Field1 : public Field { 
 public:
-	virtual bool init(); 
+	virtual void initField(); 
 	virtual void chengedField();
 	CREATE_FUNC(Field1);
 };
 
 class Field2 : public Field {
 public:
-	virtual bool init();
+	virtual void initField();
 	CREATE_FUNC(Field2);
 };

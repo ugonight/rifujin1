@@ -179,6 +179,20 @@ bool Item::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 
 	mTouchTime = 1;
 
+	//AIが表示されているとき
+	if (mShowAboutItem) {
+		auto AboutItem = getChildByName("AboutItem");
+		auto targetBox2 = AboutItem->getBoundingBox();
+		if (targetBox2.containsPoint(touchPoint)) {	//AIの枠の領域をタップしたか
+
+		}
+		else {
+			mShowAboutItem = 0;
+			removeChild(AboutItem);
+			Control::me->resumeField();
+		}
+	}
+
 	return true;
 }
 
@@ -221,6 +235,7 @@ void Item::showAboutItem() {
 
 	auto aboutItem = Sprite::create("aboutItem.png");
 	aboutItem->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
-	addChild(aboutItem, 2);
+	addChild(aboutItem, 2, "AboutItem");
 
 }
+

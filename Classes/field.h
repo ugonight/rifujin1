@@ -14,8 +14,11 @@ protected:
 	//void pauseEventListener();
 	//void resumeEventListener();
 
+
+
 public:
 	//virtual bool init() override;
+	virtual bool init();
 	virtual void update(float delta);
 
 	bool getExistObject(std::string objName);
@@ -27,6 +30,8 @@ public:
 	void resumeEventListener();
 
 	virtual void chengedField();	//現在のフィールドに切り替わった時のイベント
+	virtual void initField();		//フィールドにオブジェクトを配置
+	
 	
 	CREATE_FUNC(Field);
 };

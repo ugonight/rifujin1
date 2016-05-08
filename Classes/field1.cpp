@@ -4,12 +4,12 @@
 
 USING_NS_CC;
 
-bool Field1::init() {
-	if (!Layer::init())
-	{
-		return false;
-	}
-	scheduleUpdate();
+void Field1::initField() {
+	//if (!Layer::init())
+	//{
+	//	return false;
+	//}
+	//scheduleUpdate();
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -56,7 +56,7 @@ bool Field1::init() {
 	//this->addChild(area, 1, "crayon_g");
 	addObject(campus, "campus", 1, true);
 
-	return true;
+	//return true;
 }
 
 void Field1::chengedField() {
@@ -94,11 +94,11 @@ void Field1::chengedField() {
 	}
 }
 
-bool Field2::init() {
-	if (!Layer::init())
-	{
-		return false;
-	}
+void Field2::initField() {
+	//if (!Layer::init())
+	//{
+	//	return false;
+	//}
 	scheduleUpdate();
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -140,5 +140,5 @@ bool Field2::init() {
 	addObject(draw, "draw", 2, 1);
 
 
-	return true;
+	//return true;
 }
