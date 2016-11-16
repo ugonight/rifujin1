@@ -3,6 +3,9 @@
 //#include "WakeUpSceneFactory.h"
 #include "Title.h"
 
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
+
 USING_NS_CC;
 
 //static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
@@ -102,7 +105,7 @@ void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
 
     // if you use SimpleAudioEngine, it must be pause
-    // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+    SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
 
 // this function will be called when the app is active again
@@ -110,5 +113,5 @@ void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
 
     // if you use SimpleAudioEngine, it must resume here
-    // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+    SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

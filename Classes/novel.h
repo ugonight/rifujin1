@@ -28,12 +28,14 @@ private:
 	std::vector<std::string> mSentense;
 	std::vector<Task> mTask;
 	std::vector<CTask> mColorTask;
-	cocos2d::Label *mLabel[3];
+	//cocos2d::Label mLabel[];
 
 	void func();
 	bool touchEvent(cocos2d::Touch* touch, cocos2d::Event* event);
 
 	void end();
+	bool endCheck();
+	void setDelayAnime();
 
 	//‰æ‘œXV
 	void updateImg();

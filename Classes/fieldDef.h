@@ -2,6 +2,7 @@
 
 #include "field.h"
 
+
 class Field1 : public Field { 
 public:
 	virtual void initField(); 

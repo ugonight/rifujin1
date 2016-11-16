@@ -52,15 +52,22 @@ bool Novel::init() {
 	this->addChild(msg, 2);
 
 	//文字
-	for (int i = 0; i < 3; i++) {
-		mLabel[i] = Label::createWithTTF("", "fonts/APJapanesefontT.ttf", 24);
-		mLabel[i]->setPosition(Vec2(origin.x + 50,
-			origin.y + visibleSize.height - 340 - i * 30));
-		mLabel[i]->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
-		mLabel[i]->setColor(Color3B::BLUE);
-		this->addChild(mLabel[i], 3);
-	}
-
+	//for (int i = 0; i < 3; i++) {
+	//	mLabel[i] = Label::createWithTTF("", "fonts/APJapanesefontT.ttf", 24);
+	//	mLabel[i]->setPosition(Vec2(origin.x + 50,
+	//		origin.y + visibleSize.height - 340 - i * 30));
+	//	mLabel[i]->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+	//	mLabel[i]->setColor(Color3B::BLUE);
+	//	this->addChild(mLabel[i], 3);
+	//}
+	auto label = Label::createWithTTF("", "fonts/APJapanesefontT.ttf", 24);
+	label->setPosition(Vec2(origin.x + 50,
+				origin.y + visibleSize.height - 340));
+	label->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+	label->setColor(Color3B::BLUE);
+	label->enableOutline(Color4B::WHITE, 2);
+	label->setDimensions(750, 130);
+	this->addChild(label, 3, "label");
 
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = CC_CALLBACK_2(Novel::touchEvent, this);
@@ -70,21 +77,23 @@ bool Novel::init() {
 	return true;
 }
 
-void Novel::func() { mNovelNum = 1; }
+void Novel::func() { 
+	mNovelNum = 1;
+	auto label = (Label*)this->getChildByName("label");
+	label->setString(mSentense[mNovelNum]);
+	setDelayAnime();
+}
 
-bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) { 
-	if (mSentense.size() - 1 > mNovelNum) {	//文リストの最後でなければ
-		if (mSentense[mNovelNum].size() < mCount) {	//文がすべて表示されていたら
+bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
+	auto label = (Label*)this->getChildByName("label");
+
+	if (endCheck()) {	//文がすべて表示されていたら
+		if (mSentense.size() - 1 > mNovelNum) {	//文リストの最後でなければ
 			mNovelNum++;
-			mCount = 0;
-			for (int i = 0; i < 3; i++) mLabel[i]->setString("");
+			label->setString(mSentense[mNovelNum]);
+			setDelayAnime();
 		}
-		else {
-			mCount = mSentense[mNovelNum].size();
-		}
-	}
-	else if (mSentense.size() - 1 == mNovelNum) {	//文リストの最後なら
-		if (mSentense[mNovelNum].size() < mCount) {	//文がすべて表示されていたら
+		else if (mSentense.size() - 1 == mNovelNum) {	//文リストの最後なら
 			this->runAction(Sequence::create(FadeOut::create(1.0f), CallFunc::create(CC_CALLBACK_0(Novel::end, this)),/* RemoveSelf::create(true),*/ NULL));
 			//スプライト全部をフェードアウトする
 			Sprite* spr;
@@ -93,13 +102,18 @@ bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 				spr->runAction(FadeOut::create(1.0f));
 			}
 		}
-		else {
-			mCount = mSentense[mNovelNum].size();
+	}
+	else {
+		for (int i = 0; i < label->getStringLength() + label->getStringNumLines(); i++) {
+			auto AChar = label->getLetter(i);
+			if (nullptr != AChar) {
+				AChar->setOpacity(255);
+				AChar->stopAllActions();
+			}
 		}
 	}
-	
 
-	return true; 
+	return true;
 }
 
 void Novel::end(){	
@@ -107,17 +121,17 @@ void Novel::end(){
 }
 
 void Novel::update(float delta) {
-	int len;
-	int num = 90;
-	for (int i = 0; i < 3; i++) {
-		len = (mCount > num * (i + 1)) ? num * (i + 1) : mCount - num * i;
-		len = len < 0 ? 0 : len;
-		if (mSentense[mNovelNum].size() < num * i) break;
-		mLabel[i]->setString(mSentense[mNovelNum].substr(num * i, len));
-	}
+	//int len;
+	//int num = 90;
+	//for (int i = 0; i < 3; i++) {
+	//	len = (mCount > num * (i + 1)) ? num * (i + 1) : mCount - num * i;
+	//	len = len < 0 ? 0 : len;
+	//	if (mSentense[mNovelNum].size() < num * i) break;
+	//	mLabel[i]->setString(mSentense[mNovelNum].substr(num * i, len));
+	//}
 
 
-	if (mNovelNum > 0) mCount++;
+	//if (mNovelNum > 0) mCount++;
 
 	updateImg();
 	updateColor();
@@ -273,7 +287,9 @@ void Novel::setEndTask() {
 
 void Novel::updateColor() {
 	if (mColorTask[0].num == mNovelNum) {
-		for (int i = 0; i < 3; i++)mLabel[i]->setColor(mColorTask[0].color);
+		//for (int i = 0; i < 3; i++)mLabel[i]->setColor(mColorTask[0].color);
+		auto label = (Label*)this->getChildByName("label");
+		label->setTextColor((Color4B)mColorTask[0].color);
 		mColorTask.erase(mColorTask.begin());
 	}
 }
@@ -281,4 +297,33 @@ void Novel::updateColor() {
 void Novel::setFontColor(cocos2d::Color3B c) {
 	CTask tsk = {mNovelSetNum, c};
 	mColorTask.push_back(tsk);
+}
+
+bool Novel::endCheck() {
+	auto label = (Label*)getChildByName("label");
+	for (int i = 0; i < label->getStringLength() + label->getStringNumLines(); i++) {
+		auto AChar = label->getLetter(i);
+		if (nullptr != AChar) {
+			if (AChar->getOpacity() < 255) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void Novel::setDelayAnime() {
+	auto label1 = (Label*)getChildByName("label");
+
+	for (int i = 0; i < label1->getStringLength() + label1->getStringNumLines(); i++) {
+		auto AChar = label1->getLetter(i);
+		if (nullptr != AChar) {
+			AChar->setOpacity(0.0f);
+			AChar->runAction(
+				Sequence::createWithTwoActions(
+					DelayTime::create(0.1f*i),
+					FadeIn::create(0.1f)
+				));
+		}
+	}
 }
