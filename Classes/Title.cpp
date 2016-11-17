@@ -97,7 +97,7 @@ bool Title::init() {
 	this->addChild(chara, 1, "chara");
 
 	//BGM
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/title.ogg");
+	//SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/title.ogg"); //WakeUpSceneFactory‚Ö
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
 	playBGM = 0;
 	
