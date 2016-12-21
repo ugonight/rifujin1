@@ -1,4 +1,5 @@
 ﻿#pragma  execution_character_set("utf-8")
+
 #include "novel.h"
 
 USING_NS_CC;
@@ -73,6 +74,23 @@ bool Novel::init() {
 	listener->onTouchBegan = CC_CALLBACK_2(Novel::touchEvent, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
+	//バックログ
+	auto path = FileUtils::getInstance()->getWritablePath();
+	auto file = path + "speak.log";
+
+	if (FileUtils::getInstance()->isFileExist(file)) {
+		mLog = FileUtils::getInstance()->getValueVectorFromFile(file);
+	}
+
+	auto log = Sprite::create("log.png");
+	log->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+	log->setPosition(Vec2(visibleSize.width -15 + origin.x, -15 + origin.y + visibleSize.height));
+	addChild(log, 1, "log");
+
+	listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = CC_CALLBACK_2(Novel::logEvent, this);
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, log);
+
 
 	return true;
 }
@@ -88,7 +106,10 @@ bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 	auto label = (Label*)this->getChildByName("label");
 
 	if (endCheck()) {	//文がすべて表示されていたら
+		//バックログに記録
+		mLog.push_back(Value(mSentense[mNovelNum]));
 		if (mSentense.size() - 1 > mNovelNum) {	//文リストの最後でなければ
+			//次の分をセット
 			mNovelNum++;
 			label->setString(mSentense[mNovelNum]);
 			setDelayAnime();
@@ -101,6 +122,12 @@ bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 				spr = (Sprite*)child;
 				spr->runAction(FadeOut::create(1.0f));
 			}
+
+			//ログを保存
+			auto path = FileUtils::getInstance()->getWritablePath();
+			auto file = path + "speak.log";
+			FileUtils::getInstance()->writeValueVectorToFile(mLog, file);
+
 		}
 	}
 	else {
@@ -326,4 +353,79 @@ void Novel::setDelayAnime() {
 				));
 		}
 	}
+}
+
+bool Novel::logEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
+	auto target = (Sprite*)event->getCurrentTarget();
+	Rect targetBox = target->getBoundingBox();
+	Point touchPoint = Vec2(touch->getLocation().x, touch->getLocation().y);
+	if (targetBox.containsPoint(touchPoint))
+	{
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+		auto layer = Layer::create();
+		this->addChild(layer, 5, "layer_l");
+
+		//背景
+		Rect rect = Rect(0, 0, visibleSize.width, visibleSize.height);
+		Sprite* square = Sprite::create();
+		square->setTextureRect(rect);
+		square->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+		square->setColor(Color3B(0, 0, 0));
+		square->setOpacity(128);
+		layer->addChild(square, 0, "back_l");
+		auto listener = EventListenerTouchOneByOne::create();
+		listener->setSwallowTouches(true);
+		listener->onTouchBegan = [this](Touch* touch, Event* event) {
+			mLogScroll = touch->getLocation().y;
+			return true; 
+		};
+		listener->onTouchMoved = [this](Touch* touch, Event* event) {
+			auto label = (Label*)this->getChildByName("layer_l")->getChildByName("label");
+			auto height = Director::getInstance()->getVisibleSize().height;
+			label->setPositionY(label->getPositionY() + touch->getLocation().y - mLogScroll);
+			if (label->getPositionY() > label->getDimensions().height + height) {
+				label->setPositionY(label->getDimensions().height + height);
+			}
+			else if (label->getPositionY() < 0) {
+				label->setPositionY(0.0f);
+			}
+			mLogScroll = touch->getLocation().y;
+		};
+		this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, square);
+
+		//文字
+		std::stringstream str;
+		for (auto s : mLog) {
+			str << s.asString() << "\n";
+		}
+
+		auto label = Label::createWithTTF(str.str(), "fonts/APJapanesefontT.ttf", 24);
+		label->setPosition(Vec2(origin.x + 20 ,origin.y + visibleSize.height - 20));
+		label->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+		label->setColor(Color3B::WHITE);
+		label->setDimensions(visibleSize.width - 40, label->getLineHeight() * (label->getStringNumLines() + 1));
+		label->setPositionY(label->getDimensions().height);
+		layer->addChild(label, 3, "label");
+
+		//閉じる
+		auto close = Sprite::create("log_.png");
+		close->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+		close->setPosition(Vec2(visibleSize.width - 15 + origin.x, -15 + origin.y + visibleSize.height));
+		layer->addChild(close, 1, "close");
+		listener = EventListenerTouchOneByOne::create();
+		listener->onTouchBegan = [this](Touch* touch, Event* event) { return true; };
+		listener->onTouchEnded =[this](Touch* touch, Event* event) {
+			auto target = (Sprite*)event->getCurrentTarget();
+			Rect targetBox = target->getBoundingBox();
+			Point touchPoint = Vec2(touch->getLocation().x, touch->getLocation().y);
+			if (targetBox.containsPoint(touchPoint))
+			{
+				this->removeChildByName("layer_l");
+			}
+		};
+		this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, close);
+	}
+	return true;
 }

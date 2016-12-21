@@ -29,9 +29,12 @@ private:
 	std::vector<Task> mTask;
 	std::vector<CTask> mColorTask;
 	//cocos2d::Label mLabel[];
+	cocos2d::ValueVector mLog;
+	int mLogScroll;
 
 	void func();
 	bool touchEvent(cocos2d::Touch* touch, cocos2d::Event* event);
+	bool logEvent(cocos2d::Touch* touch, cocos2d::Event* event);
 
 	void end();
 	bool endCheck();

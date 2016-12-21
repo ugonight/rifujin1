@@ -85,6 +85,11 @@ bool Prologue::init() {
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/days.ogg");
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/dream.ogg");
 
+	//バックログを初期化
+	auto path = FileUtils::getInstance()->getWritablePath();
+	auto file = path + "speak.log";
+	FileUtils::getInstance()->removeFile(file);
+
 	return true;
 }
 
@@ -223,11 +228,11 @@ void Prologue::scene3() {
 		novel->addSentence("こいつはクラスメイトのバイロン・ダイエナ。通称バンダナ");
 		novel->addSentence("その名の通りいつもバンダナを身に着けている");
 		novel->setFontColor(Color3B::BLUE);
-		novel->addSentence("継「はーーーーーーーーーーーーー」");
+		novel->addSentence("継「はー…」");
 		novel->setFontColor(Color3B::RED);
 		novel->addSentence("セリーヌ「申し訳ありません…」");
 		novel->setFontColor(Color3B::BLUE);
-		novel->addSentence("バンダナ「あっ…（察し）」");
+		novel->addSentence("バンダナ「あっ…」");
 		novel->setFontColor(Color3B::RED);
 		novel->setCharaC("chara/suama1.png");
 		novel->addSentence("？？？「あ、つぐるん久しぶり～」");
