@@ -69,7 +69,7 @@ void Field::FadeOut(){
 void Field::FadeIn() {
 	this->setCascadeOpacityEnabled(true);
 	this->setOpacity(0.0f);
-	this->runAction(Sequence::create(FadeIn::create(0.5f), CallFunc::create(CC_CALLBACK_0(Field::chengedField, this)), NULL));
+	this->runAction(Sequence::create(FadeIn::create(0.5f), CallFunc::create(CC_CALLBACK_0(Field::changedField, this)), NULL));
 	
 	this->scheduleUpdate();
 	for (auto it : this->getChildren()) {
@@ -77,7 +77,7 @@ void Field::FadeIn() {
 	}
 }
 
-void Field::chengedField() {
+void Field::changedField() {
 	//現在のフィールドに移動したときに呼び出される処理を書く
 }
 

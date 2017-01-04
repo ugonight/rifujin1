@@ -187,9 +187,16 @@ bool Item::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 
 		}
 		else {
-			mShowAboutItem = 0;
-			removeChild(AboutItem);
-			Control::me->resumeField();
+			Size visibleSize = Director::getInstance()->getVisibleSize();
+			Vec2 origin = Director::getInstance()->getVisibleOrigin();
+			if (touchPoint.y < -15 - 64 + origin.y + visibleSize.height) {
+				mShowAboutItem = 0;
+				AboutItem->runAction(FadeOut::create(0.2f));
+				AboutItem->runAction(Sequence::create(ScaleBy::create(0.2f, 0.5f), RemoveSelf::create(), NULL));
+				//removeChild(AboutItem);
+				Control::me->resumeField();
+				Control::me->deleteAI();
+			}
 		}
 	}
 
@@ -197,7 +204,12 @@ bool Item::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 }
 
 void Item::moveEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
-	mTouchTime = 0;
+	auto window = getChildByName("window");
+	auto targetBox = window->getBoundingBox();
+	auto touchPoint = touch->getLocation();
+	if (!targetBox.containsPoint(touchPoint)) {
+		mTouchTime = 0;
+	}
 
 	if (mShowWindow) {
 		auto possession = getChildByName("possession");
@@ -232,9 +244,14 @@ void Item::showAboutItem() {
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	Control::me->pauseField();
+	Control::me->showAI(mSelectedItem);
 
-	auto aboutItem = Sprite::create("aboutItem.png");
+	auto aboutItem = Sprite::create("AboutItem.png");
 	aboutItem->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+	aboutItem->setOpacity(0.0f);
+	aboutItem->setScale(0.5f);
+	aboutItem->runAction(FadeIn::create(0.2f));
+	aboutItem->runAction(ScaleBy::create(0.2f,2.0f));
 	addChild(aboutItem, 2, "AboutItem");
 
 }

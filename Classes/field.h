@@ -29,7 +29,7 @@ public:
 	void pauseEventListener();
 	void resumeEventListener();
 
-	virtual void chengedField();	//現在のフィールドに切り替わった時のイベント
+	virtual void changedField();	//現在のフィールドに切り替わった時のイベント
 	virtual void initField();		//フィールドにオブジェクトを配置
 	
 	

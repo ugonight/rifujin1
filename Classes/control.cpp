@@ -5,6 +5,7 @@
 #include "cursor.h"
 #include "field.h"
 #include "item.h"
+#include "fieldDef.h"
 
 USING_NS_CC;
 
@@ -99,6 +100,14 @@ void Control::showMsg(std::string s) {
 	msg->runAction(Sequence::create(FadeIn::create(0.5f), FadeIn::create(3.0f), FadeOut::create(0.5f), NULL));
 	msgArea->runAction(Sequence::create(FadeIn::create(0.5f), FadeIn::create(3.0f), FadeOut::create(0.5f), NULL));
 }
+
+void Control::showAI(std::string itemName) {
+	auto ai = (AboutItem*)mFieldList["AboutItem"];
+	ai->setAboutItem(itemName);
+	addChild(ai, 3, "AboutItem");
+}
+
+void Control::deleteAI() { removeChildByName("AboutItem"); }
 
 bool Control::getExistObject(std::string field, std::string obj) {
 	return mFieldList[field]->getExistObject(obj);

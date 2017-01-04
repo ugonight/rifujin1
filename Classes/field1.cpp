@@ -59,7 +59,7 @@ void Field1::initField() {
 	//return true;
 }
 
-void Field1::chengedField() {
+void Field1::changedField() {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -142,3 +142,5 @@ void Field2::initField() {
 
 	//return true;
 }
+
+void Field2::changedField() {}

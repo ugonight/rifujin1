@@ -15,6 +15,8 @@ public:
 	void setCursor(int num);
 	void changeField(std::string field);
 	void showMsg(std::string msg);
+	void showAI(std::string itemName);
+	void deleteAI();
 	
 	void pauseField();
 	void resumeField();

@@ -104,6 +104,7 @@ bool Title::init() {
 	//SE
 	SimpleAudioEngine::getInstance()->preloadEffect("SE/se1.ogg");
 	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
+	SimpleAudioEngine::getInstance()->preloadEffect("SE/po.ogg");
 
 	return true;
 }

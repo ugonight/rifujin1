@@ -87,7 +87,7 @@ bool Prologue::init() {
 
 	//バックログを初期化
 	auto path = FileUtils::getInstance()->getWritablePath();
-	auto file = path + "speak.log";
+	auto file = path + "speak.plist";
 	FileUtils::getInstance()->removeFile(file);
 
 	return true;
@@ -170,7 +170,7 @@ void Prologue::scene2() {
 		novel->addSentence("継「どうしたの…まだこんな時間なのに…」");
 		novel->setFontColor(Color3B::BLACK);
 		novel->addSentence("ぼくの名前は王国　継（おうこく　つぐる）");
-		novel->addSentence("その名の通り、父親からこの国を継いだ王子だ。");
+		novel->addSentence("名前から察せる通り、父親からこの国を継いだ王子だ。");
 		novel->setFontColor(Color3B::RED);
 		novel->setCharaL("chara/celine1.png");
 		novel->addSentence("セリーヌ「いやもう昼過ぎですから」");

@@ -1,6 +1,9 @@
 ﻿#pragma  execution_character_set("utf-8")
 
 #include "novel.h"
+#include "SimpleAudioEngine.h"
+
+using namespace CocosDenshion;
 
 USING_NS_CC;
 
@@ -71,12 +74,13 @@ bool Novel::init() {
 	this->addChild(label, 3, "label");
 
 	auto listener = EventListenerTouchOneByOne::create();
+	listener->setSwallowTouches(true);
 	listener->onTouchBegan = CC_CALLBACK_2(Novel::touchEvent, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
 	//バックログ
 	auto path = FileUtils::getInstance()->getWritablePath();
-	auto file = path + "speak.log";
+	auto file = path + "speak.plist";
 
 	if (FileUtils::getInstance()->isFileExist(file)) {
 		mLog = FileUtils::getInstance()->getValueVectorFromFile(file);
@@ -105,37 +109,44 @@ void Novel::func() {
 bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 	auto label = (Label*)this->getChildByName("label");
 
-	if (endCheck()) {	//文がすべて表示されていたら
-		//バックログに記録
-		mLog.push_back(Value(mSentense[mNovelNum]));
-		if (mSentense.size() - 1 > mNovelNum) {	//文リストの最後でなければ
-			//次の分をセット
-			mNovelNum++;
-			label->setString(mSentense[mNovelNum]);
-			setDelayAnime();
-		}
-		else if (mSentense.size() - 1 == mNovelNum) {	//文リストの最後なら
-			this->runAction(Sequence::create(FadeOut::create(1.0f), CallFunc::create(CC_CALLBACK_0(Novel::end, this)),/* RemoveSelf::create(true),*/ NULL));
-			//スプライト全部をフェードアウトする
-			Sprite* spr;
-			for (auto child : this->getChildren()) {
-				spr = (Sprite*)child;
-				spr->runAction(FadeOut::create(1.0f));
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	if (touch->getLocation().y < visibleSize.height / 2) {
+
+		if (endCheck()) {	//文がすべて表示されていたら
+			//バックログに記録
+			if (this->getOpacity() == 255) mLog.push_back(Value(mSentense[mNovelNum]));
+			if (mSentense.size() - 1 > mNovelNum) {	//文リストの最後でなければ
+				//次の分をセット
+				mNovelNum++;
+				label->setString(mSentense[mNovelNum]);
+				setDelayAnime();
 			}
+			else if (mSentense.size() - 1 == mNovelNum && this->getOpacity() == 255) {	//文リストの最後なら
+				this->runAction(Sequence::create(FadeOut::create(1.0f), CallFunc::create(CC_CALLBACK_0(Novel::end, this)),/* RemoveSelf::create(true),*/ NULL));
+				//スプライト全部をフェードアウトする
+				Sprite* spr;
+				for (auto child : this->getChildren()) {
+					spr = (Sprite*)child;
+					spr->runAction(FadeOut::create(1.0f));
+				}
 
-			//ログを保存
-			auto path = FileUtils::getInstance()->getWritablePath();
-			auto file = path + "speak.log";
-			FileUtils::getInstance()->writeValueVectorToFile(mLog, file);
+				//ログを保存
+				mLog.push_back(Value(""));
+				auto path = FileUtils::getInstance()->getWritablePath();
+				auto file = path + "speak.plist";
+				FileUtils::getInstance()->writeValueVectorToFile(mLog, file);
 
+			}
 		}
-	}
-	else {
-		for (int i = 0; i < label->getStringLength() + label->getStringNumLines(); i++) {
-			auto AChar = label->getLetter(i);
-			if (nullptr != AChar) {
-				AChar->setOpacity(255);
-				AChar->stopAllActions();
+		else {
+			for (int i = 0; i < label->getStringLength() + label->getStringNumLines(); i++) {
+				auto AChar = label->getLetter(i);
+				if (nullptr != AChar) {
+					AChar->setOpacity(255);
+					AChar->stopAllActions();
+				}
 			}
 		}
 	}
@@ -347,9 +358,11 @@ void Novel::setDelayAnime() {
 		if (nullptr != AChar) {
 			AChar->setOpacity(0.0f);
 			AChar->runAction(
-				Sequence::createWithTwoActions(
+				Sequence::create(
 					DelayTime::create(0.1f*i),
-					FadeIn::create(0.1f)
+					FadeIn::create(0.1f),
+					CallFunc::create([this]() {	SimpleAudioEngine::getInstance()->playEffect("SE/po.ogg"); }),
+					NULL
 				));
 		}
 	}
@@ -378,20 +391,28 @@ bool Novel::logEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 		auto listener = EventListenerTouchOneByOne::create();
 		listener->setSwallowTouches(true);
 		listener->onTouchBegan = [this](Touch* touch, Event* event) {
-			mLogScroll = touch->getLocation().y;
+			mLogScrollX = touch->getLocation().x;
+			mLogScrollY = touch->getLocation().y;
 			return true; 
 		};
 		listener->onTouchMoved = [this](Touch* touch, Event* event) {
 			auto label = (Label*)this->getChildByName("layer_l")->getChildByName("label");
 			auto height = Director::getInstance()->getVisibleSize().height;
-			label->setPositionY(label->getPositionY() + touch->getLocation().y - mLogScroll);
+			label->setPosition(label->getPositionX() + touch->getLocation().x - mLogScrollX,label->getPositionY() + touch->getLocation().y - mLogScrollY);
 			if (label->getPositionY() > label->getDimensions().height + height) {
 				label->setPositionY(label->getDimensions().height + height);
 			}
 			else if (label->getPositionY() < 0) {
 				label->setPositionY(0.0f);
 			}
-			mLogScroll = touch->getLocation().y;
+			mLogScrollY = touch->getLocation().y;
+			if (label->getPositionX() < -label->getDimensions().width) {
+				label->setPositionX(-label->getDimensions().width);
+			}
+			else if (label->getPositionX() > 20) {
+				label->setPositionX(20.0f);
+			}
+			mLogScrollX = touch->getLocation().x;
 		};
 		this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, square);
 
@@ -405,7 +426,7 @@ bool Novel::logEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 		label->setPosition(Vec2(origin.x + 20 ,origin.y + visibleSize.height - 20));
 		label->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
 		label->setColor(Color3B::WHITE);
-		label->setDimensions(visibleSize.width - 40, label->getLineHeight() * (label->getStringNumLines() + 1));
+		label->setDimensions(visibleSize.width * 3, label->getLineHeight() * (label->getStringNumLines() + 1));
 		label->setPositionY(label->getDimensions().height);
 		layer->addChild(label, 3, "label");
 
