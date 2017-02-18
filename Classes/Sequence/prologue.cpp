@@ -1,8 +1,8 @@
 ﻿#pragma  execution_character_set("utf-8")
 #include "prologue.h"
-#include "novel.h"
-#include "cursor.h"
-#include "control.h"
+#include "System/novel.h"
+#include "System/cursor.h"
+#include "System/control.h"
 
 #include "SimpleAudioEngine.h"
 

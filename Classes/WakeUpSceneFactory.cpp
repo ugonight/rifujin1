@@ -1,5 +1,5 @@
 #include "WakeUpSceneFactory.h"
-#include "Title.h"
+#include "Sequence/Title.h"
 
 #include "SimpleAudioEngine.h"
 

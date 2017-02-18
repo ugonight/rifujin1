@@ -5,7 +5,7 @@
 #include "cursor.h"
 #include "field.h"
 #include "item.h"
-#include "fieldDef.h"
+#include "Script/fieldDef.h"
 
 USING_NS_CC;
 

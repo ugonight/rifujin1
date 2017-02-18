@@ -1,6 +1,6 @@
 #pragma once
 #include "cocos2d.h"
-#include "novel.h"
+#include "System/novel.h"
 
 class Prologue  : public cocos2d::Scene {
 

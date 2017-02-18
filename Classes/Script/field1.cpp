@@ -56,6 +56,12 @@ void Field1::initField() {
 	//this->addChild(area, 1, "crayon_g");
 	addObject(campus, "campus", 1, true);
 
+	auto forest2 = ObjectN::create();
+	forest2->setArea(0, 0, 80, 480);
+	forest2->setFieldChangeEvent("forest2");
+	forest2->setCursor(4);
+	addObject(forest2, "forest2", 2, false);
+
 	//return true;
 }
 
@@ -71,6 +77,7 @@ void Field1::changedField() {
 		bg->setOpacity(0.0f);
 		bg->runAction(FadeIn::create(0.5f));
 		addChild(bg, 0, "forest");
+		addChild(mObjectList["forest2"], 2, "forest2");
 
 		//this->runAction(Sequence::create(
 		//	FadeIn::create(1.0f),

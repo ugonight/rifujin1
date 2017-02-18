@@ -1,6 +1,6 @@
 #pragma once
 
-#include "field.h"
+#include "../System/field.h"
 
 #define CREATE_FIELD(cName) class cName : public Field { \
 							public: \
@@ -11,6 +11,8 @@
 
 CREATE_FIELD(Field1)};
 CREATE_FIELD(Field2)};
+CREATE_FIELD(Forest2)};
+CREATE_FIELD(Forest3)};
 
 CREATE_FIELD(AboutItem)
 	void setAboutItem(std::string itemName);

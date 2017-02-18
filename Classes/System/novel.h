@@ -23,11 +23,17 @@ private:
 		cocos2d::Color3B color;
 	} CTask;
 
-	int mNovelNum, mNovelSetNum, mCount;
+	typedef struct FTask {
+		int num;
+		cocos2d::CallFunc* func;
+	} FTask;
+
+	int mNovelNum, mNovelSetNum, mCount, mCharNum;
 	bool mEndFlag;
 	std::vector<std::string> mSentense;
 	std::vector<Task> mTask;
 	std::vector<CTask> mColorTask;
+	std::vector<FTask> mFuncTask;
 	//cocos2d::Label mLabel[];
 	cocos2d::ValueVector mLog;
 	int mLogScrollX, mLogScrollY;
@@ -44,6 +50,8 @@ private:
 	void updateImg();
 	//色更新
 	void updateColor();
+	//イベント実行
+	void updateFunc();
 
 public:
 	virtual bool init();
@@ -68,6 +76,9 @@ public:
 
 	//文字色変更
 	void setFontColor(cocos2d::Color3B c);
+
+	//イベントタスク追加
+	void addEvent(cocos2d::CallFunc* func);
 
 	CREATE_FUNC(Novel);
 };

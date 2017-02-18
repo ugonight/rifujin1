@@ -173,6 +173,7 @@ void Novel::update(float delta) {
 
 	updateImg();
 	updateColor();
+	updateFunc();
 }
 
 void Novel::addSentence(std::string s) {
@@ -319,8 +320,12 @@ void Novel::setEndTask() {
 	CTask ctsk = { -1, Color3B::BLACK};
 	mColorTask.push_back(ctsk);
 
+	FTask ftsk = { -1, NULL };
+	mFuncTask.push_back(ftsk);
+
 	updateImg();
 	updateColor();
+	updateFunc();
 }
 
 void Novel::updateColor() {
@@ -332,9 +337,21 @@ void Novel::updateColor() {
 	}
 }
 
+void Novel::updateFunc() {
+	if (mFuncTask[0].num == mNovelNum) {
+		this->runAction(mFuncTask[0].func);
+		mFuncTask.erase(mFuncTask.begin());
+	}
+}
+
 void Novel::setFontColor(cocos2d::Color3B c) {
 	CTask tsk = {mNovelSetNum, c};
 	mColorTask.push_back(tsk);
+}
+
+void Novel::addEvent(cocos2d::CallFunc* func) {
+	FTask tsk = {mNovelNum, func};
+	mFuncTask.push_back(tsk);
 }
 
 bool Novel::endCheck() {
@@ -355,13 +372,15 @@ void Novel::setDelayAnime() {
 
 	for (int i = 0; i < label1->getStringLength() + label1->getStringNumLines(); i++) {
 		auto AChar = label1->getLetter(i);
+		mCharNum = 0;
 		if (nullptr != AChar) {
+			mCharNum++;
 			AChar->setOpacity(0.0f);
 			AChar->runAction(
 				Sequence::create(
-					DelayTime::create(0.1f*i),
-					FadeIn::create(0.1f),
-					CallFunc::create([this]() {	SimpleAudioEngine::getInstance()->playEffect("SE/po.ogg"); }),
+					DelayTime::create(0.05f*i),
+					FadeIn::create(0.05f),
+					CallFunc::create([this]() {	if (mCharNum % 2 == 0) SimpleAudioEngine::getInstance()->playEffect("SE/po.ogg"); }),	//全角の最初で鳴らす
 					NULL
 				));
 		}

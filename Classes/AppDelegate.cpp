@@ -1,7 +1,7 @@
 #include "AppDelegate.h"
 //#include "HelloWorldScene.h"
 //#include "WakeUpSceneFactory.h"
-#include "Title.h"
+#include "Sequence/Title.h"
 
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;

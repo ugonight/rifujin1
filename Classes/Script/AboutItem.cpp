@@ -1,6 +1,6 @@
 ﻿#pragma  execution_character_set("utf-8")
 
-#include "fieldDef.h"
+#include "Script/fieldDef.h"
 
 USING_NS_CC;
 
@@ -21,5 +21,15 @@ void AboutItem::setAboutItem(std::string itemName) {
 		auto rect = crayon->getBoundingBox();
 		crayon->setArea(rect.getMinX(), rect.getMinY(), rect.getMaxX() - rect.getMinX(), rect.getMaxY() - rect.getMinY());
 		addObject(crayon, "crayon", 1, true);
+	}
+	else if (itemName == "egg") {
+		auto egg = ObjectN::create();
+		egg->setTexture("item/egg.png");
+		egg->setMsg("鳥のたまごだ");
+		egg->setScale(2.0f);
+		egg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+		auto rect = egg->getBoundingBox();
+		egg->setArea(rect.getMinX(), rect.getMinY(), rect.getMaxX() - rect.getMinX(), rect.getMaxY() - rect.getMinY());
+		addObject(egg, "egg", 1, true);
 	}
 }

@@ -2,7 +2,7 @@
 #include "prologue.h"
 #include "SimpleAudioEngine.h"
 
-#include "control.h"
+#include "System/control.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -98,12 +98,13 @@ bool Title::init() {
 
 	//BGM
 	//SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/title.ogg"); //WakeUpSceneFactory‚Ö
+	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic(true);
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
 	playBGM = 0;
 	
 	//SE
 	SimpleAudioEngine::getInstance()->preloadEffect("SE/se1.ogg");
-	SimpleAudioEngine::getInstance()->setEffectsVolume(1.0f);
+	SimpleAudioEngine::getInstance()->setEffectsVolume(0.8f);
 	SimpleAudioEngine::getInstance()->preloadEffect("SE/po.ogg");
 
 	return true;
