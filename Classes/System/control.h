@@ -9,6 +9,7 @@ private:
 	std::map<std::string, Field*> mFieldList;
 	
 	void initField();
+	void save(cocos2d::Ref* pSender);
 
 public:
 
@@ -26,7 +27,7 @@ public:
 	virtual bool init();
 	virtual void update(float delta);
 
-
+	void load();
 
 	static Control* me;
 

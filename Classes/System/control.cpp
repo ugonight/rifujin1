@@ -47,6 +47,16 @@ bool Control::init() {
 	auto resetCursor = Layer::create();
 	this->addChild(resetCursor, 10);
 
+	auto save = MenuItemImage::create(
+		"save.png",
+		"save2.png",
+		CC_CALLBACK_1(Control::save, this));
+	save->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+	save->setPosition(Vec2(origin.x + visibleSize.width - 15, origin.y));
+	auto menu = Menu::create(save, NULL);
+	menu->setPosition(Vec2::ZERO);
+	this->addChild(menu, 1, "save");
+
 	initField();
 
 	//auto field = Field::create();
@@ -54,7 +64,7 @@ bool Control::init() {
 	this->addChild(mFieldList["forest1"], 0, "field");
 
 	auto item = Item::create();
-	this->addChild(item, 2);
+	this->addChild(item, 2, "item");
 
 	auto msg = Label::create("", "fonts/APJapanesefontT.ttf", 30);
 	msg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + 50));
@@ -77,7 +87,87 @@ bool Control::init() {
 }
 
 void Control::update(float delta) {
-	
+	auto field = getChildByName("field");
+	if (field->getChildByName("novel") && ((MenuItemImage*)getChildByName("save"))->getOpacity() >= 255) {
+		((MenuItemImage*)getChildByName("save"))->setOpacity(0.0f);
+	}
+	else if (!field->getChildByName("novel")) {
+		((MenuItemImage*)getChildByName("save"))->setOpacity(255.0f);
+	}
+}
+
+void Control::save(cocos2d::Ref* pSender) {
+	if ((getChildByName("save"))->getOpacity() >= 255) {
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+		auto path = FileUtils::getInstance()->getWritablePath();
+
+		//現在いるフィールド&取得しているアイテム
+		auto file = path + "saveData.plist";
+		ValueMap data;
+
+		for (auto field : mFieldList) {
+			if (field.second->getReferenceCount() > 1 && field.first != "AboutItem") {
+				data["currentField"] = field.first;
+				break;
+			}
+		}
+		auto item = (Item*)getChildByName("item");
+		item->saveItem(&data);
+
+		if (FileUtils::getInstance()->writeToFile(data, file))
+		{
+			CCLOG("データを%sに書き出しました。", file.c_str());
+		}
+		else
+		{
+			CCLOG("Ops!");
+		}
+
+		//フィールドごとのオブジェクトの状態
+		for (auto field : mFieldList) {
+			file = path + field.first + ".plist";
+			if (FileUtils::getInstance()->writeToFile(((Field*)field.second)->saveField(), file))
+			{
+				CCLOG("データを%sに書き出しました。", file.c_str());
+			}
+			else
+			{
+				CCLOG("Ops!");
+			}
+		}
+
+		auto label = Label::create("セーブが完了しました", "fonts/APJapanesefontT.ttf", 20);
+		label->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+		label->setPosition(Vec2(origin.x + visibleSize.width - 15 - 64, origin.y));
+		label->setTextColor(Color4B::WHITE);
+		label->enableOutline(Color4B::BLACK, 2);
+		label->setOpacity(0.0f);
+		label->runAction(Sequence::create(FadeIn::create(0.5f), DelayTime::create(3.0f), FadeOut::create(0.5f), NULL));
+		addChild(label, 5, "saveText");
+	}
+}
+
+void Control::load() {
+	auto path = FileUtils::getInstance()->getWritablePath();
+
+	//現在いるフィールド&取得しているアイテム
+	auto file = path + "saveData.plist";
+
+	ValueMap data = FileUtils::getInstance()->getValueMapFromFile(file);
+	changeField(data["currentField"].asString());
+
+	auto item = (Item*)getChildByName("item");
+	item->loadItem(data);
+
+	//フィールドごとのオブジェクトの状態
+	for (auto field : mFieldList) {
+		file = path + field.first + ".plist";
+		data.clear();
+		data = FileUtils::getInstance()->getValueMapFromFile(file);
+		field.second->loadField(data);
+	}
 }
 
 void Control::setCursor(int num) {

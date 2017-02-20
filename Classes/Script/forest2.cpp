@@ -49,7 +49,7 @@ void Forest2::initField() {
 		}));
 
 		novel->setEndTask();
-		this->addChild(novel, 0, "novel");
+		this->addChild(novel, 10, "novel");
 	}));
 	addObject(egg, "egg", 3, true);
 
@@ -60,6 +60,14 @@ void Forest2::initField() {
 	egg_->setItemGetEvent("egg");
 	egg_->setMsg("鳥のたまごを手に入れた");
 	addObject(egg_, "egg_", 3, false);
+
+	auto mushroom = ObjectN::create();
+	mushroom->setArea(40, 370, 50, 90);
+	mushroom->setTexture("mushroom.png");
+	mushroom->setPosition(visibleSize / 2);
+	mushroom->setItemGetEvent("mushroom");
+	mushroom->setMsg("キノコを手に入れた");
+	addObject(mushroom, "mushroom", 3, true);
 
 }
 

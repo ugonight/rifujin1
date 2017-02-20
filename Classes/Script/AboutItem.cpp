@@ -32,4 +32,13 @@ void AboutItem::setAboutItem(std::string itemName) {
 		egg->setArea(rect.getMinX(), rect.getMinY(), rect.getMaxX() - rect.getMinX(), rect.getMaxY() - rect.getMinY());
 		addObject(egg, "egg", 1, true);
 	}
+	else if (itemName == "mushroom") {
+		auto mushroom = ObjectN::create();
+		mushroom->setTexture("item/mushroom_a.png");
+		mushroom->setMsg("キノコだ。胞子がたくさんついている");
+		mushroom->setPosition(visibleSize / 2);
+		auto rect = mushroom->getBoundingBox();
+		mushroom->setArea(rect.getMinX(), rect.getMinY(), rect.getMaxX() - rect.getMinX(), rect.getMaxY() - rect.getMinY());
+		addObject(mushroom, "mushroom", 1, true);
+	}
 }

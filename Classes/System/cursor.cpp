@@ -16,9 +16,9 @@ bool Cursor::init() {
 
 	//‰æ‘œ
 	//for (int i = 0; i < CURSOR_NUM; i++) {
-	//	auto rect = CCRectMake(80 * i, 0, 80, 80);
+	//	auto rect = Rect(80 * i, 0, 80, 80);
 	//	auto sprite = Sprite::create("cursor.png", rect);
-		auto rect = CCRectMake(80 * 0, 0, 80, 80);
+		auto rect = Rect(80 * 0, 0, 80, 80);
 		auto sprite = Sprite::create("cursor.png", rect);
 		
 
@@ -76,7 +76,7 @@ void Cursor::setCursorNum(int i) {
 	//	sprite1->runAction(FadeOut::create(0.1f)); 
 	//}
 
-	auto rect = CCRectMake(80 * i, 0, 80, 80);
+	auto rect = Rect(80 * i, 0, 80, 80);
 	auto sprite = (Sprite*)this->getChildByTag(0);
 
 	sprite->setTextureRect(rect);

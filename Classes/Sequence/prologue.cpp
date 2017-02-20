@@ -82,8 +82,6 @@ bool Prologue::init() {
 
 	//BGM
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/days.ogg");
-	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/dream.ogg");
 
 	//バックログを初期化
 	auto path = FileUtils::getInstance()->getWritablePath();

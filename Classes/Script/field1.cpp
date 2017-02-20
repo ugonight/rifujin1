@@ -14,9 +14,14 @@ void Field1::initField() {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	auto bg = Sprite::create("forest1_.png");
+	auto bg = ObjectN::create();	//セーブで管理するものは背景でもObjectNで
+	bg->setTexture("forest1_.png");
 	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-	this->addChild(bg, 0, "forest_");
+	this->addObject(bg,"forest_", 0, true);
+	bg = ObjectN::create();
+	bg->setTexture("forest1.png");
+	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	this->addObject(bg, "forest", 0, false);
 
 	auto area = ObjectN::create();
 	area->setArea(650, 300, 100, 100);
@@ -39,6 +44,9 @@ void Field1::initField() {
 		novel->addSentence("セリーヌ「左上にあるピンクの枠をタップすると取得しているアイテムの一覧が出てきます」");
 		novel->addSentence("セリーヌ「そのまま左にスライドして使いたいアイテムの上で離します」");
 		novel->addSentence("セリーヌ「ピンクの枠にアイテムがセットされますので、画面上の使いたい場所でタップするとアイテムが使えます」");
+		novel->setCharaC("tutorial4.png");
+		novel->addSentence("セリーヌ「また、ピンクの枠の上で長押しすると、アイテムを拡大して見ることができます。」");
+		novel->addSentence("セリーヌ「拡大したアイテムにアイテムを使うことができるときがありますので、お試しください。」");
 		novel->setCharaC("");
 		novel->setCharaR("chara/tuguru1.png");
 		novel->setFontColor(Color3B::BLUE);
@@ -72,8 +80,7 @@ void Field1::changedField() {
 	if (Control::me->getExistObject("campus","green") && getChildByName("forest_")) {
 		auto bg = getChildByName("forest_");
 		bg->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(), NULL));
-		bg = Sprite::create("forest1.png");
-		bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+		bg = mObjectList["forest"];
 		bg->setOpacity(0.0f);
 		bg->runAction(FadeIn::create(0.5f));
 		addChild(bg, 0, "forest");

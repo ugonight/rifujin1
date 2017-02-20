@@ -100,12 +100,16 @@ bool Title::init() {
 	//SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/title.ogg"); //WakeUpSceneFactory‚Ö
 	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic(true);
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/days.ogg");
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/dream.ogg");
 	playBGM = 0;
 	
 	//SE
 	SimpleAudioEngine::getInstance()->preloadEffect("SE/se1.ogg");
 	SimpleAudioEngine::getInstance()->setEffectsVolume(0.8f);
 	SimpleAudioEngine::getInstance()->preloadEffect("SE/po.ogg");
+	SimpleAudioEngine::getInstance()->preloadEffect("SE/get.ogg");
+	SimpleAudioEngine::getInstance()->preloadEffect("SE/set.ogg");
 
 	return true;
 }
@@ -118,7 +122,12 @@ void Title::startBtnCallback(Ref* pSender){
 void Title::continueBtnCallback(Ref* pSender) {
 	//SE
 	SimpleAudioEngine::getInstance()->playEffect("SE/se1.ogg");
-	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Control::create(), Color3B::WHITE));
+	//BGM
+	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic(true);
+	SimpleAudioEngine::getInstance()->playBackgroundMusic("BGM/dream.ogg", true);
+	auto control = Control::create();
+	control->load();
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, control, Color3B::WHITE));
 }
 
 void Title::update(float delta) {

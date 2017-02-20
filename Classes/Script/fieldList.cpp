@@ -13,4 +13,5 @@ void Control::initField() {
 	for (auto it = mFieldList.begin(); it != mFieldList.end(); it++) {
 		it->second->retain();
 	}
+
 }

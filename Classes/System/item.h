@@ -13,6 +13,9 @@ public:
 	void deleteItem(std::string itemName);
 	std::string getSelectedItem();
 
+	void saveItem(cocos2d::ValueMap* map);
+	void loadItem(cocos2d::ValueMap map);
+
 	static Item* sharedItem();
 
 
@@ -31,6 +34,7 @@ private:
 
 		std::string getImage() { return imgName; };
 		void setGetFlag(bool i) { getFlag = i; };
+		bool getGetFlag() { return getFlag; };
 		
 		//aiLayerのinit()を定義する関数（？）を作る
 		//わざわざアイテムごとにクラスを作るのがめんどうなので、簡単に定義できるようにしたい。

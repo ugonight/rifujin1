@@ -18,6 +18,8 @@ bool ObjectN::init(){
 	mGetItem = mField = mMsg = "";
 	mTouchTime = 0;
 
+	mArea = Rect(0, 0, 0, 0);
+
 	mTouchEvent = CallFunc::create([]() {return; });
 	mTouchEvent->retain();
 
@@ -58,12 +60,14 @@ bool ObjectN::touchOn(cocos2d::Touch* touch, cocos2d::Event* event) {
 		
 		//範囲がタッチされた時
 		mTouchTime = 1;
+
 	}
 	else {
 		//Control::me->setCursor(0);
 	}
 
-	return true;
+	return true;	//カーソル変化の関係で無条件でタッチを拾う
+
 }
 
 void ObjectN::touchOff(cocos2d::Touch* touch, cocos2d::Event* event) {

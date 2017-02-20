@@ -1,7 +1,9 @@
 #include "item.h"
 
 #include "control.h"
+#include "SimpleAudioEngine.h"
 
+using namespace CocosDenshion;
 USING_NS_CC;
 
 static Item* instanceOfItem;
@@ -29,14 +31,14 @@ bool Item::init() {
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	//選択アイテムウィンドウ
-	auto rect = CCRectMake(64 * 0, 0, 64, 64);
+	auto rect = Rect(64 * 0, 0, 64, 64);
 	auto window = Sprite::create("itemWindow.png",rect);
 	window->setPosition(Vec2(15 + origin.x, -15 + origin.y + visibleSize.height));
 	window->setAnchorPoint(Vec2(0.0f, 1.0f));
 	addChild(window, 2, "window");
 
 	//アイテムリストウィンドウ
-	rect = CCRectMake(64, 0, 64 * 0, 64);
+	rect = Rect(64, 0, 64 * 0, 64);
 	window = Sprite::create("itemWindow.png", rect);
 	window->setPosition(Vec2(15 + origin.x + 64, -15 + origin.y + visibleSize.height));
 	window->setAnchorPoint(Vec2(0.0f, 1.0f));
@@ -71,8 +73,9 @@ bool Item::init() {
 }
 
 void Item::update(float delta) {
-		auto possession = getChildByName("possession");
-		auto window = (Sprite*)getChildByName("listWindow");
+	auto possession = getChildByName("possession");
+	auto window = (Sprite*)getChildByName("listWindow");
+	auto baseWindow = (Sprite*)getChildByName("window");
 
 	if (mShowWindow) {
 		if (mWindowW < 64 * possession->getChildrenCount()) mWindowW += 16;
@@ -81,12 +84,18 @@ void Item::update(float delta) {
 		if (mWindowW > 0) mWindowW -= 16;
 	}
 
-	auto rect = CCRectMake(64, 0, mWindowW, 64);
+	auto rect = Rect(64, 0, mWindowW, 64);
 	window->setTextureRect(rect);
 
 	int i = 0;
 	for (auto item : possession->getChildren()) {
-		if (mWindowW >= 64 * i) item->setPositionX(window->getPositionX() + mWindowW - (possession->getChildrenCount() - i) * 64);
+		if (mWindowW > 64 * i) {
+			item->setPositionX(window->getPositionX() + mWindowW - (possession->getChildrenCount() - i) * 64);		
+			if (baseWindow->getPositionX() > item->getPositionX()) item->setPositionX(baseWindow->getPositionX());	//左に飛び出すのを防ぐ（突貫工事）
+		}
+		else {
+			item->setPositionX(baseWindow->getPositionX());
+		}
 		i++;
 	}
 
@@ -157,6 +166,8 @@ void Item::getItem(std::string s, Point p) {
 	m_emitter->setBlendFunc(func);
 	addChild(m_emitter, 10);
 
+	//SE
+	SimpleAudioEngine::getInstance()->playEffect("SE/get.ogg");
 }
 
 void Item::deleteItem(std::string s) {
@@ -165,6 +176,7 @@ void Item::deleteItem(std::string s) {
 	mSelectedItem = "";
 	auto item = (Sprite*)getChildByName("selectItem");
 	item->setTextureRect(Rect(0, 0, 0, 0));
+	mItemList[s]->setGetFlag(0);
 }
 
 std::string Item::getSelectedItem() { return mSelectedItem; }
@@ -175,9 +187,8 @@ bool Item::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 	auto touchPoint = touch->getLocation();
 	if (targetBox.containsPoint(touchPoint)) {
 		mShowWindow = 1;
+		mTouchTime = 1;
 	}
-
-	mTouchTime = 1;
 
 	//AIが表示されているとき
 	if (mShowAboutItem) {
@@ -200,21 +211,21 @@ bool Item::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 		}
 	}
 
-	return true;
+		return true;
 }
 
 void Item::moveEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 	auto window = getChildByName("window");
 	auto targetBox = window->getBoundingBox();
-	auto touchPoint = touch->getLocation();
+	auto touchPoint = touch->getLocation();	
+	auto possession = getChildByName("possession");
+	auto frame = getChildByName("frame");
+
 	if (!targetBox.containsPoint(touchPoint)) {
 		mTouchTime = 0;
 	}
 
-	if (mShowWindow) {
-		auto possession = getChildByName("possession");
-		auto frame = getChildByName("frame");
-
+	if (mShowWindow && mWindowW >= 64 * possession->getChildrenCount()) {
 		int i = 0;
 		for (auto item : possession->getChildren()) {
 			if (touch->getLocation().x > item->getPositionX() && touch->getLocation().x < item->getPositionX() + 64) {
@@ -235,8 +246,9 @@ void Item::endEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 	auto item = (Sprite*)getChildByName("selectItem");
 
 	frame->setPositionX(window->getPositionX());
-	if (mSelectedItem != "") item->setTexture(mItemList[mSelectedItem]->getImage());
-
+	if (mSelectedItem != "") {
+		item->setTexture(mItemList[mSelectedItem]->getImage());
+	}
 }
 
 void Item::showAboutItem() {
@@ -249,10 +261,34 @@ void Item::showAboutItem() {
 	auto aboutItem = Sprite::create("AboutItem.png");
 	aboutItem->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
 	aboutItem->setOpacity(0.0f);
-	aboutItem->setScale(0.5f);
+	//aboutItem->setScale(0.5f);
 	aboutItem->runAction(FadeIn::create(0.2f));
-	aboutItem->runAction(ScaleBy::create(0.2f,2.0f));
+	//aboutItem->runAction(ScaleBy::create(0.2f,2.0f));
 	addChild(aboutItem, 2, "AboutItem");
 
+	//SE
+	SimpleAudioEngine::getInstance()->playEffect("SE/set.ogg");
+}
+
+void Item::saveItem(cocos2d::ValueMap* map) {
+	for (auto item : mItemList) {
+		map->insert(ValueMap::value_type(item.first, item.second->getGetFlag()));
+		//map[item.first] = item.second->getGetFlag();
+	}
+}
+
+void Item::loadItem(cocos2d::ValueMap map) {
+	for (auto item : mItemList) {
+		if (map[item.first].asBool()) {
+			mItemList[item.first]->setGetFlag(1);
+			auto item_ = Sprite::create(mItemList[item.first]->getImage());
+			//登録
+			auto possession = getChildByName("possession");
+			auto window = getChildByName("window");
+			item_->setPosition(window->getPosition());
+			item_->setAnchorPoint(Vec2(0.0f, 1.0f));
+			possession->addChild(item_, 0, item.first);
+		}
+	}
 }
 

@@ -149,6 +149,7 @@ bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 				}
 			}
 		}
+		
 	}
 
 	return true;
@@ -380,7 +381,7 @@ void Novel::setDelayAnime() {
 				Sequence::create(
 					DelayTime::create(0.05f*i),
 					FadeIn::create(0.05f),
-					CallFunc::create([this]() {	if (mCharNum % 2 == 0) SimpleAudioEngine::getInstance()->playEffect("SE/po.ogg"); }),	//全角の最初で鳴らす
+					CallFunc::create([this]() {	if (mCharNum % 4 == 0) SimpleAudioEngine::getInstance()->playEffect("SE/po.ogg"); }),	//全角の最初で鳴らす
 					NULL
 				));
 		}

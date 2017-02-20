@@ -53,7 +53,8 @@ void Field::update(float delta) {
 
 void Field::addObject(ObjectN* obj, std::string s, int z, bool addchild){
 	mObjectList[s] = obj;
-	obj->retain();
+	obj->retain();	
+	obj->setZOrder(z);
 	if (addchild) this->addChild(obj, z, s);
 }
 
@@ -93,5 +94,28 @@ void Field::resumeEventListener() {
 	for (auto it : this->getChildren()) {
 		auto dispatcher = Director::getInstance()->getEventDispatcher();
 		dispatcher->resumeEventListenersForTarget(it);
+	}
+}
+
+cocos2d::ValueMap Field::saveField() {
+	ValueMap data;
+	for (auto obj : mObjectList) {
+			data[obj.first] = obj.second->getReferenceCount() > 1;
+	}
+	return data;
+}
+
+void Field::loadField(cocos2d::ValueMap data) {
+	for (auto obj : mObjectList) {
+		if (data[obj.first].asBool()) {
+			if (!this->getChildByName(obj.first)) {	//‰Šúó‘Ô‚ÅÁ‚¦‚Ä‚¢‚é
+				addChild(obj.second, obj.second->getLocalZOrder(), obj.first);
+			}
+		}
+		else {
+			if (this->getChildByName(obj.first)) {	//‰Šúó‘Ô‚Å•\¦‚³‚ê‚Ä‚¢‚é
+				removeChild(obj.second);
+			}
+		}
 	}
 }
