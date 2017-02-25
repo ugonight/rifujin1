@@ -13,10 +13,38 @@ void Forest3::initField() {
 	this->addChild(bg, 0, "forest3");
 
 	auto forest2 = ObjectN::create();
-	forest2->setArea(200, 430, 400, 50);
+	forest2->setArea(Rect(200, 430, 400, 50));
 	forest2->setFieldChangeEvent("forest2");
 	forest2->setCursor(2);
 	addObject(forest2, "forest2", 2, true);
+
+	auto matsu = ObjectN::create();
+	matsu->setArea(Rect(540, 200, 280, 100));
+	matsu->setTouchEvent(CallFunc::create([this] {
+		pauseEventListener();
+
+		auto novel = Novel::create();
+
+		novel->setFontColor(Color3B::BLUE);
+		novel->setCharaL("chara/tuguru1.png");
+		novel->addSentence("継「いたっ」");
+		novel->addSentence("継「なにか頭に刺さった…」");
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaR("chara/celine1.png");
+		novel->addSentence("セリーヌ「これは…松の葉みたいですね」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「使えるかもしれないから持っておこうか」");
+		novel->addEvent(CallFunc::create([this] {
+			Item::sharedItem()->getItem("matsu", Point(680, 250));
+			removeChildByName("matsu");
+		}));
+		novel->setFontColor(Color3B::BLACK);
+		novel->addSentence("松の葉を手に入れた");
+
+		novel->setEndTask();
+		this->addChild(novel, 10, "novel");
+	}));
+	addObject(matsu, "matsu", 2, true);
 }
 
 void Forest3::changedField() {

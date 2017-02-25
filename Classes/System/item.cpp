@@ -270,11 +270,13 @@ void Item::showAboutItem() {
 	SimpleAudioEngine::getInstance()->playEffect("SE/set.ogg");
 }
 
-void Item::saveItem(cocos2d::ValueMap* map) {
+void Item::saveItem(cocos2d::ValueMap* map) {	
+	ValueMap data;
 	for (auto item : mItemList) {
-		map->insert(ValueMap::value_type(item.first, item.second->getGetFlag()));
-		//map[item.first] = item.second->getGetFlag();
+		//map->insert(item.first, item.second->getGetFlag());
+		data[item.first] = item.second->getGetFlag();
 	}
+	map->insert(data.begin(), data.end());
 }
 
 void Item::loadItem(cocos2d::ValueMap map) {

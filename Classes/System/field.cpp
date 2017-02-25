@@ -113,6 +113,7 @@ void Field::loadField(cocos2d::ValueMap data) {
 			}
 		}
 		else {
+			if (data[obj.first].isNull()) continue;	//セーブデータに登録されてなかったら無視
 			if (this->getChildByName(obj.first)) {	//初期状態で表示されている時
 				removeChild(obj.second);
 			}

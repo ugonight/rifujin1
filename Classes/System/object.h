@@ -7,6 +7,7 @@ class ObjectN : public cocos2d::Sprite {
 	//bool mAreaFlag;	//タッチエリアが存在するか
 	cocos2d::Rect mArea;
 	int mCursorNum;
+	int mState;	//状態・フラグ的なもの
 
 	std::string mGetItem;	//タッチ時に入手するアイテム
 	std::string mField;		//移動先のフィールド
@@ -27,14 +28,17 @@ public:
 	virtual bool init();
 	virtual void update(float delta);
 
-	void setArea(int x, int y, int w, int h);
+	void setArea(cocos2d::Rect rect);	//(int x, int y, int w, int h)
 	void setCursor(int cursorNum);
+	void setState(int state);
 	void setItemGetEvent(std::string itemName);
 	void setFieldChangeEvent(std::string fieldName);
 	void setMsg(std::string msg);
 
 	//void setTouchEvent(void (*func)());
 	void setTouchEvent(cocos2d::CallFunc *func);
+
+	int getState();
 
 
 	CREATE_FUNC(ObjectN);

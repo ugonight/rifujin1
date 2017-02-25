@@ -24,7 +24,7 @@ void Field1::initField() {
 	this->addObject(bg, "forest", 0, false);
 
 	auto area = ObjectN::create();
-	area->setArea(650, 300, 100, 100);
+	area->setArea(Rect(650, 300, 100, 100));
 	area->setItemGetEvent("crayon_g");
 	area->setMsg("クレヨン（緑）を手に入れた");
 	//this->addChild(area, 1, "crayon_g");
@@ -59,13 +59,13 @@ void Field1::initField() {
 	addObject(area, "crayon_g", 1, true);
 
 	auto campus = ObjectN::create();
-	campus->setArea(365, 230, 90, 55);
+	campus->setArea(Rect(365, 230, 90, 55));
 	campus->setFieldChangeEvent("campus");
 	//this->addChild(area, 1, "crayon_g");
 	addObject(campus, "campus", 1, true);
 
 	auto forest2 = ObjectN::create();
-	forest2->setArea(0, 0, 80, 480);
+	forest2->setArea(Rect(0, 0, 80, 480));
 	forest2->setFieldChangeEvent("forest2");
 	forest2->setCursor(4);
 	addObject(forest2, "forest2", 2, false);
@@ -132,14 +132,14 @@ void Field2::initField() {
 	addObject(green, "green", 1, false);
 
 	auto back = ObjectN::create();
-	back->setArea(0, 400, 854, 80);
+	back->setArea(Rect(0, 400, 854, 80));
 	back->setFieldChangeEvent("forest1");
 	back->setCursor(2);
 	//this->addChild(area, 1, "crayon_g");
 	addObject(back, "back", 2, true);
 
 	auto draw = ObjectN::create();
-	draw->setArea(10, 80, 844, 220);
+	draw->setArea(Rect(10, 80, 844, 220));
 	draw->setMsg("絵が描かれている");
 	draw->setTouchEvent(CallFunc::create([this] {
 		if (Item::sharedItem()->getSelectedItem() == "crayon_g") {

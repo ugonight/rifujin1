@@ -74,6 +74,9 @@ bool Title::init() {
 		CC_CALLBACK_1(Title::continueBtnCallback, this)
 		);
 	continueBtn->setPosition(Vec2(420, 250));
+	auto path = FileUtils::getInstance()->getWritablePath();
+	auto file = path + "saveData.plist";
+	continueBtn->setEnabled(FileUtils::getInstance()->isFileExist(file));
 	menu->addChild(continueBtn);
 
 	//キャラクター
@@ -98,7 +101,7 @@ bool Title::init() {
 
 	//BGM
 	//SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/title.ogg"); //WakeUpSceneFactoryへ
-	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic(true);
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/days.ogg");
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/dream.ogg");
@@ -123,7 +126,7 @@ void Title::continueBtnCallback(Ref* pSender) {
 	//SE
 	SimpleAudioEngine::getInstance()->playEffect("SE/se1.ogg");
 	//BGM
-	SimpleAudioEngine::sharedEngine()->stopBackgroundMusic(true);
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 	SimpleAudioEngine::getInstance()->playBackgroundMusic("BGM/dream.ogg", true);
 	auto control = Control::create();
 	control->load();

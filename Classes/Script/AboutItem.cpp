@@ -4,7 +4,53 @@
 
 USING_NS_CC;
 
-void AboutItem::initField() {}	//最初は何も置かない
+void AboutItem::initField() {
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	//オブジェクトを作っておく
+
+	//クレヨン（緑）
+	auto crayon = ObjectN::create();
+	crayon->setTexture("item/crayon_g.png");
+	crayon->setMsg("緑のクレヨンだ");
+	crayon->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	crayon->setArea(crayon->getBoundingBox());
+	addObject(crayon, "crayon_g", 1, false);
+
+	//卵
+	auto egg = ObjectN::create();
+	egg->setTexture("item/egg.png");
+	egg->setMsg("鳥のたまごだ");
+	egg->setScale(2.0f);
+	egg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	egg->setArea(egg->getBoundingBox());
+	addObject(egg, "egg", 1, false);
+
+	//きのこ
+	auto mushroom = ObjectN::create();
+	mushroom->setTexture("item/mushroom_a.png");
+	mushroom->setMsg("キノコだ。胞子がたくさんついている");
+	mushroom->setPosition(visibleSize / 2);
+	mushroom->setArea(mushroom->getBoundingBox());
+	addObject(mushroom, "mushroom", 1, false);
+
+	//松の葉
+	auto matsu = ObjectN::create();
+	matsu->setTexture("item/matsu_a.png");
+	matsu->setMsg("松の葉の先を曲げた");
+	matsu->setArea(matsu->getBoundingBox());
+	matsu->setTouchEvent(CallFunc::create([this] {
+		auto obj = (ObjectN*)mObjectList["matsu"];
+		if (obj->getState() == 0) {
+			obj->setTexture("item/matsu2_a.png");
+			obj->setMsg("松の葉の先を曲げてある");
+			obj->setState(1);
+		}
+	}));
+	addObject(matsu, "matsu", 1, false);
+
+}
 void AboutItem::changedField(){}
 void AboutItem::setAboutItem(std::string itemName) {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -14,31 +60,15 @@ void AboutItem::setAboutItem(std::string itemName) {
 
 	//ここにAboutItemの処理を書いていく
 	if (itemName=="crayon_g") {
-		auto crayon = ObjectN::create();
-		crayon->setTexture("item/crayon_g.png");
-		crayon->setMsg("緑のクレヨンだ");
-		crayon->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-		auto rect = crayon->getBoundingBox();
-		crayon->setArea(rect.getMinX(), rect.getMinY(), rect.getMaxX() - rect.getMinX(), rect.getMaxY() - rect.getMinY());
-		addObject(crayon, "crayon", 1, true);
+		addChild(mObjectList["crayon_g"]);
 	}
 	else if (itemName == "egg") {
-		auto egg = ObjectN::create();
-		egg->setTexture("item/egg.png");
-		egg->setMsg("鳥のたまごだ");
-		egg->setScale(2.0f);
-		egg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-		auto rect = egg->getBoundingBox();
-		egg->setArea(rect.getMinX(), rect.getMinY(), rect.getMaxX() - rect.getMinX(), rect.getMaxY() - rect.getMinY());
-		addObject(egg, "egg", 1, true);
+		addChild(mObjectList["egg"]);
 	}
 	else if (itemName == "mushroom") {
-		auto mushroom = ObjectN::create();
-		mushroom->setTexture("item/mushroom_a.png");
-		mushroom->setMsg("キノコだ。胞子がたくさんついている");
-		mushroom->setPosition(visibleSize / 2);
-		auto rect = mushroom->getBoundingBox();
-		mushroom->setArea(rect.getMinX(), rect.getMinY(), rect.getMaxX() - rect.getMinX(), rect.getMaxY() - rect.getMinY());
-		addObject(mushroom, "mushroom", 1, true);
+		addChild(mObjectList["mushroom"]);
+	}
+	else if (itemName == "matsu") {
+		addChild(mObjectList["matsu"]);
 	}
 }

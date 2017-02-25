@@ -14,6 +14,7 @@ bool ObjectN::init(){
 
 	//mAreaFlag = 0;
 	mCursorNum = 1;
+	mState = 0;
 
 	mGetItem = mField = mMsg = "";
 	mTouchTime = 0;
@@ -29,11 +30,14 @@ bool ObjectN::init(){
 	//listener->onTouchEnded = CC_CALLBACK_2(ObjectN::touchOff, this);/* [=](Touch* touch, Event* event) {};*/
 	//this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
+	//デフォルトで中央に表示
+	this->setPosition(Director::getInstance()->getVisibleSize() / 2);
+
 	return true;
 }
 
-void ObjectN::setArea(int x, int y, int w, int h) {
-	mArea = Rect(x, y, w, h);
+void ObjectN::setArea(cocos2d::Rect rect) {
+	mArea = rect; //Rect(x, y, w, h);
 	//mAreaFlag = 1;
 
 	auto listener = EventListenerTouchOneByOne::create();
@@ -102,7 +106,7 @@ void ObjectN::touchOff(cocos2d::Touch* touch, cocos2d::Event* event) {
 //}
 
 void ObjectN::setCursor(int i) { mCursorNum = i; }
-
+void ObjectN::setState(int s) { mState = s; }
 void ObjectN::setItemGetEvent(std::string s) { mGetItem = s; }
 void ObjectN::setFieldChangeEvent(std::string s) { mField = s; }
 void ObjectN::setMsg(std::string s) { mMsg = s; };
@@ -110,6 +114,7 @@ void ObjectN::setMsg(std::string s) { mMsg = s; };
 //void ObjectN::setTouchEvent(void func()) { mTouchEvent = func; }
 void ObjectN::setTouchEvent(cocos2d::CallFunc *func) { mTouchEvent = func; mTouchEvent->retain(); }
 
+int ObjectN::getState() { return mState; }
 
 void ObjectN::update(float delta) {
 	if (mTouchTime > 0) mTouchTime++;

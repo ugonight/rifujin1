@@ -124,6 +124,7 @@ bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 				setDelayAnime();
 			}
 			else if (mSentense.size() - 1 == mNovelNum && this->getOpacity() == 255) {	//文リストの最後なら
+				mNovelNum++;
 				this->runAction(Sequence::create(FadeOut::create(1.0f), CallFunc::create(CC_CALLBACK_0(Novel::end, this)),/* RemoveSelf::create(true),*/ NULL));
 				//スプライト全部をフェードアウトする
 				Sprite* spr;
@@ -321,12 +322,12 @@ void Novel::setEndTask() {
 	CTask ctsk = { -1, Color3B::BLACK};
 	mColorTask.push_back(ctsk);
 
-	FTask ftsk = { -1, NULL };
+	FTask ftsk = { -1, CallFunc::create([] {}) };
 	mFuncTask.push_back(ftsk);
 
 	updateImg();
 	updateColor();
-	updateFunc();
+	//updateFunc();
 }
 
 void Novel::updateColor() {
@@ -351,7 +352,8 @@ void Novel::setFontColor(cocos2d::Color3B c) {
 }
 
 void Novel::addEvent(cocos2d::CallFunc* func) {
-	FTask tsk = {mNovelNum, func};
+	func->retain();
+	FTask tsk = {mNovelSetNum, func};
 	mFuncTask.push_back(tsk);
 }
 

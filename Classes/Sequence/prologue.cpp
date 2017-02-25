@@ -88,11 +88,35 @@ bool Prologue::init() {
 	auto file = path + "speak.plist";
 	FileUtils::getInstance()->removeFile(file);
 
+	//スキップボタン
+	auto skip = Label::create("スキップ", "fonts/APJapanesefontT.ttf", 24);
+	skip->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+	skip->setPosition(Vec2(origin.x, origin.y + display.height));
+	skip->setTextColor(Color4B::WHITE);
+	skip->enableOutline(Color4B::BLACK, 2);
+	addChild(skip, 3, "skip");
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [this](Touch* touch, Event* event) {
+		auto target = (Label*)event->getCurrentTarget();
+		Rect targetBox = target->getBoundingBox();
+		Point touchPoint = Vec2(touch->getLocation().x, touch->getLocation().y);
+		if (targetBox.containsPoint(touchPoint))
+		{
+			mState = &Prologue::scene5;
+			removeChildByTag(0);
+			return true;
+		}
+		return false;
+	};
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, skip);
+
 	return true;
 }
 
 void Prologue::update(float delta){
 	(this->*mState)();
+	
+	if (mState == &Prologue::scene5 && getChildByName("skip")) removeChildByName("skip");
 }
 
 void Prologue::scene1() {
@@ -224,7 +248,7 @@ void Prologue::scene3() {
 		novel->addSentence("？？？「もう授業終わったけど…何しに来たの…？」");
 		novel->setFontColor(Color3B::BLACK);
 		novel->addSentence("こいつはクラスメイトのバイロン・ダイエナ。通称バンダナ");
-		novel->addSentence("その名の通りいつもバンダナを身に着けている");
+		novel->addSentence("そのあだ名の通りいつもバンダナを身に着けている");
 		novel->setFontColor(Color3B::BLUE);
 		novel->addSentence("継「はー…」");
 		novel->setFontColor(Color3B::RED);
