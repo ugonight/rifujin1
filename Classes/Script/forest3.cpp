@@ -45,6 +45,13 @@ void Forest3::initField() {
 		this->addChild(novel, 10, "novel");
 	}));
 	addObject(matsu, "matsu", 2, true);
+
+	auto stick = ObjectN::create();
+	stick->setTexture("stick.png");
+	stick->setArea(Rect(520, 390, 140, 60));
+	stick->setItemGetEvent("stick");
+	stick->setMsg("木の棒を手に入れた");
+	addObject(stick, "stick", 3, true);
 }
 
 void Forest3::changedField() {

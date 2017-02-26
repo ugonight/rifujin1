@@ -266,7 +266,7 @@ void Prologue::scene3() {
 		novel->setFontColor(Color3B::BLUE);
 		novel->addSentence("継「？…何のこと？」");
 		novel->setFontColor(Color3B::RED);
-		novel->addSentence("寿甘「いやね、マリアちゃんもここ数日来てなかったから。てっきりデートでもしてるのかと思ったんだけど…」");
+		novel->addSentence("寿甘「いやね、マリアちゃんもここ数日来てなかったから。てっきり二人でデートでもしてるのかと思ったんだけど…」");
 		novel->setFontColor(Color3B::BLACK);
 		novel->addSentence("マリア・ミルフィーユ。彼女もまたクラスメイトだ。…あんまり話したことはないけど");
 		novel->setFontColor(Color3B::BLUE);

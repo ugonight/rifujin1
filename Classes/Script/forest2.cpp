@@ -105,10 +105,86 @@ void Forest2::initField() {
 	ladder->setTexture("ladder_.png");
 	ladder->setArea(Rect(630, 50, 100, 35));
 	ladder->setMsg("はしごが上がっている");
+	ladder->setTouchEvent(CallFunc::create([this] {
+		if (Item::sharedItem()->getSelectedItem() == "stick" && mObjectList["ladder"]->getState() == 0) {
+			pauseEventListener();
+
+			auto novel = Novel::create();
+			novel->setFontColor(Color3B::BLUE);
+			novel->setCharaL("chara/tuguru1.png");
+			novel->addSentence("継「この棒で何とかはしごを降ろせないかな…」");
+			novel->addSentence("継「よっ！…ほっ！…うーん、届かない…」");
+			novel->setFontColor(Color3B::RED);
+			novel->setCharaR("chara/suama1.png");
+			novel->addSentence("寿甘「あはは、何やってんのよー！バンダナ、肩車してあげなさい。」");
+			novel->setFontColor(Color3B::BLUE);
+			novel->setCharaL("chara/bandana1.png");
+			novel->addSentence("バンダナ「えー、俺ー？お前の方がデカいからやれよー」");
+			novel->setFontColor(Color3B::RED);
+			novel->addSentence("寿甘「あ゛？」");
+			novel->setCharaC("chara/scene3.png");
+			novel->addSentence("寿甘「誰がデブだって…？」");
+			novel->addSentence("寿甘「つーかお前男だろ。女にやらせるとかどういうことよ？」");
+			novel->setFontColor(Color3B::BLACK);
+			novel->setCharaC("");
+			novel->addSentence("ガンッ…ガラガラ…");
+			novel->addEvent(CallFunc::create([this] {
+				removeChildByName("ladder_");
+				addChild(mObjectList["ladder"], 3, "ladder");
+			}));
+			novel->setFontColor(Color3B::BLUE);
+			novel->addSentence("バンダナ「ええ…」");
+			
+			novel->setEndTask();
+			this->addChild(novel, 10, "novel");
+		}
+	}));
 	addObject(ladder, "ladder_", 3, true);
 
+	ladder = ObjectN::create();
+	ladder->setTexture("ladder.png");
+	ladder->setArea(Rect(640, 70, 100, 380));
+	ladder->setMsg("はしごが下がっている");
+	addObject(ladder, "ladder", 3, false);
+
+	auto girl = ObjectN::create();
+	addObject(girl, "girl", 0, true);	//フラグ用
 }
 
 void Forest2::changedField() {
+	if (getChildByName("girl")) {
+		pauseEventListener();
 
+		auto novel = Novel::create();
+
+		novel->setFontColor(Color3B::BLUE);
+		novel->setCharaL("chara/tuguru1.png");
+		novel->addSentence("継「森の中に入ってきたね」");
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaR("chara/suama1.png");
+		novel->addSentence("寿甘「薄暗くて気味が悪いよ…闇雲に動いたってしょうがなくない？引き返そうよー」");
+		novel->addSentence("寿甘「それに後ろからなんとなく気配が…」");
+		novel->setCharaC("chara/girl1.png");
+		novel->addSentence("寿甘「！」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「えっ、女の子…？」");
+		novel->setFontColor(Color3B::RED);
+		novel->addSentence("寿甘「ねえ、君はこの世界の子なのかな？…そうだ、紫の長い髪の子見なかった？」");
+		novel->addSentence("謎の少女「・・・」");
+		novel->addSentence("謎の少女「あなたたちは…だれ…？」");
+		novel->addSentence("寿甘「え！…あー、私たちはその子の友達…みたいな感じ…かな？それで、捜してるの！」");
+		novel->addSentence("謎の少女「！……そう…」");
+		novel->addSentence("謎の少女「じゃあ、ついてきて…」");
+		novel->setCharaC("");
+		novel->addSentence("寿甘「消えた？…ってもうあんなところに！ほうきで飛んで追いかけよう！早くしないと見失っちゃう！」");
+		novel->setCharaL("chara/celine1.png");
+		novel->addSentence("セリーヌ「それは、できません。ここには魔力を制御するハンコの力が及びませんので、魔法は使えないみたいです。」");
+		novel->addSentence("セリーヌ「手がかりを見つけながら追いかけましょう」");
+		novel->addEvent(CallFunc::create([this] {
+			removeChildByName("girl");
+		}));
+
+		novel->setEndTask();
+		this->addChild(novel, 10, "novel");
+	}
 }

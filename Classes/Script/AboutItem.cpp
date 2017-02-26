@@ -50,6 +50,13 @@ void AboutItem::initField() {
 	}));
 	addObject(matsu, "matsu", 1, false);
 
+	//木の棒
+	auto stick = ObjectN::create();
+	stick->setTexture("item/stick_a.png");
+	stick->setMsg("木の棒だ");
+	stick->setArea(stick->getBoundingBox());
+	addObject(stick, "stick", 1, false);
+
 }
 void AboutItem::changedField(){}
 void AboutItem::setAboutItem(std::string itemName) {
@@ -59,16 +66,21 @@ void AboutItem::setAboutItem(std::string itemName) {
 	this->removeAllChildren();
 
 	//ここにAboutItemの処理を書いていく
-	if (itemName=="crayon_g") {
-		addChild(mObjectList["crayon_g"]);
-	}
-	else if (itemName == "egg") {
-		addChild(mObjectList["egg"]);
-	}
-	else if (itemName == "mushroom") {
-		addChild(mObjectList["mushroom"]);
-	}
-	else if (itemName == "matsu") {
-		addChild(mObjectList["matsu"]);
-	}
+	//if (itemName=="crayon_g") {
+	//	addChild(mObjectList["crayon_g"]);
+	//}
+	//else if (itemName == "egg") {
+	//	addChild(mObjectList["egg"]);
+	//}
+	//else if (itemName == "mushroom") {
+	//	addChild(mObjectList["mushroom"]);
+	//}
+	//else if (itemName == "matsu") {
+	//	addChild(mObjectList["matsu"]);
+	//}
+
+	addChild(mObjectList[itemName]);
+
+	//同時に二つ以上表示する場合はitemName == で書く
+	
 }
