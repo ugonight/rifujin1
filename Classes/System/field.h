@@ -22,6 +22,7 @@ public:
 	virtual void update(float delta);
 
 	bool getExistObject(std::string objName);
+	ObjectN* getObject(std::string objName);
 
 	void FadeOut();
 	void FadeIn();

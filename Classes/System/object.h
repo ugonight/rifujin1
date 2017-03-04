@@ -39,6 +39,7 @@ public:
 	void setTouchEvent(cocos2d::CallFunc *func);
 
 	int getState();
+	std::string getMsg();
 
 
 	CREATE_FUNC(ObjectN);

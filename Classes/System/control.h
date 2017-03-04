@@ -23,6 +23,7 @@ public:
 	void resumeField();
 
 	bool getExistObject(std::string field, std::string obj);
+	Field* getField(std::string field);
 
 	virtual bool init();
 	virtual void update(float delta);

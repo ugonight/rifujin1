@@ -18,6 +18,12 @@ void Forest3::initField() {
 	forest2->setCursor(2);
 	addObject(forest2, "forest2", 2, true);
 
+	auto cave = ObjectN::create();
+	cave->setArea(Rect(440, 220, 90, 140));
+	cave->setFieldChangeEvent("cave");
+	cave->setCursor(6);
+	addObject(cave, "cave", 2, true);
+
 	auto matsu = ObjectN::create();
 	matsu->setArea(Rect(540, 200, 280, 100));
 	matsu->setTouchEvent(CallFunc::create([this] {

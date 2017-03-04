@@ -7,6 +7,9 @@ void Control::initField() {
 	mFieldList["campus"] = Field2::create();
 	mFieldList["forest2"] = Forest2::create();
 	mFieldList["forest3"] = Forest3::create();
+	mFieldList["cave"] = Cave::create();
+	mFieldList["treehouse"] = TreeHouse::create();
+	mFieldList["river"] = River::create();
 
 	mFieldList["AboutItem"] = AboutItem::create();
 

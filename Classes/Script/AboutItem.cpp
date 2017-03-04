@@ -9,6 +9,7 @@ void AboutItem::initField() {
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	//オブジェクトを作っておく
+	//基本的にアイテム名と同じ名前でオブジェクトを登録する。必ずaddChildをfalseにして登録。
 
 	//クレヨン（緑）
 	auto crayon = ObjectN::create();
@@ -17,6 +18,14 @@ void AboutItem::initField() {
 	crayon->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	crayon->setArea(crayon->getBoundingBox());
 	addObject(crayon, "crayon_g", 1, false);
+
+	//クレヨン（青）
+	crayon = ObjectN::create();
+	crayon->setTexture("item/crayon_b.png");
+	crayon->setMsg("青のクレヨンだ");
+	crayon->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	crayon->setArea(crayon->getBoundingBox());
+	addObject(crayon, "crayon_b", 1, false);
 
 	//卵
 	auto egg = ObjectN::create();
@@ -56,6 +65,27 @@ void AboutItem::initField() {
 	stick->setMsg("木の棒だ");
 	stick->setArea(stick->getBoundingBox());
 	addObject(stick, "stick", 1, false);
+
+	//カギ
+	auto key = ObjectN::create();
+	key->setTexture("item/key_a.png");
+	key->setMsg("ツリーハウスのカギだろう");
+	key->setArea(key->getBoundingBox());
+	addObject(key, "key", 1, false);
+
+	//ランプ
+	auto lamp = ObjectN::create();
+	lamp->setTexture("item/lamp_a.png");
+	lamp->setMsg("ランプが消えている");
+	lamp->setArea(lamp->getBoundingBox());
+	addObject(lamp, "lamp", 1, false);
+
+	//木版
+	auto board = ObjectN::create();
+	board->setTexture("item/board_a.png");
+	board->setMsg("木版だ");
+	board->setArea(board->getBoundingBox());
+	addObject(board, "board", 1, false);
 
 }
 void AboutItem::changedField(){}

@@ -99,6 +99,28 @@ void Forest2::initField() {
 	rafflesia = ObjectN::create();
 	rafflesia->setArea(Rect(300, 360, 160, 100));
 	rafflesia->setMsg("大きな花がある");
+	rafflesia->setTouchEvent(CallFunc::create([this] {
+		if (Item::sharedItem()->getSelectedItem() == "matsu" &&
+			((ObjectN*)(Control::me->getField("AboutItem")->getObject("matsu")))->getState() == 1 &&
+			mObjectList["rafflesia_"]->getState() == 0) {
+			pauseEventListener();
+
+			auto novel = Novel::create();
+
+			novel->setFontColor(Color3B::BLUE);
+			novel->setCharaL("chara/bandana1.png");
+			novel->addSentence("バンダナ「この松の葉…針金みたいに曲がるぞ…」");
+			novel->addSentence("バンダナ「フック状にして中にあるカギを取ってみよう」");
+			novel->addEvent(CallFunc::create([this] {
+				mObjectList["rafflesia_"]->setState(1);
+				Item::sharedItem()->getItem("key", Point(380, 80));
+			}));
+			novel->addSentence("バンダナ「よし、取れた」");
+
+			novel->setEndTask();
+			this->addChild(novel, 10, "novel");
+		}
+	}));
 	addObject(rafflesia, "rafflesia_", 3, false);
  
 	auto ladder = ObjectN::create();
@@ -129,8 +151,10 @@ void Forest2::initField() {
 			novel->setCharaC("");
 			novel->addSentence("ガンッ…ガラガラ…");
 			novel->addEvent(CallFunc::create([this] {
-				removeChildByName("ladder_");
+				getChildByName("ladder_")->runAction(Sequence::create(FadeOut::create(0.3f), RemoveSelf::create(), NULL));
 				addChild(mObjectList["ladder"], 3, "ladder");
+				mObjectList["ladder"]->setOpacity(0.0f); mObjectList["ladder"]->runAction(FadeIn::create(0.3f));
+				mObjectList["door"]->setMsg("カギがかかっている");
 			}));
 			novel->setFontColor(Color3B::BLUE);
 			novel->addSentence("バンダナ「ええ…」");
@@ -146,6 +170,23 @@ void Forest2::initField() {
 	ladder->setArea(Rect(640, 70, 100, 380));
 	ladder->setMsg("はしごが下がっている");
 	addObject(ladder, "ladder", 3, false);
+
+	auto door = ObjectN::create();
+	door->setArea(Rect(630, 0, 100, 50));
+	door->setMsg("はしごが上がっていて入れない");
+	door->setTouchEvent(CallFunc::create([this] {
+		if (mObjectList["door"]->getState() == 0) {
+			if (getChildByName("ladder") &&
+				Item::sharedItem()->getSelectedItem() == "key") {
+				Control::me->showMsg("カギを開けた");
+				Item::sharedItem()->deleteItem("key");
+				mObjectList["door"]->setState(1);
+				mObjectList["door"]->setFieldChangeEvent("treehouse");
+				mObjectList["door"]->setMsg("ツリーハウスの中に入った");
+			}
+		}
+	}));
+	addObject(door, "door", 3, true);
 
 	auto girl = ObjectN::create();
 	addObject(girl, "girl", 0, true);	//フラグ用

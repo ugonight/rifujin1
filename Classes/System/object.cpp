@@ -82,13 +82,14 @@ void ObjectN::touchOff(cocos2d::Touch* touch, cocos2d::Event* event) {
 			if (mField != "" && getParent()->getOpacity() == 255) {
 				Control::me->changeField(mField);
 			}
+			
+			//その他のイベント
+			//mTouchEvent();
+			runAction(mTouchEvent);	
 
 			//メッセージイベント
 			if (mMsg != "")Control::me->showMsg(mMsg);
 
-			//その他のイベント
-			//mTouchEvent();
-			runAction(mTouchEvent);	
 			
 			//アイテムゲットイベント
 			if (mGetItem != "") {
@@ -115,6 +116,7 @@ void ObjectN::setMsg(std::string s) { mMsg = s; };
 void ObjectN::setTouchEvent(cocos2d::CallFunc *func) { mTouchEvent = func; mTouchEvent->retain(); }
 
 int ObjectN::getState() { return mState; }
+std::string ObjectN::getMsg() { return mMsg; }
 
 void ObjectN::update(float delta) {
 	if (mTouchTime > 0) mTouchTime++;

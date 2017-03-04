@@ -62,6 +62,10 @@ bool Field::getExistObject(std::string s) {
 	return mObjectList[s]->getReferenceCount() > 1;
 }
 
+ObjectN* Field::getObject(std::string s) {
+	return mObjectList[s];
+}
+
 void Field::FadeOut(){
 	this->setCascadeOpacityEnabled(true);
 	this->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(), NULL));
@@ -100,23 +104,32 @@ void Field::resumeEventListener() {
 cocos2d::ValueMap Field::saveField() {
 	ValueMap data;
 	for (auto obj : mObjectList) {
-			data[obj.first] = obj.second->getReferenceCount() > 1;
+			data[obj.first + "_visible"] = obj.second->getReferenceCount() > 1;		//addChild()されてるか
+			data[obj.first + "_state"] = obj.second->getState();					//状態
+			data[obj.first + "_msg"] = obj.second->getMsg();						//メッセージ
+			data[obj.first + "_texture"] = obj.second->getTexture()->getPath();			//イメージ
 	}
 	return data;
 }
 
 void Field::loadField(cocos2d::ValueMap data) {
 	for (auto obj : mObjectList) {
-		if (data[obj.first].asBool()) {
+		if (data[obj.first + "_visible"].asBool()) {
 			if (!this->getChildByName(obj.first)) {	//初期状態で消えている時
 				addChild(obj.second, obj.second->getLocalZOrder(), obj.first);
 			}
 		}
 		else {
-			if (data[obj.first].isNull()) continue;	//セーブデータに登録されてなかったら無視
+			if (data[obj.first + "_visible"].isNull()) continue;	//セーブデータに登録されてなかったら無視
 			if (this->getChildByName(obj.first)) {	//初期状態で表示されている時
 				removeChild(obj.second);
 			}
 		}
+		//状態
+		obj.second->setState(data[obj.first + "_state"].asInt());
+		//メッセージ
+		obj.second->setMsg(data[obj.first + "_msg"].asString());
+		//イメージ
+		obj.second->setTexture(data[obj.first + "_texture"].asString());
 	}
 }

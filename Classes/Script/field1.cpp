@@ -70,6 +70,12 @@ void Field1::initField() {
 	forest2->setCursor(4);
 	addObject(forest2, "forest2", 2, false);
 
+	auto river = ObjectN::create();
+	river->setArea(Rect(770, 0, 80, 480));
+	river->setFieldChangeEvent("river");
+	river->setCursor(3);
+	addObject(river, "river", 2, false);
+
 	//return true;
 }
 
@@ -85,6 +91,7 @@ void Field1::changedField() {
 		bg->runAction(FadeIn::create(0.5f));
 		addChild(bg, 0, "forest");
 		addChild(mObjectList["forest2"], 2, "forest2");
+		addChild(mObjectList["river"], 2, "river");
 
 		//this->runAction(Sequence::create(
 		//	FadeIn::create(1.0f),

@@ -125,12 +125,12 @@ bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 			}
 			else if (mSentense.size() - 1 == mNovelNum && this->getOpacity() == 255) {	//文リストの最後なら
 				mNovelNum++;
-				this->runAction(Sequence::create(FadeOut::create(1.0f), CallFunc::create(CC_CALLBACK_0(Novel::end, this)),/* RemoveSelf::create(true),*/ NULL));
+				this->runAction(Sequence::create(FadeOut::create(0.5f), CallFunc::create(CC_CALLBACK_0(Novel::end, this)),/* RemoveSelf::create(true),*/ NULL));
 				//スプライト全部をフェードアウトする
 				Sprite* spr;
 				for (auto child : this->getChildren()) {
 					spr = (Sprite*)child;
-					spr->runAction(FadeOut::create(1.0f));
+					spr->runAction(FadeOut::create(0.5f));
 				}
 
 				//ログを保存

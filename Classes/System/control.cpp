@@ -156,7 +156,8 @@ void Control::load() {
 	auto file = path + "saveData.plist";
 
 	ValueMap data = FileUtils::getInstance()->getValueMapFromFile(file);
-	changeField(data["currentField"].asString());
+	if (data["currentField"].asString() != "forest1")
+		changeField(data["currentField"].asString());
 
 	auto item = (Item*)getChildByName("item");
 	item->loadItem(data);
@@ -201,6 +202,10 @@ void Control::deleteAI() { removeChildByName("AboutItem"); }
 
 bool Control::getExistObject(std::string field, std::string obj) {
 	return mFieldList[field]->getExistObject(obj);
+}
+
+Field* Control::getField(std::string field) {
+	return mFieldList[field];
 }
 
 void Control::pauseField() {
