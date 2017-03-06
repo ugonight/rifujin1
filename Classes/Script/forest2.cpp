@@ -182,7 +182,7 @@ void Forest2::initField() {
 				Item::sharedItem()->deleteItem("key");
 				mObjectList["door"]->setState(1);
 				mObjectList["door"]->setFieldChangeEvent("treehouse");
-				mObjectList["door"]->setMsg("ツリーハウスの中に入った");
+				mObjectList["door"]->setMsg("");
 			}
 		}
 	}));

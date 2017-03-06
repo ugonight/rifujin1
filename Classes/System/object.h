@@ -40,7 +40,7 @@ public:
 
 	int getState();
 	std::string getMsg();
-
+	std::string getField();
 
 	CREATE_FUNC(ObjectN);
 };

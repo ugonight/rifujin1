@@ -117,6 +117,7 @@ void ObjectN::setTouchEvent(cocos2d::CallFunc *func) { mTouchEvent = func; mTouc
 
 int ObjectN::getState() { return mState; }
 std::string ObjectN::getMsg() { return mMsg; }
+std::string ObjectN::getField() { return mField; }
 
 void ObjectN::update(float delta) {
 	if (mTouchTime > 0) mTouchTime++;

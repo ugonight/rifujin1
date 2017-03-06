@@ -14,6 +14,8 @@ CREATE_FIELD(Field2)};
 CREATE_FIELD(Forest2)};
 CREATE_FIELD(Forest3)};
 CREATE_FIELD(Cave)};
+CREATE_FIELD(CaveIn) private: int mCount; };
+CREATE_FIELD(CaveEnd)};
 CREATE_FIELD(TreeHouse) private: cocos2d::Layer* puzzle(); bool touchPiece(cocos2d::Touch *touch, cocos2d::Event *event); };
 CREATE_FIELD(River)};
 

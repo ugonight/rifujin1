@@ -138,6 +138,11 @@ void Field2::initField() {
 	green->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	addObject(green, "green", 1, false);
 
+	auto blue = ObjectN::create();
+	blue->setTexture("campus_b.png");
+	blue->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	addObject(blue, "blue", 1, false);
+
 	auto back = ObjectN::create();
 	back->setArea(Rect(0, 400, 854, 80));
 	back->setFieldChangeEvent("forest1");
@@ -156,6 +161,14 @@ void Field2::initField() {
 			Item::sharedItem()->deleteItem("crayon_g");
 
 			Control::me->showMsg("絵に緑のクレヨンで色を塗った");
+		}
+		else if (Item::sharedItem()->getSelectedItem() == "crayon_b") {
+			mObjectList["blue"]->setOpacity(0.0f);
+			mObjectList["blue"]->runAction(FadeIn::create(0.5f));
+			addChild(mObjectList["blue"], 1, "blue");
+			Item::sharedItem()->deleteItem("crayon_b");
+
+			Control::me->showMsg("絵に青のクレヨンで色を塗った");
 		}
 	}));
 	addObject(draw, "draw", 2, 1);

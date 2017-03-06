@@ -108,6 +108,7 @@ cocos2d::ValueMap Field::saveField() {
 			data[obj.first + "_state"] = obj.second->getState();					//状態
 			data[obj.first + "_msg"] = obj.second->getMsg();						//メッセージ
 			data[obj.first + "_texture"] = obj.second->getTexture()->getPath();			//イメージ
+			data[obj.first + "_field"] = obj.second->getField();	//移動先フィールド
 	}
 	return data;
 }
@@ -131,5 +132,7 @@ void Field::loadField(cocos2d::ValueMap data) {
 		obj.second->setMsg(data[obj.first + "_msg"].asString());
 		//イメージ
 		obj.second->setTexture(data[obj.first + "_texture"].asString());
+		//フィールド
+		obj.second->setFieldChangeEvent(data[obj.first + "_field"].asString());
 	}
 }

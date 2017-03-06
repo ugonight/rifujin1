@@ -8,6 +8,8 @@ void Control::initField() {
 	mFieldList["forest2"] = Forest2::create();
 	mFieldList["forest3"] = Forest3::create();
 	mFieldList["cave"] = Cave::create();
+	mFieldList["cave_in"] = CaveIn::create();
+	mFieldList["cave_end"] = CaveEnd::create();
 	mFieldList["treehouse"] = TreeHouse::create();
 	mFieldList["river"] = River::create();
 

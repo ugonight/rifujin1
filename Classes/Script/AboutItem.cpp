@@ -64,6 +64,17 @@ void AboutItem::initField() {
 	stick->setTexture("item/stick_a.png");
 	stick->setMsg("木の棒だ");
 	stick->setArea(stick->getBoundingBox());
+	stick->setTouchEvent(CallFunc::create([this] {
+		auto obj = (ObjectN*)mObjectList["stick"];
+		if (obj->getState() == 1 &&
+			Item::sharedItem()->getSelectedItem() == "matsu" &&
+			mObjectList["matsu"]->getState() == 1) {
+			Item::sharedItem()->deleteItem("matsu");
+			obj->setTexture("item/stick_yarn_matsu_a.png");
+			obj->setMsg("釣り竿を作った");
+			obj->setState(2);
+		}
+	}));
 	addObject(stick, "stick", 1, false);
 
 	//カギ
@@ -73,11 +84,28 @@ void AboutItem::initField() {
 	key->setArea(key->getBoundingBox());
 	addObject(key, "key", 1, false);
 
+	//カギ2
+	key = ObjectN::create();
+	key->setTexture("item/key2_a.png");
+	key->setMsg("石でできている。洞窟で使うカギだろうか");
+	key->setArea(key->getBoundingBox());
+	addObject(key, "key2", 1, false);
+
 	//ランプ
 	auto lamp = ObjectN::create();
 	lamp->setTexture("item/lamp_a.png");
 	lamp->setMsg("ランプが消えている");
 	lamp->setArea(lamp->getBoundingBox());
+	lamp->setTouchEvent(CallFunc::create([this] {
+		if (Item::sharedItem()->getSelectedItem() == "board" &&
+			mObjectList["board"]->getState() == 1 &&
+			mObjectList["lamp"]->getState() == 0) {
+			Item::sharedItem()->deleteItem("board");
+			mObjectList["lamp"]->setTexture("item/lamp_on.png");
+			mObjectList["lamp"]->setState(1);
+			mObjectList["lamp"]->setMsg("ランプがついている");
+		}
+	}));
 	addObject(lamp, "lamp", 1, false);
 
 	//木版
@@ -85,7 +113,41 @@ void AboutItem::initField() {
 	board->setTexture("item/board_a.png");
 	board->setMsg("木版だ");
 	board->setArea(board->getBoundingBox());
+	board->setTouchEvent(CallFunc::create([this] {
+		if (Item::sharedItem()->getSelectedItem() == "stick" && mObjectList["board"]->getState() == 0) {
+			pauseEventListener();
+			auto novel = Novel::create();
+			novel->setFontColor(Color3B::BLUE);
+			novel->setCharaL("chara/tuguru1.png");
+			novel->addSentence("継「これで火を起こせるかな…」");
+			novel->setFontColor(Color3B::BLACK);
+			novel->addSentence("ゴシゴシゴシ…");
+			novel->addSentence("ゴシゴシ…");
+			novel->setFontColor(Color3B::BLUE);
+			novel->addSentence("継「む、無理…魔法がないとこんなに大変なんて…」");
+			novel->setCharaR("chara/bandana1.png");
+			novel->addSentence("バンダナ「貸してみ？」");
+			novel->addSentence("バンダナ「うおおおおお」");	
+			novel->addEvent(CallFunc::create([this] {
+				mObjectList["board"]->setTexture("item/board_stick_a.png");
+				mObjectList["board"]->setState(1);
+				mObjectList["board"]->setMsg("火を起こした");
+			}));
+			novel->addSentence("継「あ！煙が出てきた！」");
+			novel->addSentence("バンダナ「ふん、俺はいつでも魔法に頼りっきりって訳じゃじゃねえからな」");
+			novel->addSentence("継「助かったよ、早くランプに火を移そう」");
+			novel->setEndTask();
+			this->addChild(novel, 10, "novel");
+		}
+	}));
 	addObject(board, "board", 1, false);
+
+	//種
+	auto seed = ObjectN::create();
+	seed->setTexture("item/seed_a.png");
+	seed->setMsg("大きなタネだ");
+	seed->setArea(seed->getBoundingBox());
+	addObject(seed, "seed", 1, false);
 
 }
 void AboutItem::changedField(){}
@@ -94,6 +156,11 @@ void AboutItem::setAboutItem(std::string itemName) {
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	this->removeAllChildren();
+
+	this->scheduleUpdate();
+	for (auto it : this->getChildren()) {
+		it->scheduleUpdate();
+	}
 
 	//ここにAboutItemの処理を書いていく
 	//if (itemName=="crayon_g") {

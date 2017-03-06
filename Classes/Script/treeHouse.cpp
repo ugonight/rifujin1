@@ -250,7 +250,12 @@ bool TreeHouse::touchPiece(Touch *touch, Event *event) {
 			for (int i = 0; i < x && complete; i++) {
 				if (layer->getChildByTag(j * x + i + 1)->getPosition() != Vec2(x0 + (w / 2 + 1)*i, y0 - (h / 2 + 1)*j))
 				{
-					if (layer->getChildByTag(j * x + i + 1)->getPosition() == me) break;
+					if (layer->getChildByTag(j * x + i + 1)->getPosition() == me) { 
+						if (spaceP == Vec2(x0 + (w / 2 + 1)*i, y0 - (h / 2 + 1)*j)) break;
+					}
+					else if (layer->getChildByTag(j * x + i + 1)->getPosition() == spaceP) {
+						if (me == Vec2(x0 + (w / 2 + 1)*i, y0 - (h / 2 + 1)*j)) break;
+					}
 					complete = false;
 				}
 			}
