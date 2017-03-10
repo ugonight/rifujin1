@@ -73,6 +73,7 @@ void AboutItem::initField() {
 			obj->setTexture("item/stick_yarn_matsu_a.png");
 			obj->setMsg("釣り竿を作った");
 			obj->setState(2);
+			Control::me->showMsg("釣り竿を作った");
 		}
 	}));
 	addObject(stick, "stick", 1, false);
@@ -104,6 +105,7 @@ void AboutItem::initField() {
 			mObjectList["lamp"]->setTexture("item/lamp_on.png");
 			mObjectList["lamp"]->setState(1);
 			mObjectList["lamp"]->setMsg("ランプがついている");
+			Control::me->showMsg("ランプに火を灯した");
 		}
 	}));
 	addObject(lamp, "lamp", 1, false);

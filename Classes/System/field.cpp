@@ -104,7 +104,7 @@ void Field::resumeEventListener() {
 cocos2d::ValueMap Field::saveField() {
 	ValueMap data;
 	for (auto obj : mObjectList) {
-			data[obj.first + "_visible"] = obj.second->getReferenceCount() > 1;		//addChild()されてるか
+			data[obj.first + "_visible"] = getChildByName(obj.first);//obj.second->getReferenceCount() > 1;		//addChild()されてるか
 			data[obj.first + "_state"] = obj.second->getState();					//状態
 			data[obj.first + "_msg"] = obj.second->getMsg();						//メッセージ
 			data[obj.first + "_texture"] = obj.second->getTexture()->getPath();			//イメージ

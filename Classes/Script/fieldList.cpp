@@ -10,6 +10,7 @@ void Control::initField() {
 	mFieldList["cave"] = Cave::create();
 	mFieldList["cave_in"] = CaveIn::create();
 	mFieldList["cave_end"] = CaveEnd::create();
+	mFieldList["cliff"] = Cliff::create();
 	mFieldList["treehouse"] = TreeHouse::create();
 	mFieldList["river"] = River::create();
 

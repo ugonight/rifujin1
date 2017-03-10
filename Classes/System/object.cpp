@@ -46,6 +46,7 @@ void ObjectN::setArea(cocos2d::Rect rect) {
 	listener->onTouchEnded = CC_CALLBACK_2(ObjectN::touchOff, this);/* [=](Touch* touch, Event* event) {};*/
 	//this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+
 }
 
 void ObjectN::checkOn(cocos2d::Touch* touch, cocos2d::Event* event) {
@@ -102,6 +103,7 @@ void ObjectN::touchOff(cocos2d::Touch* touch, cocos2d::Event* event) {
 
 	mTouchTime = 0;
 }
+
 //void ObjectN::setTouchEvent(void (*event)()){
 //	mTouchEvent = event;
 //}

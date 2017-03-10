@@ -25,7 +25,7 @@ void River::initField() {
 
 	auto fishing = ObjectN::create();
 	fishing->setArea(Rect(355, 255, 155, 225));
-	fishing->setMsg("川だ");
+	fishing->setMsg("川だ。釣りができそうだ。");
 	fishing->setTouchEvent(CallFunc::create([this] {
 		if (Item::sharedItem()->getSelectedItem() == "stick" &&
 			Control::me->getField("AboutItem")->getObject("stick")->getState() == 2 &&
@@ -75,7 +75,7 @@ void River::changedField() {
 		bg->setOpacity(0.0f);
 		bg->runAction(FadeIn::create(0.5f));
 		addChild(bg, 0, "river");
-		addChild(mObjectList["fishing"]);
+		addChild(mObjectList["fishing"], 3, "fishing");
 
 		pauseEventListener();
 

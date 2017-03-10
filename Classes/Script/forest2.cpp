@@ -100,7 +100,9 @@ void Forest2::initField() {
 	rafflesia->setArea(Rect(300, 360, 160, 100));
 	rafflesia->setMsg("大きな花がある");
 	rafflesia->setTouchEvent(CallFunc::create([this] {
-		if (Item::sharedItem()->getSelectedItem() == "matsu" &&
+		if ((Item::sharedItem()->getSelectedItem() == "matsu" ||
+			(Item::sharedItem()->getSelectedItem() == "stick" &&
+			Control::me->getField("AboutItem")->getObject("stick")->getState() == 2 )) &&
 			((ObjectN*)(Control::me->getField("AboutItem")->getObject("matsu")))->getState() == 1 &&
 			mObjectList["rafflesia_"]->getState() == 0) {
 			pauseEventListener();

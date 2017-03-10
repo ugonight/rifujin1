@@ -58,8 +58,81 @@ void Forest3::initField() {
 	stick->setItemGetEvent("stick");
 	stick->setMsg("木の棒を手に入れた");
 	addObject(stick, "stick", 3, true);
+
+	auto ivy = ObjectN::create();
+	ivy->setArea(Rect(0, 435, 150, 45));
+	ivy->setMsg("土が柔らかくなっている");
+	ivy->setTouchEvent(CallFunc::create([this] {
+		if (Item::sharedItem()->getSelectedItem() == "seed" &&
+			getChildByName("ivy")) {
+			pauseEventListener();
+
+			auto novel = Novel::create();
+
+			novel->setFontColor(Color3B::BLUE);
+			novel->setCharaL("chara/tuguru1.png");
+			novel->addSentence("継「タネを植えてみよう」");	
+			novel->addEvent(CallFunc::create([this] {
+				Item::sharedItem()->deleteItem("seed");
+				removeChildByName("ivy");
+				addChild(mObjectList["ivy1"], 3, "ivy1");
+				mObjectList["ivy1"]->runAction(FadeIn::create(2.0f));
+			}));
+			novel->setCharaR("chara/bandana1.png");
+			novel->addSentence("バンダナ「すっげえ成長の早さ…」");
+			novel->addSentence("継「葉につかまっていれば上に上がれるかな、やってみよう。」");
+
+			novel->setEndTask();
+			this->addChild(novel, 10, "novel");
+		}
+	}));
+	addObject(ivy, "ivy", 3, true);
+
+	ivy = ObjectN::create();
+	ivy->setArea(Rect(0, 0, 150, 200));
+	ivy->setTexture("ivy.png");
+	ivy->setFieldChangeEvent("cliff");
+	ivy->setOpacity(0.0f);
+	auto _animation = Animation::create();
+	_animation->addSpriteFrameWithFile("ivy.png");
+	_animation->addSpriteFrameWithFile("ivy1.png");
+	_animation->addSpriteFrameWithFile("ivy2.png");
+	_animation->addSpriteFrameWithFile("ivy3.png");
+	_animation->setDelayPerUnit(0.5f); //アニメの動く時間を設定
+	_animation->setRestoreOriginalFrame(true);
+	ivy->runAction(RepeatForever::create(Animate::create(_animation)));
+	addObject(ivy, "ivy1", 3, false);
+
 }
 
 void Forest3::changedField() {
+	//フィールド移動でアニメが消えてしまうのでこっちに定義
+	auto _animation = Animation::create();
+	_animation->addSpriteFrameWithFile("ivy.png");
+	_animation->addSpriteFrameWithFile("ivy1.png");
+	_animation->addSpriteFrameWithFile("ivy2.png");
+	_animation->addSpriteFrameWithFile("ivy3.png");
+	_animation->setDelayPerUnit(0.5f); //アニメの動く時間を設定
+	_animation->setRestoreOriginalFrame(true);
+	mObjectList["ivy1"]->runAction(RepeatForever::create(Animate::create(_animation)));
+}
+
+
+void Cliff::initField() {
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	auto bg = Sprite::create("cliff.png");
+	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	this->addChild(bg, 0, "cliff");
+
+	auto forest3 = ObjectN::create();
+	forest3->setArea(Rect(0, 320, 150, 160));
+	forest3->setFieldChangeEvent("forest3");
+	forest3->setCursor(2);
+	addObject(forest3, "forest3", 2, true);
+}
+
+void Cliff::changedField() {
 
 }

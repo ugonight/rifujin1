@@ -9,6 +9,7 @@ private:
 	int mCursorNum;
 	bool mTouchNow;
 
+
 	bool touchEvent(cocos2d::Touch* touch, cocos2d::Event* event);
 	bool moveEvent(cocos2d::Touch* touch, cocos2d::Event* event);
 	bool endEvent(cocos2d::Touch* touch, cocos2d::Event* event);
