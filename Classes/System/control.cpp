@@ -66,7 +66,7 @@ bool Control::init() {
 	auto item = Item::create();
 	this->addChild(item, 2, "item");
 
-	auto msg = Label::create("", "fonts/APJapanesefontT.ttf", 30);
+	auto msg = Label::createWithTTF("", "fonts/APJapanesefontT.ttf", 30);
 	msg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + 50));
 	msg->setColor(Color3B::WHITE);
 	msg->setOpacity(0.0f);
@@ -138,7 +138,7 @@ void Control::save(cocos2d::Ref* pSender) {
 			}
 		}
 
-		auto label = Label::create("セーブが完了しました", "fonts/APJapanesefontT.ttf", 20);
+		auto label = Label::createWithTTF("セーブが完了しました", "fonts/APJapanesefontT.ttf", 20);
 		label->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
 		label->setPosition(Vec2(origin.x + visibleSize.width - 15 - 64, origin.y));
 		label->setTextColor(Color4B::WHITE);

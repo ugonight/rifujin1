@@ -131,6 +131,48 @@ void Cliff::initField() {
 	forest3->setFieldChangeEvent("forest3");
 	forest3->setCursor(2);
 	addObject(forest3, "forest3", 2, true);
+
+	auto pen = ObjectN::create();
+	pen->setArea(Rect(440, 340, 60, 20));
+	pen->setItemGetEvent("pen");
+	pen->setMsg("ペンが落ちていた");
+	addObject(pen, "pen", 2, true);
+
+	auto bird = ObjectN::create();
+	bird->setArea(Rect(390, 430, 130, 50));
+	bird->setMsg("鳥がいる");
+	bird->setTouchEvent(CallFunc::create([this] {
+		if (Item::sharedItem()->getSelectedItem() == "egg" &&
+			mObjectList["bird"]->getState() == 0) {
+			pauseEventListener();
+
+			auto novel = Novel::create();
+
+			novel->setFontColor(Color3B::RED);
+			novel->setCharaL("chara/suama1.png");
+			novel->addSentence("寿甘「あ！この鳥…もしかして…！」");
+			novel->addSentence("寿甘「ちょっと話してくるねー！」");
+			novel->setFontColor(Color3B::BLACK);
+			novel->addSentence("寿甘は動物や物と話せる特殊能力を持っているのだ");
+			novel->setCharaL("");
+			novel->setBg("chara/scene4.png");
+			novel->setFontColor(Color3B::RED);
+			novel->addSentence("寿甘「もしかして、このタマゴ君のかな？」");
+			novel->addSentence("寿甘「やっぱりそうなんだ！ヘビに食べられそうになってて危なかったんだよ～」");
+			novel->addSentence("寿甘「ていうか、なんでまた危ないところに巣作ってるのよ…」");
+			novel->addSentence("寿甘「お礼にこれを…ってクレヨン！？ありがとー！探してたからすっごく助かる～」");
+			novel->addEvent(CallFunc::create([this] {
+				Item::sharedItem()->deleteItem("egg");
+				mObjectList["bird"]->setState(1);
+				Item::sharedItem()->getItem("crayon_y", Point(580, 20));
+			}));
+
+			novel->setEndTask();
+			this->addChild(novel, 10, "novel");
+		}
+	}));
+	addObject(bird, "bird", 2, true);
+
 }
 
 void Cliff::changedField() {

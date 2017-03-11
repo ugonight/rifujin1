@@ -195,7 +195,7 @@ cocos2d::Layer* TreeHouse::puzzle() {
 
 
 	//戻るボタン
-	auto back = Label::create("戻る", "fonts/APJapanesefontT.ttf", 40);
+	auto back = Label::createWithTTF("戻る", "fonts/APJapanesefontT.ttf", 40);
 	back->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
 	back->setPosition(Vec2(origin.x, origin.y));
 	back->setTextColor(Color4B::WHITE);

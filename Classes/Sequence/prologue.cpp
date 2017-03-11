@@ -89,7 +89,7 @@ bool Prologue::init() {
 	FileUtils::getInstance()->removeFile(file);
 
 	//スキップボタン
-	auto skip = Label::create("スキップ", "fonts/APJapanesefontT.ttf", 24);
+	auto skip = Label::createWithTTF("スキップ", "fonts/APJapanesefontT.ttf", 24);
 	skip->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
 	skip->setPosition(Vec2(origin.x, origin.y + display.height));
 	skip->setTextColor(Color4B::WHITE);

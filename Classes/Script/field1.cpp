@@ -76,6 +76,38 @@ void Field1::initField() {
 	river->setCursor(3);
 	addObject(river, "river", 2, false);
 
+	auto celine = ObjectN::create();
+	celine->setTexture("chara/celine1.png");
+	celine->setScale(0.7f);	
+	celine->setPosition(Vec2(180, 200));
+	celine->setArea(Rect(celine->getBoundingBox().getMinX(), celine->getBoundingBox().getMinY() + 100, celine->getBoundingBox().getMaxX() - celine->getBoundingBox().getMinX(), celine->getBoundingBox().getMaxY() - celine->getBoundingBox().getMinY()));
+	celine->setTouchEvent(CallFunc::create([this]{
+		pauseEventListener();
+
+		auto novel = Novel::create();
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaL("chara/celine1.png");
+		novel->addSentence("セリーヌ「探索方法をもう一度説明してほしいと？かしこまりました。」");
+		novel->setCharaC("tutorial1.png");
+		novel->addSentence("セリーヌ「画面をタッチするとルーペのカーソルが出てきます」");
+		novel->addSentence("セリーヌ「そのままスライドしてカーソルに反応がないか探していきます」");
+		novel->setCharaC("tutorial2.png");
+		novel->addSentence("セリーヌ「カーソルに反応があったらそこでタップしてみましょう」");
+		novel->addSentence("セリーヌ「その場所を調べたり、アイテムをゲットしたり、場所を移動したりすることができます」");
+		novel->setCharaC("tutorial3.png");
+		novel->addSentence("セリーヌ「左上にあるピンクの枠をタップすると取得しているアイテムの一覧が出てきます」");
+		novel->addSentence("セリーヌ「そのまま左にスライドして使いたいアイテムの上で離します」");
+		novel->addSentence("セリーヌ「ピンクの枠にアイテムがセットされますので、画面上の使いたい場所でタップするとアイテムが使えます」");
+		novel->setCharaC("tutorial4.png");
+		novel->addSentence("セリーヌ「また、ピンクの枠の上で長押しすると、アイテムを拡大して見ることができます。」");
+		novel->addSentence("セリーヌ「拡大したアイテムにアイテムを使うことができるときがありますので、お試しください。」");
+
+		novel->setEndTask();
+		this->addChild(novel, 10, "novel");
+	}));
+	addObject(celine, "celine", 3, false);
+
+
 	//return true;
 }
 
@@ -93,6 +125,7 @@ void Field1::changedField() {
 		addChild(mObjectList["forest2"], 2, "forest2");
 		addChild(mObjectList["river"], 2, "river");
 
+
 		//this->runAction(Sequence::create(
 		//	FadeIn::create(1.0f),
 		//	CallFunc::create(CallFunc::create([this] {
@@ -107,9 +140,14 @@ void Field1::changedField() {
 			novel->setCharaR("chara/tuguru1.png");
 			novel->setFontColor(Color3B::BLUE);
 			novel->addSentence("継「この調子で辺りを散策してみよう」");
+			novel->addEvent(CallFunc::create([this] {
+				mObjectList["celine"]->setOpacity(0);
+				mObjectList["celine"]->runAction(FadeIn::create(1.0f));
+				addChild(mObjectList["celine"], 3, "celine");
+			}));
 
 			novel->setEndTask();
-			this->addChild(novel, 0, "novel");
+			this->addChild(novel, 10, "novel");
 
 		/*}), NULL)));*/
 	}
@@ -143,6 +181,11 @@ void Field2::initField() {
 	blue->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	addObject(blue, "blue", 1, false);
 
+	auto yellow= ObjectN::create();
+	yellow->setTexture("campus_y.png");
+	yellow->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	addObject(yellow, "yellow", 1, false);
+
 	auto back = ObjectN::create();
 	back->setArea(Rect(0, 400, 854, 80));
 	back->setFieldChangeEvent("forest1");
@@ -169,6 +212,14 @@ void Field2::initField() {
 			Item::sharedItem()->deleteItem("crayon_b");
 
 			Control::me->showMsg("絵に青のクレヨンで色を塗った");
+		}
+		else if (Item::sharedItem()->getSelectedItem() == "crayon_y") {
+			mObjectList["yellow"]->setOpacity(0.0f);
+			mObjectList["yellow"]->runAction(FadeIn::create(0.5f));
+			addChild(mObjectList["yellow"], 1, "yellow");
+			Item::sharedItem()->deleteItem("crayon_y");
+
+			Control::me->showMsg("絵に黄のクレヨンで色を塗った");
 		}
 	}));
 	addObject(draw, "draw", 2, 1);

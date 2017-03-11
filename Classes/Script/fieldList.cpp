@@ -13,6 +13,8 @@ void Control::initField() {
 	mFieldList["cliff"] = Cliff::create();
 	mFieldList["treehouse"] = TreeHouse::create();
 	mFieldList["river"] = River::create();
+	mFieldList["waterfalls"] = WaterFalls::create();
+	mFieldList["paddy"] = Paddy::create();
 
 	mFieldList["AboutItem"] = AboutItem::create();
 

@@ -109,6 +109,7 @@ cocos2d::ValueMap Field::saveField() {
 			data[obj.first + "_msg"] = obj.second->getMsg();						//メッセージ
 			data[obj.first + "_texture"] = obj.second->getTexture()->getPath();			//イメージ
 			data[obj.first + "_field"] = obj.second->getField();	//移動先フィールド
+			data[obj.first + "_opacity"] = (float)obj.second->getOpacity();	//透明度
 	}
 	return data;
 }
@@ -134,5 +135,7 @@ void Field::loadField(cocos2d::ValueMap data) {
 		obj.second->setTexture(data[obj.first + "_texture"].asString());
 		//フィールド
 		obj.second->setFieldChangeEvent(data[obj.first + "_field"].asString());
+		//透明度
+		obj.second->setOpacity(data[obj.first + "_opacity"].asFloat());
 	}
 }

@@ -6,6 +6,7 @@ void Item::initItem() {
 
 	mItemList["crayon_g"] = new ItemObj("item/crayon_g.png");
 	mItemList["crayon_b"] = new ItemObj("item/crayon_b.png");
+	mItemList["crayon_y"] = new ItemObj("item/crayon_y.png");
 	mItemList["egg"] = new ItemObj("item/egg.png");
 	mItemList["mushroom"] = new ItemObj("item/mushroom_i.png");
 	mItemList["matsu"] = new ItemObj("item/matsu.png");
@@ -15,5 +16,6 @@ void Item::initItem() {
 	mItemList["lamp"] = new ItemObj("item/lamp_i.png");
 	mItemList["board"] = new ItemObj("item/board_i.png");
 	mItemList["seed"] = new ItemObj("item/seed_i.png");
+	mItemList["pen"] = new ItemObj("item/pen_i.png");
 
 }

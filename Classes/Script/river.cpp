@@ -23,6 +23,12 @@ void River::initField() {
 	forest1->setCursor(4);
 	addObject(forest1, "forest1", 2, true);
 
+	auto waterfalls = ObjectN::create();
+	waterfalls->setArea(Rect(770, 0, 110, 240));
+	waterfalls->setFieldChangeEvent("waterfalls");
+	waterfalls->setCursor(3);
+	addObject(waterfalls, "waterfalls", 2, false);
+
 	auto fishing = ObjectN::create();
 	fishing->setArea(Rect(355, 255, 155, 225));
 	fishing->setMsg("川だ。釣りができそうだ。");
@@ -76,6 +82,7 @@ void River::changedField() {
 		bg->runAction(FadeIn::create(0.5f));
 		addChild(bg, 0, "river");
 		addChild(mObjectList["fishing"], 3, "fishing");
+		addChild(mObjectList["waterfalls"], 3, "waterfalls");
 
 		pauseEventListener();
 
@@ -90,4 +97,160 @@ void River::changedField() {
 
 		/*}), NULL)));*/
 	}
+}
+
+void WaterFalls::initField() {
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	auto bg = ObjectN::create();	//セーブで管理するものは背景でもObjectNで
+	bg->setTexture("waterfalls.png");
+	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	this->addObject(bg, "waterfalls", 0, true);
+
+	auto river = ObjectN::create();
+	river->setArea(Rect(0, 100, 100, 250));
+	river->setFieldChangeEvent("river");
+	river->setCursor(4);
+	addObject(river, "river", 2, true);
+
+	auto paddy = ObjectN::create();
+	paddy->setArea(Rect(750, 100, 100, 250));
+	paddy->setFieldChangeEvent("paddy");
+	paddy->setCursor(3);
+	addObject(paddy, "paddy", 2, false);
+
+
+	auto stone = ObjectN::create();
+	stone->setArea(Rect(20, 390, 120, 90));
+	stone->setTexture("stone1.png");
+	stone->setTouchEvent(CallFunc::create([this] {
+		int switchList[3] = { 1,2,4 };
+		switchStone(switchList);
+	}));
+	addObject(stone, "stone1", 3, true);
+
+	stone = ObjectN::create();
+	stone->setArea(Rect(170, 390, 120, 90));
+	stone->setOpacity(0.0f);
+	stone->setTexture("stone2.png");
+	stone->setTouchEvent(CallFunc::create([this] {
+		int switchList[3] = { 2,4,6 };
+		switchStone(switchList);
+	}));
+	addObject(stone, "stone2", 3, true);
+
+	stone = ObjectN::create();
+	stone->setArea(Rect(320, 390, 120, 90));
+	stone->setOpacity(0.0f);
+	stone->setTexture("stone3.png");
+	stone->setTouchEvent(CallFunc::create([this] {
+		int switchList[3] = { 3,5,2 };
+		switchStone(switchList);
+	}));
+	addObject(stone, "stone3", 3, true);
+
+	stone = ObjectN::create();
+	stone->setArea(Rect(470, 390, 120, 90));
+	stone->setOpacity(0.0f);
+	stone->setTexture("stone4.png");
+	stone->setTouchEvent(CallFunc::create([this] {
+		int switchList[3] = { 4,6,5 };
+		switchStone(switchList);
+	}));
+	addObject(stone, "stone4", 3, true);
+
+	stone = ObjectN::create();
+	stone->setArea(Rect(610, 390, 120, 90));
+	stone->setTexture("stone5.png");
+	stone->setTouchEvent(CallFunc::create([this] {
+		int switchList[3] = { 5,1,3 };
+		switchStone(switchList);
+	}));
+	addObject(stone, "stone5", 3, true);
+
+	stone = ObjectN::create();
+	stone->setArea(Rect(740, 390, 120, 90));
+	stone->setOpacity(0.0f);
+	stone->setTexture("stone6.png");
+	stone->setTouchEvent(CallFunc::create([this] {
+		int switchList[3] = { 6,3,1 };
+		switchStone(switchList);
+	}));
+	addObject(stone, "stone6", 3, true);
+
+
+
+	auto first = ObjectN::create();
+	addObject(first, "first", 0, true);	//フラグ用
+}
+
+void WaterFalls::changedField() {
+	if (getChildByName("first")) {
+		pauseEventListener();
+
+		auto novel = Novel::create();
+
+		novel->setFontColor(Color3B::BLUE);
+		novel->setCharaR("chara/tuguru1.png");
+		novel->addSentence("継「飛び石の間隔が広すぎて渡れない…」");
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaL("chara/celine1.png");
+		novel->addSentence("セリーヌ「飛び石を出し入れすることができるみたいですね」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「上手く全部の飛び石を出すことができるかな…？」");
+		novel->addEvent(CallFunc::create([this] {
+			removeChildByName("first");
+		}));
+
+		novel->setEndTask();
+		this->addChild(novel, 10, "novel");
+	}
+}
+
+void WaterFalls::switchStone(int *list) {
+		for (int i = 0; i < 3; i++) {
+			std::string name = "stone" + std::to_string(list[i]);
+			Action *action;
+			if (mObjectList[name]->getOpacity() > 0) {
+				action = FadeOut::create(0.5f);
+			}
+			else {
+				action = FadeIn::create(0.5f);
+			}
+			if (i == 0) {
+				mObjectList[name]->runAction(Sequence::create(
+					(FiniteTimeAction*)action, 
+					CallFunc::create(CC_CALLBACK_0(WaterFalls::judge,this)),
+					NULL));
+			}
+			else {
+				mObjectList[name]->runAction(action);
+			}
+		}
+}
+
+void WaterFalls::judge() {
+		bool complete = true;
+		for (int i = 1; i < 7; i++) {
+			std::string name = "stone" + std::to_string(i);
+			if ((int)mObjectList[name]->getOpacity() < 240) complete = false;
+		}
+
+		if (complete && !getChildByName("paddy")) {
+			pauseEventListener();
+
+			auto novel = Novel::create();
+			novel->setFontColor(Color3B::BLUE);
+			novel->setCharaR("chara/tuguru1.png");
+			novel->addSentence("継「飛び石を全部出せたよ！」");
+			novel->setCharaL("chara/bandana1.png");
+			novel->addSentence("バンダナ「これで先に進めるな！」");
+			novel->addEvent(CallFunc::create([this] {
+				addChild(mObjectList["paddy"], 3, "paddy");
+			}));
+
+			novel->setEndTask();
+			this->addChild(novel, 10, "novel");
+		}
 }

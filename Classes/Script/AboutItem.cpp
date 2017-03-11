@@ -27,6 +27,14 @@ void AboutItem::initField() {
 	crayon->setArea(crayon->getBoundingBox());
 	addObject(crayon, "crayon_b", 1, false);
 
+	//クレヨン（黄）
+	crayon = ObjectN::create();
+	crayon->setTexture("item/crayon_y.png");
+	crayon->setMsg("黄のクレヨンだ");
+	crayon->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	crayon->setArea(crayon->getBoundingBox());
+	addObject(crayon, "crayon_y", 1, false);
+
 	//卵
 	auto egg = ObjectN::create();
 	egg->setTexture("item/egg.png");
@@ -150,6 +158,13 @@ void AboutItem::initField() {
 	seed->setMsg("大きなタネだ");
 	seed->setArea(seed->getBoundingBox());
 	addObject(seed, "seed", 1, false);
+
+	//ペン
+	auto pen = ObjectN::create();
+	pen->setTexture("item/pen_a.png");
+	pen->setMsg("マジックペンだ");
+	pen->setArea(pen->getBoundingBox());
+	addObject(pen, "pen", 1, false);
 
 }
 void AboutItem::changedField(){}

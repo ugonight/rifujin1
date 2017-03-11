@@ -19,6 +19,8 @@ CREATE_FIELD(CaveEnd)};
 CREATE_FIELD(Cliff)};
 CREATE_FIELD(TreeHouse) private: cocos2d::Layer* puzzle(); bool touchPiece(cocos2d::Touch *touch, cocos2d::Event *event); };
 CREATE_FIELD(River)};
+CREATE_FIELD(WaterFalls) private: void switchStone(int *switchList); void judge(); };
+CREATE_FIELD(Paddy)};
 
 CREATE_FIELD(AboutItem)
 	void setAboutItem(std::string itemName);
