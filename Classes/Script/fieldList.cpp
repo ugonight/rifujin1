@@ -11,10 +11,12 @@ void Control::initField() {
 	mFieldList["cave_in"] = CaveIn::create();
 	mFieldList["cave_end"] = CaveEnd::create();
 	mFieldList["cliff"] = Cliff::create();
+	mFieldList["pass"] = Passward::create();
 	mFieldList["treehouse"] = TreeHouse::create();
 	mFieldList["river"] = River::create();
 	mFieldList["waterfalls"] = WaterFalls::create();
 	mFieldList["paddy"] = Paddy::create();
+	mFieldList["garden"] = Garden::create();
 
 	mFieldList["AboutItem"] = AboutItem::create();
 

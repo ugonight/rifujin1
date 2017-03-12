@@ -114,6 +114,7 @@ void Forest3::changedField() {
 	_animation->addSpriteFrameWithFile("ivy3.png");
 	_animation->setDelayPerUnit(0.5f); //アニメの動く時間を設定
 	_animation->setRestoreOriginalFrame(true);
+	mObjectList["ivy1"]->stopAllActions();
 	mObjectList["ivy1"]->runAction(RepeatForever::create(Animate::create(_animation)));
 }
 
@@ -173,8 +174,189 @@ void Cliff::initField() {
 	}));
 	addObject(bird, "bird", 2, true);
 
+	auto hint = ObjectN::create();
+	hint->setArea(Rect(300, 200, 50, 130));
+	hint->setMsg("壁に何か書かれている");
+	hint->setTouchEvent(CallFunc::create([this] {
+		auto spr = Sprite::create("hint.png");
+		spr->setPosition(Director::getInstance()->getVisibleSize() / 2);
+		spr->setOpacity(0.0f);
+		spr->runAction(FadeIn::create(0.3f));
+		addChild(spr, 5, "wall");
+		auto listener = EventListenerTouchOneByOne::create();
+		listener->setSwallowTouches(true);
+		listener->onTouchBegan = [this](Touch* touch, Event* event) {
+			auto target = (Label*)event->getCurrentTarget();
+			Rect targetBox = target->getBoundingBox();
+			Point touchPoint = Vec2(touch->getLocation().x, touch->getLocation().y);
+			if (targetBox.containsPoint(touchPoint))
+			{
+				getChildByName("wall")->runAction(Sequence::create(FadeOut::create(0.3f), RemoveSelf::create(), NULL));
+				return true;
+			}
+			return false;
+		};
+		this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, spr);
+	}));
+	addObject(hint, "hint", 3, true);
+
+	auto pass = ObjectN::create();
+	pass->setArea(Rect(410, 240, 70, 70));
+	pass->setTouchEvent(CallFunc::create([this] {
+		Field* passward = Control::me->getField("pass");
+		if (passward->getObject("num1")->getState() == 2 &&
+			passward->getObject("num2")->getState() == 1 && 
+			passward->getObject("num3")->getState() == 1 && 
+			passward->getObject("num4")->getState() == 4 &&
+			mObjectList["pass"]->getState() == 0) {
+			Item::sharedItem()->getItem("scroll", Point(445, 200));
+			Control::me->showMsg("祠の中に巻物が入っていた");
+			mObjectList["pass"]->setState(1);
+			mObjectList["pass"]->setMsg("もう何もない");
+		}
+		else if (mObjectList["pass"]->getState() == 0) {
+			Control::me->changeField("pass");
+		}
+	}));
+	addObject(pass, "pass", 3, true);
 }
 
 void Cliff::changedField() {
+
+}
+
+
+void Passward::initField() {
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	auto bg = Sprite::create("pass.png");
+	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	this->addChild(bg, 0, "pass");
+
+	auto cliff = ObjectN::create();
+	cliff->setArea(Rect(0, 320, 850, 160));
+	cliff->setFieldChangeEvent("cliff");
+	cliff->setCursor(2);
+	addObject(cliff, "cliff", 2, true);
+
+	//1
+	auto num = ObjectN::create();
+	addObject(num, "num1", 2, false);
+	auto label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 80);
+	label->setPosition(Vec2(240,240));
+	label->setTextColor(Color4B::BLACK);
+	addChild(label, 3, "label1");
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [this](Touch* touch, Event* event) {
+		auto target = (Label*)event->getCurrentTarget();
+		Rect targetBox = target->getBoundingBox();
+		Point touchPoint = Vec2(touch->getLocation().x, touch->getLocation().y);
+		if (targetBox.containsPoint(touchPoint))
+		{
+			int num = mObjectList["num1"]->getState();
+			num++;
+			if (num >= 5) num = 1;
+			
+			mObjectList["num1"]->setState(num);
+			std::stringstream s;
+			s << num;
+			target->setString(s.str());
+
+			return true;
+		}
+		return false;
+	};
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, label);
+
+	//2
+	num = ObjectN::create();
+	addObject(num, "num2", 2, false);
+	label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 80);
+	label->setPosition(Vec2(350, 240));
+	label->setTextColor(Color4B::BLACK);
+	addChild(label, 3, "label2");
+	 listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [this](Touch* touch, Event* event) {
+		auto target = (Label*)event->getCurrentTarget();
+		Rect targetBox = target->getBoundingBox();
+		Point touchPoint = Vec2(touch->getLocation().x, touch->getLocation().y);
+		if (targetBox.containsPoint(touchPoint))
+		{
+			int num = mObjectList["num2"]->getState();
+			num++;
+			if (num >= 5) num = 1;
+
+			mObjectList["num2"]->setState(num);
+			std::stringstream s;
+			s << num;
+			target->setString(s.str());
+
+			return true;
+		}
+		return false;
+	};
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, label);
+
+	//3
+	num = ObjectN::create();
+	addObject(num, "num3", 2, false);
+	label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 80);
+	label->setPosition(Vec2(460, 240));
+	label->setTextColor(Color4B::BLACK);
+	addChild(label, 3, "label3");
+	listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [this](Touch* touch, Event* event) {
+		auto target = (Label*)event->getCurrentTarget();
+		Rect targetBox = target->getBoundingBox();
+		Point touchPoint = Vec2(touch->getLocation().x, touch->getLocation().y);
+		if (targetBox.containsPoint(touchPoint))
+		{
+			int num = mObjectList["num3"]->getState();
+			num++;
+			if (num >= 5) num = 1;
+
+			mObjectList["num3"]->setState(num);
+			std::stringstream s;
+			s << num;
+			target->setString(s.str());
+
+			return true;
+		}
+		return false;
+	};
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, label);
+
+	//4
+	num = ObjectN::create();
+	addObject(num, "num4", 2, false);
+	label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 80);
+	label->setPosition(Vec2(580, 240));
+	label->setTextColor(Color4B::BLACK);
+	addChild(label, 3, "label4");
+	listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [this](Touch* touch, Event* event) {
+		auto target = (Label*)event->getCurrentTarget();
+		Rect targetBox = target->getBoundingBox();
+		Point touchPoint = Vec2(touch->getLocation().x, touch->getLocation().y);
+		if (targetBox.containsPoint(touchPoint))
+		{
+			int num = mObjectList["num4"]->getState();
+			num++;
+			if (num >= 5) num = 1;
+
+			mObjectList["num4"]->setState(num);
+			std::stringstream s;
+			s << num;
+			target->setString(s.str());
+
+			return true;
+		}
+		return false;
+	};
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, label);
+}
+
+void Passward::changedField() {
 
 }

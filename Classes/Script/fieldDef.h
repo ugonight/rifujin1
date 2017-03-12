@@ -17,10 +17,12 @@ CREATE_FIELD(Cave)};
 CREATE_FIELD(CaveIn) private: int mCount; };
 CREATE_FIELD(CaveEnd)};
 CREATE_FIELD(Cliff)};
+CREATE_FIELD(Passward)};
 CREATE_FIELD(TreeHouse) private: cocos2d::Layer* puzzle(); bool touchPiece(cocos2d::Touch *touch, cocos2d::Event *event); };
 CREATE_FIELD(River)};
 CREATE_FIELD(WaterFalls) private: void switchStone(int *switchList); void judge(); };
 CREATE_FIELD(Paddy)};
+CREATE_FIELD(Garden)};
 
 CREATE_FIELD(AboutItem)
 	void setAboutItem(std::string itemName);

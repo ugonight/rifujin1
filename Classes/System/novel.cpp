@@ -188,7 +188,7 @@ void Novel::updateImg() {
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	int num = 0;
-	if (mTask[num].num == mNovelNum) {
+	if ( mTask[num].num == mNovelNum) {
 		if ( mTask[num].imgPos == IMG_BG) {
 			auto old = this->getChildByName("bg");
 			old->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(true), NULL));

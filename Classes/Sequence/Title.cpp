@@ -105,6 +105,7 @@ bool Title::init() {
 	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(1.0f);
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/days.ogg");
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/dream.ogg");
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/misery.ogg");
 	playBGM = 0;
 	
 	//SE

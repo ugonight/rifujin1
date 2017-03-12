@@ -143,11 +143,14 @@ void Forest2::initField() {
 			novel->addSentence("寿甘「あはは、何やってんのよー！バンダナ、肩車してあげなさい。」");
 			novel->setFontColor(Color3B::BLUE);
 			novel->setCharaL("chara/bandana1.png");
-			novel->addSentence("バンダナ「えー、俺ー？お前の方がデカいからやれよー」");
+			novel->addSentence("バンダナ「えー、俺ー？お前の方がデカいからお前やれよー」");
 			novel->setFontColor(Color3B::RED);
 			novel->addSentence("寿甘「あ゛？」");
 			novel->setCharaC("chara/scene3.png");
 			novel->addSentence("寿甘「誰がデブだって…？」");
+			novel->setFontColor(Color3B::BLUE);
+			novel->addSentence("バンダナ「言ってない…」");
+			novel->setFontColor(Color3B::RED);
 			novel->addSentence("寿甘「つーかお前男だろ。女にやらせるとかどういうことよ？」");
 			novel->setFontColor(Color3B::BLACK);
 			novel->setCharaC("");

@@ -166,6 +166,21 @@ void AboutItem::initField() {
 	pen->setArea(pen->getBoundingBox());
 	addObject(pen, "pen", 1, false);
 
+	//巻物
+	auto scroll = ObjectN::create();
+	scroll->setTexture("item/scroll_a.png");
+	scroll->setMsg("滝の中に入るための呪文が書かれている");
+	scroll->setArea(scroll->getBoundingBox());
+	addObject(scroll, "scroll", 1, false);
+
+	//剣
+	auto sword = ObjectN::create();
+	sword->setTexture("item/sword_a.png");
+	sword->setMsg("強そうな剣だ");
+	sword->setArea(sword->getBoundingBox());
+	addObject(sword, "sword", 1, false);
+
+
 }
 void AboutItem::changedField(){}
 void AboutItem::setAboutItem(std::string itemName) {

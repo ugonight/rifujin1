@@ -180,6 +180,42 @@ void WaterFalls::initField() {
 	addObject(stone, "stone6", 3, true);
 
 
+	auto waterfalls_ = ObjectN::create();
+	waterfalls_->setTexture("waterfalls_.png");
+	waterfalls_->setArea(Rect(300, 130, 300, 170));
+	waterfalls_->setPosition(visibleSize / 2);
+	waterfalls_->setOpacity(0.0f);
+	waterfalls_->setMsg("滝だ");
+	waterfalls_->setTouchEvent(CallFunc::create([this] {
+		if (Item::sharedItem()->getSelectedItem() == "scroll") {
+			pauseEventListener();
+
+			auto novel = Novel::create();
+			novel->setFontColor(Color3B::BLUE);
+			novel->setCharaR("chara/tuguru1.png");
+			novel->addSentence("継「呪文を唱えてみよう」");
+			novel->addSentence("継「アブラカタブラナンマイダー！」");
+			novel->setCharaL("chara/bandana1.png");
+			novel->addSentence("バンダナ「見事な呪文のダサさに驚きを隠せない」");
+			novel->setFontColor(Color3B::BLACK);
+			novel->addEvent(CallFunc::create([this] {
+				Item::sharedItem()->deleteItem("scroll");
+				mObjectList["waterfalls_"]->runAction(FadeIn::create(4.0f));
+				mObjectList["waterfalls_"]->setState(1);
+			}));
+			novel->addSentence("ゴゴゴゴゴゴゴゴ…");
+			novel->addSentence("バンダナ「おおおお！！呪文はともかく仕掛けはすげえ！！！」");
+
+			novel->setEndTask();
+			this->addChild(novel, 10, "novel");
+		}
+		else if (mObjectList["waterfalls_"]->getState() == 1) {
+			Item::sharedItem()->getItem("sword", Point(440, 180));
+			Control::me->showMsg("伝説の剣を手に入れた");
+			mObjectList["waterfalls_"]->setState(2);
+		}
+	}));
+	addObject(waterfalls_, "waterfalls_", 3, true);
 
 	auto first = ObjectN::create();
 	addObject(first, "first", 0, true);	//フラグ用
@@ -209,32 +245,37 @@ void WaterFalls::changedField() {
 }
 
 void WaterFalls::switchStone(int *list) {
+		std::stringstream name;
 		for (int i = 0; i < 3; i++) {
-			std::string name = "stone" + std::to_string(list[i]);
+			name.str(""); name.clear();
+			name << "stone"  << list[i];
 			Action *action;
-			if (mObjectList[name]->getOpacity() > 0) {
+			if (mObjectList[name.str()]->getOpacity() > 0) {
 				action = FadeOut::create(0.5f);
 			}
 			else {
 				action = FadeIn::create(0.5f);
 			}
 			if (i == 0) {
-				mObjectList[name]->runAction(Sequence::create(
+				mObjectList[name.str()]->runAction(Sequence::create(
 					(FiniteTimeAction*)action, 
 					CallFunc::create(CC_CALLBACK_0(WaterFalls::judge,this)),
 					NULL));
 			}
 			else {
-				mObjectList[name]->runAction(action);
+				mObjectList[name.str()]->runAction(action);
 			}
 		}
 }
 
 void WaterFalls::judge() {
 		bool complete = true;
+		std::stringstream name;
 		for (int i = 1; i < 7; i++) {
-			std::string name = "stone" + std::to_string(i);
-			if ((int)mObjectList[name]->getOpacity() < 240) complete = false;
+			//std::string name = "stone" + std::to_string(i);
+			name.str(""); name.clear();
+			name << "stone" << i;
+			if ((int)mObjectList[name.str()]->getOpacity() < 240) complete = false;
 		}
 
 		if (complete && !getChildByName("paddy")) {
