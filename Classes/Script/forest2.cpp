@@ -152,15 +152,15 @@ void Forest2::initField() {
 			novel->addSentence("バンダナ「言ってない…」");
 			novel->setFontColor(Color3B::RED);
 			novel->addSentence("寿甘「つーかお前男だろ。女にやらせるとかどういうことよ？」");
-			novel->setFontColor(Color3B::BLACK);
-			novel->setCharaC("");
-			novel->addSentence("ガンッ…ガラガラ…");
 			novel->addEvent(CallFunc::create([this] {
 				getChildByName("ladder_")->runAction(Sequence::create(FadeOut::create(0.3f), RemoveSelf::create(), NULL));
 				addChild(mObjectList["ladder"], 3, "ladder");
 				mObjectList["ladder"]->setOpacity(0.0f); mObjectList["ladder"]->runAction(FadeIn::create(0.3f));
 				mObjectList["door"]->setMsg("カギがかかっている");
 			}));
+			novel->setFontColor(Color3B::BLACK);
+			novel->setCharaC("");
+			novel->addSentence("ガンッ…ガラガラ…");
 			novel->setFontColor(Color3B::BLUE);
 			novel->addSentence("バンダナ「ええ…」");
 			

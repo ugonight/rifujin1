@@ -13,7 +13,7 @@ void Forest3::initField() {
 	this->addChild(bg, 0, "forest3");
 
 	auto forest2 = ObjectN::create();
-	forest2->setArea(Rect(200, 430, 400, 50));
+	forest2->setArea(Rect(200, 430, 350, 50));
 	forest2->setFieldChangeEvent("forest2");
 	forest2->setCursor(2);
 	addObject(forest2, "forest2", 2, true);
@@ -161,12 +161,12 @@ void Cliff::initField() {
 			novel->addSentence("寿甘「もしかして、このタマゴ君のかな？」");
 			novel->addSentence("寿甘「やっぱりそうなんだ！ヘビに食べられそうになってて危なかったんだよ～」");
 			novel->addSentence("寿甘「ていうか、なんでまた危ないところに巣作ってるのよ…」");
-			novel->addSentence("寿甘「お礼にこれを…ってクレヨン！？ありがとー！探してたからすっごく助かる～」");
 			novel->addEvent(CallFunc::create([this] {
 				Item::sharedItem()->deleteItem("egg");
 				mObjectList["bird"]->setState(1);
 				Item::sharedItem()->getItem("crayon_y", Point(580, 20));
 			}));
+			novel->addSentence("寿甘「お礼にこれを…ってクレヨン！？ありがとー！探してたからすっごく助かる～」");
 
 			novel->setEndTask();
 			this->addChild(novel, 10, "novel");
@@ -243,7 +243,7 @@ void Passward::initField() {
 	//1
 	auto num = ObjectN::create();
 	addObject(num, "num1", 2, false);
-	auto label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 80);
+	auto label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 100);
 	label->setPosition(Vec2(240,240));
 	label->setTextColor(Color4B::BLACK);
 	addChild(label, 3, "label1");
@@ -272,7 +272,7 @@ void Passward::initField() {
 	//2
 	num = ObjectN::create();
 	addObject(num, "num2", 2, false);
-	label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 80);
+	label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 100);
 	label->setPosition(Vec2(350, 240));
 	label->setTextColor(Color4B::BLACK);
 	addChild(label, 3, "label2");
@@ -301,7 +301,7 @@ void Passward::initField() {
 	//3
 	num = ObjectN::create();
 	addObject(num, "num3", 2, false);
-	label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 80);
+	label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 100);
 	label->setPosition(Vec2(460, 240));
 	label->setTextColor(Color4B::BLACK);
 	addChild(label, 3, "label3");
@@ -330,7 +330,7 @@ void Passward::initField() {
 	//4
 	num = ObjectN::create();
 	addObject(num, "num4", 2, false);
-	label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 80);
+	label = Label::createWithTTF("0", "fonts/APJapanesefontT.ttf", 100);
 	label->setPosition(Vec2(580, 240));
 	label->setTextColor(Color4B::BLACK);
 	addChild(label, 3, "label4");

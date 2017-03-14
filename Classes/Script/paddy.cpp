@@ -145,13 +145,52 @@ void Garden::initField() {
 	paddy->setCursor(2);
 	addObject(paddy, "paddy", 2, true);
 
+	auto forestD = ObjectN::create();
+	forestD->setArea(Rect(300, 50, 300, 180));
+	forestD->setFieldChangeEvent("forestD");
+	forestD->setCursor(6);
+	addObject(forestD, "forestD", 2, false);
+
 	auto girl = ObjectN::create();
 	girl->setTexture("girl_hurt.png");
 	girl->setPosition(visibleSize / 2);
 	girl->setArea(Rect(250, 50, 300, 350));
 	girl->setTouchEvent(CallFunc::create([this] {
-		if (Item::sharedItem()->getSelectedItem() != "") {
-			Control::me->showMsg("さすがにそれでは太刀打ちできない");
+		if (Item::sharedItem()->getSelectedItem() != "" ) {
+			if (Item::sharedItem()->getSelectedItem() == "sword") {
+				pauseEventListener();
+
+				auto novel = Novel::create();
+				novel->setFontColor(Color3B::BLUE);
+				novel->setCharaR("chara/bandana1.png");
+				novel->addSentence("バンダナ「…ここは俺が引き受ける」");
+				novel->addSentence("バンダナ「おぅら！！かかってこいや！！！」");
+				novel->setCharaR("");
+				novel->setFontColor(Color3B::BLACK);
+				novel->setBg("chara/scene5.png");
+				novel->addSentence("");
+				novel->addSentence("カキーン！");
+				novel->setFontColor(Color3B::BLUE);
+				novel->addSentence("バンダナ「クソッ…なんだその玉は！卑怯なもん使いやがって…！」");
+				novel->addSentence("バンダナ「俺様をなめんじゃねぇぇええええ！！！！」」");
+				novel->addSentence("バンダナ「つぐるん！早くその子を連れて逃げろ！！」");
+				novel->addSentence("継「うん、わかった。あとは頼むよ…！」");
+				novel->addEvent(CallFunc::create([this] {
+					Item::sharedItem()->deleteItem("sword");
+					mObjectList["girl"]->setState(1);
+					mObjectList["girl"]->runAction(Sequence::create(FadeOut::create(2.0f), RemoveSelf::create(), NULL));
+					addChild(mObjectList["forestD"], 2, "forestD");
+				}));
+
+				novel->setEndTask();
+				this->addChild(novel, 10, "novel");
+			}
+			else {
+				Control::me->showMsg("さすがにそれでは太刀打ちできない");
+			}
+		}
+		else {
+			if (mObjectList["girl"]->getState() == 0)Control::me->showMsg("少女が襲われている");
 		}
 	}));
 	addObject(girl, "girl", 3, true);
@@ -182,6 +221,85 @@ void Garden::changedField() {
 		novel->setFontColor(Color3B::BLUE);
 		novel->setCharaL("chara/tuguru1.png");
 		novel->addSentence("継「早く助けてあげないと…ど、どうしよう…」");
+		novel->addEvent(CallFunc::create([this] {
+			removeChildByName("first");
+		}));
+
+		novel->setEndTask();
+		this->addChild(novel, 10, "novel");
+	}
+}
+
+
+void DeadForest::initField() {
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	auto bg = ObjectN::create();
+	bg->setTexture("deadforest.png");
+	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	this->addObject(bg, "deadforest", 0, true);
+
+	auto paddy = ObjectN::create();
+	paddy->setArea(Rect(320, 420, 280, 60));
+	paddy->setFieldChangeEvent("garden");
+	paddy->setCursor(2);
+	addObject(paddy, "garden", 2, true);
+
+	auto ruins = ObjectN::create();
+	ruins->setArea(Rect(0, 130, 250, 150));
+	ruins->setFieldChangeEvent("ruins");
+	ruins->setCursor(6);
+	addObject(ruins, "ruins", 2, true);
+
+	auto tongs = ObjectN::create();
+	tongs->setArea(Rect(500, 340, 160, 90));
+	tongs->setItemGetEvent("tongs");
+	tongs->setMsg("トングが落ちていた");
+	addObject(tongs, "tongs", 2, true);
+
+
+	auto first = ObjectN::create();
+	addObject(first, "first", 0, true);	//フラグ用
+}
+
+void DeadForest::changedField() {
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	if (getChildByName("first")) {
+		pauseEventListener();
+
+		auto novel = Novel::create();
+
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaR("chara/girl1.png");
+		novel->addSentence("少女「はぁ…はぁ…」");
+		novel->setCharaC("chara/celine1.png");
+		novel->addSentence("セリーヌ「大丈夫ですか…？」");
+		novel->addSentence("セリーヌ「ひとまずここまでくれば安全でしょう。…少し休みましょう。」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->setCharaL("chara/tuguru1.png");
+		novel->addSentence("継「大分景色が変わってきたね…さっきのはなんだったんだろう」");
+		novel->setFontColor(Color3B::RED);
+		novel->addSentence("少女「…あいつが…この世界を壊しているの……」");
+		novel->addSentence("少女「私には………せめて形だけでも繕って…………慰めることしかできないのに……………」");
+		novel->addSentence("少女「それに気付いたあいつが暴走して…………」");
+		novel->addSentence("少女「………私……結局、なんにもできないんだ………無力でしかないんだ…………………」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「君はずっと一人で頑張ってきたんだ。何一つ、無駄なことなんてないよ。」");
+		novel->addSentence("継「…僕たちにできることならなんでもする。力になるよ。」");
+		novel->setFontColor(Color3B::RED);
+		novel->addSentence("少女「このままだと………もうじきこの世界も私も消えてしまう…………」");
+		novel->addSentence("少女「私には………もう、色を教えてあげることができない…………」");
+		novel->addSentence("少女「だから…………お願い、最後のクレヨンを見つけて………この世界に朝を迎えさせてほしいの………」");
+		novel->addSentence("少女「そうすればきっと…………うぅ………」");
+		novel->addSentence("セリーヌ「継様と寿甘様は先にクレヨンを探しに行ってください。私は、ここでこの子の看病をしています」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「頼むよ…行こう、寿甘」");
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaC("chara/suama1.png");
+		novel->addSentence("寿甘「うん！」");
 		novel->addEvent(CallFunc::create([this] {
 			removeChildByName("first");
 		}));

@@ -204,6 +204,7 @@ void WaterFalls::initField() {
 				mObjectList["waterfalls_"]->setState(1);
 			}));
 			novel->addSentence("ゴゴゴゴゴゴゴゴ…");
+			novel->setFontColor(Color3B::BLUE);
 			novel->addSentence("バンダナ「おおおお！！呪文はともかく仕掛けはすげえ！！！」");
 
 			novel->setEndTask();

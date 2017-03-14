@@ -68,11 +68,13 @@ ObjectN* Field::getObject(std::string s) {
 
 void Field::FadeOut(){
 	this->setCascadeOpacityEnabled(true);
+	this->pauseEventListener();
 	this->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(), NULL));
 }
 
 void Field::FadeIn() {
 	this->setCascadeOpacityEnabled(true);
+	this->resumeEventListener();
 	this->setOpacity(0.0f);
 	this->runAction(Sequence::create(FadeIn::create(0.5f), CallFunc::create(CC_CALLBACK_0(Field::changedField, this)), NULL));
 	

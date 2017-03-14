@@ -42,8 +42,10 @@ bool Cursor::init() {
 
 bool Cursor::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 	//auto sprite = this->getChildByTag(mCursorNum);
+	Size visibleSize = Director::getInstance()->getVisibleSize();
 	auto sprite = this->getChildByTag(0);
-	sprite->setPosition(Vec2(touch->getLocation().x, touch->getLocation().y));
+	int y = (touch->getLocation().y + 60 > visibleSize.height) ? visibleSize.height - 40 : touch->getLocation().y + 20;
+	sprite->setPosition(Vec2(touch->getLocation().x, y));
 	sprite->runAction(FadeIn::create(0.2f));
 
 	mTouchNow = 1;
@@ -54,7 +56,9 @@ bool Cursor::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 bool Cursor::moveEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 	//auto sprite = this->getChildByTag(mCursorNum);
 	auto sprite = this->getChildByTag(0);
-	sprite->setPosition(Vec2(touch->getLocation().x, touch->getLocation().y));
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	int y = (touch->getLocation().y + 60 > visibleSize.height) ? visibleSize.height - 40 : touch->getLocation().y + 20;
+	sprite->setPosition(Vec2(touch->getLocation().x, y));
 
 	return true;
 }

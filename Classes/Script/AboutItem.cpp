@@ -180,6 +180,43 @@ void AboutItem::initField() {
 	sword->setArea(sword->getBoundingBox());
 	addObject(sword, "sword", 1, false);
 
+	//手紙
+	auto letter = ObjectN::create();
+	letter->setTexture("item/letter1_a.png");
+	letter->setMsg("何も書かれていない");
+	letter->setArea(letter->getBoundingBox());
+	letter->setTouchEvent(CallFunc::create([this] {
+		if (Item::sharedItem()->getSelectedItem() == "lamp") {
+			Control::me->showMsg("ランプの火であぶり出しをした");
+			addChild(mObjectList["letter_"], 2, "letter_");
+			mObjectList["letter_"]->setOpacity(0.0f);
+			mObjectList["letter_"]->runAction(FadeIn::create(1.0f));
+			mObjectList["letter_"]->setState(1);
+			mObjectList["letter"]->runAction(Sequence::create(DelayTime::create(1.0f),RemoveSelf::create(),NULL));
+		}
+	}));
+	addObject(letter, "letter", 1, false);
+	letter = ObjectN::create();
+	letter->setTexture("item/letter2_a.png");
+	letter->setMsg("文字が浮かび上がっている");
+	letter->setArea(letter->getBoundingBox());
+	addObject(letter, "letter_", 1, false);
+
+	//トング
+	auto tongs = ObjectN::create();
+	tongs->setTexture("item/tongs_a.png");
+	tongs->setMsg("トングだ");
+	tongs->setArea(tongs->getBoundingBox());
+	addObject(tongs, "tongs", 1, false);
+
+	//木箱
+	auto box = ObjectN::create();
+	box->setTexture("item/box_a.png");
+	box->setMsg("接着剤で頑丈に閉められていて開かない");
+	box->setArea(box->getBoundingBox());
+	addObject(box, "box", 1, false);
+
+
 
 }
 void AboutItem::changedField(){}
@@ -195,21 +232,16 @@ void AboutItem::setAboutItem(std::string itemName) {
 	}
 
 	//ここにAboutItemの処理を書いていく
-	//if (itemName=="crayon_g") {
-	//	addChild(mObjectList["crayon_g"]);
-	//}
-	//else if (itemName == "egg") {
-	//	addChild(mObjectList["egg"]);
-	//}
-	//else if (itemName == "mushroom") {
-	//	addChild(mObjectList["mushroom"]);
-	//}
-	//else if (itemName == "matsu") {
-	//	addChild(mObjectList["matsu"]);
-	//}
-
-	addChild(mObjectList[itemName]);
-
 	//同時に二つ以上表示する場合はitemName == で書く
-	
+	if (itemName == "letter") {
+		if (mObjectList["letter_"]->getState() == 1) {
+			addChild(mObjectList["letter_"], 2, "letter_");
+		}
+		else {
+			addChild(mObjectList["letter"], 1, "letter");
+		}
+	}
+	else {
+		addChild(mObjectList[itemName]);	//基本的に登録名と同じオブジェクトを表示
+	}
 }

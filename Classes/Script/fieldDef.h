@@ -23,6 +23,10 @@ CREATE_FIELD(River)};
 CREATE_FIELD(WaterFalls) private: void switchStone(int *switchList); void judge(); };
 CREATE_FIELD(Paddy)};
 CREATE_FIELD(Garden)};
+CREATE_FIELD(DeadForest)};
+CREATE_FIELD(Ruins)};
+CREATE_FIELD(Living)};
+CREATE_FIELD(Room)};
 
 CREATE_FIELD(AboutItem)
 	void setAboutItem(std::string itemName);

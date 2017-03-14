@@ -188,11 +188,11 @@ void Novel::updateImg() {
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	int num = 0;
-	if ( mTask[num].num == mNovelNum) {
-		if ( mTask[num].imgPos == IMG_BG) {
+	while (mTask[num].num == mNovelNum) {
+		if (mTask[num].imgPos == IMG_BG) {
 			auto old = this->getChildByName("bg");
 			old->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(true), NULL));
-			
+
 			if (mTask[num].imgName != "") {
 				auto newOne = Sprite::create(mTask[num].imgName);
 				newOne->setPosition(old->getPosition());
@@ -207,10 +207,10 @@ void Novel::updateImg() {
 				this->addChild(bg, 0, "bg");
 			}
 		}
-		else if ( mTask[num].imgPos == IMG_CENTER) {
+		else if (mTask[num].imgPos == IMG_CENTER) {
 			auto old = this->getChildByName("charaC");
 			old->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(true), NULL));
-			
+
 			if (mTask[num].imgName != "") {
 				auto newOne = Sprite::create(mTask[num].imgName);
 				newOne->setPosition(old->getPosition());
@@ -228,7 +228,7 @@ void Novel::updateImg() {
 		else if (mTask[num].imgPos == IMG_LEFT) {
 			auto old = this->getChildByName("charaL");
 			old->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(true), NULL));
-			
+
 			if (mTask[num].imgName != "") {
 				auto newOne = Sprite::create(mTask[num].imgName);
 				newOne->setPosition(old->getPosition());
@@ -246,7 +246,7 @@ void Novel::updateImg() {
 		else if (mTask[num].imgPos == IMG_RIGHT) {
 			auto old = this->getChildByName("charaR");
 			old->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(true), NULL));
-			
+
 			if (mTask[num].imgName != "") {
 				auto newOne = Sprite::create(mTask[num].imgName);
 				newOne->setPosition(old->getPosition());

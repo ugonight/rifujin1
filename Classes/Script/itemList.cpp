@@ -19,5 +19,8 @@ void Item::initItem() {
 	mItemList["pen"] = new ItemObj("item/pen_i.png");
 	mItemList["scroll"] = new ItemObj("item/scroll_i.png");
 	mItemList["sword"] = new ItemObj("item/sword_i.png");
+	mItemList["letter"] = new ItemObj("item/letter_i.png");
+	mItemList["tongs"] = new ItemObj("item/tongs_i.png");
+	mItemList["box"] = new ItemObj("item/box_i.png");
 
 }

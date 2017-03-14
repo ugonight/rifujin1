@@ -17,6 +17,10 @@ void Control::initField() {
 	mFieldList["waterfalls"] = WaterFalls::create();
 	mFieldList["paddy"] = Paddy::create();
 	mFieldList["garden"] = Garden::create();
+	mFieldList["forestD"] = DeadForest::create();
+	mFieldList["ruins"] = Ruins::create();
+	mFieldList["living"] = Living::create();
+	mFieldList["room"] = Room::create();
 
 	mFieldList["AboutItem"] = AboutItem::create();
 
