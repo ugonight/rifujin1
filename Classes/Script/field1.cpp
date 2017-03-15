@@ -29,7 +29,7 @@ void Field1::initField() {
 	area->setMsg("クレヨン（緑）を手に入れた");
 	//this->addChild(area, 1, "crayon_g");
 	area->setTouchEvent(CallFunc::create([this] {
-		pauseEventListener();
+		//pauseEventListener();
 	
 		auto novel = Novel::create();
 
@@ -82,7 +82,7 @@ void Field1::initField() {
 	celine->setPosition(Vec2(180, 200));
 	celine->setArea(Rect(celine->getBoundingBox().getMinX(), celine->getBoundingBox().getMinY() + 100, celine->getBoundingBox().getMaxX() - celine->getBoundingBox().getMinX(), celine->getBoundingBox().getMaxY() - celine->getBoundingBox().getMinY()));
 	celine->setTouchEvent(CallFunc::create([this]{
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 		novel->setFontColor(Color3B::RED);
@@ -129,7 +129,7 @@ void Field1::changedField() {
 		//this->runAction(Sequence::create(
 		//	FadeIn::create(1.0f),
 		//	CallFunc::create(CallFunc::create([this] {
-			pauseEventListener();
+			//pauseEventListener();
 
 			auto novel = Novel::create();
 

@@ -29,7 +29,7 @@ void Forest2::initField() {
 	egg->setTexture("egg.png");
 	egg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	egg->setTouchEvent(CallFunc::create([this] {
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 
@@ -72,7 +72,7 @@ void Forest2::initField() {
 	auto rafflesia = ObjectN::create();
 	rafflesia->setArea(Rect(300, 360, 160, 100));
 	rafflesia->setTouchEvent(CallFunc::create([this] {
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 
@@ -105,7 +105,7 @@ void Forest2::initField() {
 			Control::me->getField("AboutItem")->getObject("stick")->getState() == 2 )) &&
 			((ObjectN*)(Control::me->getField("AboutItem")->getObject("matsu")))->getState() == 1 &&
 			mObjectList["rafflesia_"]->getState() == 0) {
-			pauseEventListener();
+			//pauseEventListener();
 
 			auto novel = Novel::create();
 
@@ -131,7 +131,7 @@ void Forest2::initField() {
 	ladder->setMsg("はしごが上がっている");
 	ladder->setTouchEvent(CallFunc::create([this] {
 		if (Item::sharedItem()->getSelectedItem() == "stick" && mObjectList["ladder"]->getState() == 0) {
-			pauseEventListener();
+			//pauseEventListener();
 
 			auto novel = Novel::create();
 			novel->setFontColor(Color3B::BLUE);
@@ -199,7 +199,7 @@ void Forest2::initField() {
 
 void Forest2::changedField() {
 	if (getChildByName("girl")) {
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 

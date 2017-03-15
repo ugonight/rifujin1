@@ -36,7 +36,7 @@ void River::initField() {
 		if (Item::sharedItem()->getSelectedItem() == "stick" &&
 			Control::me->getField("AboutItem")->getObject("stick")->getState() == 2 &&
 			mObjectList["fishing"]->getState() == 0) {
-			pauseEventListener();
+			//pauseEventListener();
 
 			auto novel = Novel::create();
 
@@ -84,7 +84,7 @@ void River::changedField() {
 		addChild(mObjectList["fishing"], 3, "fishing");
 		addChild(mObjectList["waterfalls"], 3, "waterfalls");
 
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 
@@ -188,7 +188,7 @@ void WaterFalls::initField() {
 	waterfalls_->setMsg("滝だ");
 	waterfalls_->setTouchEvent(CallFunc::create([this] {
 		if (Item::sharedItem()->getSelectedItem() == "scroll") {
-			pauseEventListener();
+			//pauseEventListener();
 
 			auto novel = Novel::create();
 			novel->setFontColor(Color3B::BLUE);
@@ -224,7 +224,7 @@ void WaterFalls::initField() {
 
 void WaterFalls::changedField() {
 	if (getChildByName("first")) {
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 
@@ -250,13 +250,16 @@ void WaterFalls::switchStone(int *list) {
 		for (int i = 0; i < 3; i++) {
 			name.str(""); name.clear();
 			name << "stone"  << list[i];
-			Action *action;
-			if (mObjectList[name.str()]->getOpacity() > 0) {
-				action = FadeOut::create(0.5f);
+			Action* action = DelayTime::create(0.0);	//何もしない
+			if (mObjectList[name.str()]->getOpacity() == 0 || mObjectList[name.str()]->getOpacity() == 255) {	//完全に切り替わってたら
+				if (mObjectList[name.str()]->getOpacity() > 0) {
+					action = FadeOut::create(0.3f);
+				}
+				else {
+					action = FadeIn::create(0.3f);
+				}
 			}
-			else {
-				action = FadeIn::create(0.5f);
-			}
+
 			if (i == 0) {
 				mObjectList[name.str()]->runAction(Sequence::create(
 					(FiniteTimeAction*)action, 
@@ -276,11 +279,11 @@ void WaterFalls::judge() {
 			//std::string name = "stone" + std::to_string(i);
 			name.str(""); name.clear();
 			name << "stone" << i;
-			if ((int)mObjectList[name.str()]->getOpacity() < 240) complete = false;
+			if ((int)mObjectList[name.str()]->getOpacity() < 200) complete = false;
 		}
 
 		if (complete && !getChildByName("paddy")) {
-			pauseEventListener();
+			//pauseEventListener();
 
 			auto novel = Novel::create();
 			novel->setFontColor(Color3B::BLUE);

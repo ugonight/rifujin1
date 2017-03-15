@@ -32,7 +32,7 @@ void TreeHouse::initField() {
 	floorHole->setArea(Rect(550, 420, 100, 60));
 	floorHole->setTouchEvent(CallFunc::create([this] {
 		if (mObjectList["floorHole"]->getState() == 0) {
-			pauseEventListener();
+			//pauseEventListener();
 			auto novel = Novel::create();
 			novel->addEvent(CallFunc::create([this] {
 				mObjectList["floorHole"]->setTexture("floorhole.png");
@@ -67,7 +67,7 @@ void TreeHouse::initField() {
 			addChild(puzzle(), 10, "puzzle"); 
 		}
 		else if (mObjectList["_puzzle"]->getState() == 1) {
-			pauseEventListener();
+			//pauseEventListener();
 			auto novel = Novel::create();
 
 			novel->setFontColor(Color3B::BLUE);

@@ -20,13 +20,13 @@ void Paddy::initField() {
 	this->addObject(bg, "paddy", 0, false);
 
 	auto waterfalls = ObjectN::create();
-	waterfalls->setArea(Rect(290, 370, 590, 110));
+	waterfalls->setArea(Rect(290, 400, 590, 80));
 	waterfalls->setFieldChangeEvent("waterfalls");
 	waterfalls->setCursor(2);
 	addObject(waterfalls, "waterfalls", 2, true);
 
 	auto garden = ObjectN::create();
-	garden->setArea(Rect(360, 170, 280, 210));
+	garden->setArea(Rect(360, 170, 280, 150));
 	garden->setFieldChangeEvent("garden");
 	garden->setCursor(6);
 	addObject(garden, "garden", 2, false);
@@ -37,7 +37,7 @@ void Paddy::initField() {
 	scarecrow->setTouchEvent(CallFunc::create([this] {
 		if (Item::sharedItem()->getSelectedItem() == "pen" &&
 			mObjectList["scarecrow"]->getState() == 0) {
-			pauseEventListener();
+			//pauseEventListener();
 
 			auto novel = Novel::create();
 			novel->setCharaR("chara/suama1.png");
@@ -87,7 +87,7 @@ void Paddy::changedField() {
 		//addChild(mObjectList["fishing"], 3, "fishing");
 		//addChild(mObjectList["waterfalls"], 3, "waterfalls");
 
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 
@@ -158,7 +158,7 @@ void Garden::initField() {
 	girl->setTouchEvent(CallFunc::create([this] {
 		if (Item::sharedItem()->getSelectedItem() != "" ) {
 			if (Item::sharedItem()->getSelectedItem() == "sword") {
-				pauseEventListener();
+				//pauseEventListener();
 
 				auto novel = Novel::create();
 				novel->setFontColor(Color3B::BLUE);
@@ -205,7 +205,7 @@ void Garden::changedField() {
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	if (getChildByName("first")) {
-		pauseEventListener();
+		//pauseEventListener();
 
 		SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 		SimpleAudioEngine::getInstance()->playBackgroundMusic("BGM/misery.ogg",true);
@@ -268,7 +268,7 @@ void DeadForest::changedField() {
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	if (getChildByName("first")) {
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 
@@ -283,9 +283,9 @@ void DeadForest::changedField() {
 		novel->addSentence("継「大分景色が変わってきたね…さっきのはなんだったんだろう」");
 		novel->setFontColor(Color3B::RED);
 		novel->addSentence("少女「…あいつが…この世界を壊しているの……」");
-		novel->addSentence("少女「私には………せめて形だけでも繕って…………慰めることしかできないのに……………」");
+		novel->addSentence("少女「私には………せめて形だけでも繕って…………慰めることしかできないのに………」");
 		novel->addSentence("少女「それに気付いたあいつが暴走して…………」");
-		novel->addSentence("少女「………私……結局、なんにもできないんだ………無力でしかないんだ…………………」");
+		novel->addSentence("少女「………私……結局、なんにもできないんだ………無力でしかないんだ…………」");
 		novel->setFontColor(Color3B::BLUE);
 		novel->addSentence("継「君はずっと一人で頑張ってきたんだ。何一つ、無駄なことなんてないよ。」");
 		novel->addSentence("継「…僕たちにできることならなんでもする。力になるよ。」");

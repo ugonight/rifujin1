@@ -13,7 +13,7 @@ void Forest3::initField() {
 	this->addChild(bg, 0, "forest3");
 
 	auto forest2 = ObjectN::create();
-	forest2->setArea(Rect(200, 430, 350, 50));
+	forest2->setArea(Rect(200, 430, 300, 50));
 	forest2->setFieldChangeEvent("forest2");
 	forest2->setCursor(2);
 	addObject(forest2, "forest2", 2, true);
@@ -27,7 +27,7 @@ void Forest3::initField() {
 	auto matsu = ObjectN::create();
 	matsu->setArea(Rect(540, 200, 280, 100));
 	matsu->setTouchEvent(CallFunc::create([this] {
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 
@@ -65,7 +65,7 @@ void Forest3::initField() {
 	ivy->setTouchEvent(CallFunc::create([this] {
 		if (Item::sharedItem()->getSelectedItem() == "seed" &&
 			getChildByName("ivy")) {
-			pauseEventListener();
+			//pauseEventListener();
 
 			auto novel = Novel::create();
 
@@ -145,7 +145,7 @@ void Cliff::initField() {
 	bird->setTouchEvent(CallFunc::create([this] {
 		if (Item::sharedItem()->getSelectedItem() == "egg" &&
 			mObjectList["bird"]->getState() == 0) {
-			pauseEventListener();
+			//pauseEventListener();
 
 			auto novel = Novel::create();
 

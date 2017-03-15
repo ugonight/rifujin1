@@ -35,6 +35,14 @@ void AboutItem::initField() {
 	crayon->setArea(crayon->getBoundingBox());
 	addObject(crayon, "crayon_y", 1, false);
 
+	//クレヨン（赤）
+	crayon = ObjectN::create();
+	crayon->setTexture("item/crayon_r.png");
+	crayon->setMsg("赤のクレヨンだ");
+	crayon->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	crayon->setArea(crayon->getBoundingBox());
+	addObject(crayon, "crayon_r", 1, false);
+
 	//卵
 	auto egg = ObjectN::create();
 	egg->setTexture("item/egg.png");
@@ -100,6 +108,13 @@ void AboutItem::initField() {
 	key->setArea(key->getBoundingBox());
 	addObject(key, "key2", 1, false);
 
+	//カギ3
+	key = ObjectN::create();
+	key->setTexture("item/key3_a.png");
+	key->setMsg("さび付いている。戸棚に使えそうだ");
+	key->setArea(key->getBoundingBox());
+	addObject(key, "key3", 1, false);
+
 	//ランプ
 	auto lamp = ObjectN::create();
 	lamp->setTexture("item/lamp_a.png");
@@ -125,7 +140,7 @@ void AboutItem::initField() {
 	board->setArea(board->getBoundingBox());
 	board->setTouchEvent(CallFunc::create([this] {
 		if (Item::sharedItem()->getSelectedItem() == "stick" && mObjectList["board"]->getState() == 0) {
-			pauseEventListener();
+			//pauseEventListener();
 			auto novel = Novel::create();
 			novel->setFontColor(Color3B::BLUE);
 			novel->setCharaL("chara/tuguru1.png");

@@ -64,6 +64,7 @@ bool Item::init() {
 
 	//タッチイベント
 	auto listener = EventListenerTouchOneByOne::create();
+	listener->setSwallowTouches(true);
 	listener->onTouchBegan = CC_CALLBACK_2(Item::touchEvent, this);
 	listener->onTouchMoved = CC_CALLBACK_2(Item::moveEvent, this);
 	listener->onTouchEnded = CC_CALLBACK_2(Item::endEvent, this);
@@ -182,20 +183,25 @@ void Item::deleteItem(std::string s) {
 std::string Item::getSelectedItem() { return mSelectedItem; }
 
 bool Item::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
+	bool validity = false;	//タッチイベントが有効になるか
+
 	auto window = getChildByName("window");
 	auto targetBox = window->getBoundingBox();
 	auto touchPoint = touch->getLocation();
 	if (targetBox.containsPoint(touchPoint)) {
 		mShowWindow = 1;
 		mTouchTime = 1;
+
+		validity = true;
 	}
 
 	//AIが表示されているとき
 	if (mShowAboutItem) {
+		validity = true;
 		auto AboutItem = getChildByName("AboutItem");
 		auto targetBox2 = AboutItem->getBoundingBox();
 		if (targetBox2.containsPoint(touchPoint)) {	//AIの枠の領域をタップしたか
-
+		
 		}
 		else {
 			Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -205,13 +211,13 @@ bool Item::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 				AboutItem->runAction(FadeOut::create(0.2f));
 				AboutItem->runAction(Sequence::create(ScaleBy::create(0.2f, 0.5f), RemoveSelf::create(), NULL));
 				//removeChild(AboutItem);
-				Control::me->resumeField();
+				//Control::me->resumeField();
 				Control::me->deleteAI();
 			}
 		}
 	}
 
-		return true;
+	return validity;
 }
 
 void Item::moveEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
@@ -255,7 +261,7 @@ void Item::showAboutItem() {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	Control::me->pauseField();
+	//Control::me->pauseField();
 	Control::me->showAI(mSelectedItem);
 
 	auto aboutItem = Sprite::create("AboutItem.png");

@@ -26,7 +26,8 @@ CREATE_FIELD(Garden)};
 CREATE_FIELD(DeadForest)};
 CREATE_FIELD(Ruins)};
 CREATE_FIELD(Living)};
-CREATE_FIELD(Room)};
+CREATE_FIELD(Room) private: void turnPage(); };
+CREATE_FIELD(Passward2)};
 
 CREATE_FIELD(AboutItem)
 	void setAboutItem(std::string itemName);

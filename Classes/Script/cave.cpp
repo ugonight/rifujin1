@@ -70,7 +70,7 @@ void Cave::initField() {
 
 void Cave::changedField() {
 	if (getChildByName("girl")) {
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 
@@ -188,14 +188,14 @@ void CaveEnd::initField() {
 
 void CaveEnd::changedField() {
 	if (getChildByName("first")) {
-		pauseEventListener();
+		//pauseEventListener();
 
 		auto novel = Novel::create();
 
 		novel->setFontColor(Color3B::BLUE);
 		novel->setCharaR("chara/bandana1.png");
 		novel->addSentence("バンダナ「行き止まり！？」");
-		novel->addSentence("バンダナ「ここにきてそんなのって…・」");
+		novel->addSentence("バンダナ「ここにきてそんなのって…」");
 		novel->addEvent(CallFunc::create([this] {
 			removeChildByName("first");
 		}));

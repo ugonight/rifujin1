@@ -21,6 +21,7 @@ void Control::initField() {
 	mFieldList["ruins"] = Ruins::create();
 	mFieldList["living"] = Living::create();
 	mFieldList["room"] = Room::create();
+	mFieldList["pass2"] = Passward2::create();
 
 	mFieldList["AboutItem"] = AboutItem::create();
 

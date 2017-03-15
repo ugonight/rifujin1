@@ -49,8 +49,7 @@ bool Novel::init() {
 	msg->setOpacity(0.0f);
 	auto seq = Sequence::create(
 		FadeIn::create(0.5f),
-		//CallFunc::create(this, callfunc_selector(Novel::func)),
-		CallFunc::create(this, callfunc_selector(Novel::func)),
+		CallFunc::create(CC_CALLBACK_0(Novel::func,this)),
 		NULL);
 	msg->runAction(seq);
 	this->addChild(msg, 2);

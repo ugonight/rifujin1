@@ -45,8 +45,11 @@ void Field::update(float delta) {
 	Novel* novel = (Novel*)(this->getChildByName("novel"));
 	if (novel) {
 		if (novel->getEndFlag()) {
-			resumeEventListener();
+			//resumeEventListener();
 			removeChild(novel);
+		}
+		else {
+			Control::me->setCursor(7);
 		}
 	}
 }
@@ -74,14 +77,17 @@ void Field::FadeOut(){
 
 void Field::FadeIn() {
 	this->setCascadeOpacityEnabled(true);
-	this->resumeEventListener();
+	//this->resumeEventListener();
 	this->setOpacity(0.0f);
-	this->runAction(Sequence::create(FadeIn::create(0.5f), CallFunc::create(CC_CALLBACK_0(Field::changedField, this)), NULL));
+	this->runAction(Sequence::create(FadeIn::create(0.5f),
+		CallFunc::create([this] {
+		this->resumeEventListener();
+		this->scheduleUpdate();
+		for (auto it : this->getChildren()) {
+			it->scheduleUpdate();
+		}
+	}), CallFunc::create(CC_CALLBACK_0(Field::changedField, this)), NULL));
 	
-	this->scheduleUpdate();
-	for (auto it : this->getChildren()) {
-		it->scheduleUpdate();
-	}
 }
 
 void Field::changedField() {
@@ -89,17 +95,23 @@ void Field::changedField() {
 }
 
 void Field::pauseEventListener() {
-	for (auto it : this->getChildren()) {
-		//it->second->setEventListenerEnabled(false);
-		auto dispatcher = Director::getInstance()->getEventDispatcher();
-		dispatcher->pauseEventListenersForTarget(it);
+	//for (auto it : this->getChildren()) {
+	//	//it->second->setEventListenerEnabled(false);
+	//	auto dispatcher = Director::getInstance()->getEventDispatcher();
+	//	dispatcher->pauseEventListenersForTarget(it);
+	//}
+	for (auto it : mObjectList) {
+		it.second->getEventDispatcher()->setEnabled(false);
 	}
 }
 
 void Field::resumeEventListener() {
-	for (auto it : this->getChildren()) {
-		auto dispatcher = Director::getInstance()->getEventDispatcher();
-		dispatcher->resumeEventListenersForTarget(it);
+	//for (auto it : this->getChildren()) {
+	//	auto dispatcher = Director::getInstance()->getEventDispatcher();
+	//	dispatcher->resumeEventListenersForTarget(it);
+	//}
+	for (auto it : mObjectList) {
+		it.second->getEventDispatcher()->setEnabled(true);
 	}
 }
 
