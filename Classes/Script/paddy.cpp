@@ -71,6 +71,12 @@ void Paddy::initField() {
 	face->setOpacity(0.0f);
 	addObject(face, "face", 2, true);
 
+	auto malice = ObjectN::create();
+	malice->setTexture("chara/malice1.png");
+	malice->setScale(0.5f);
+	malice->setPosition(500, 250);
+	malice->setOpacity(0.0f);
+	addObject(malice, "malice", 3, false);
 }
 
 void Paddy::changedField() {
@@ -111,7 +117,7 @@ void Paddy::changedField() {
 		novel->setCharaR("");
 		novel->setBg("bg/black.png");
 		novel->setFontColor(Color3B::BLACK);
-		novel->addSentence("　");
+		novel->addSentence("モゾモゾモゾモゾ…");
 		novel->setCharaR("chara/malice1.png");
 		novel->addSentence("？？？「…」");
 		novel->setBg("");
@@ -124,9 +130,17 @@ void Paddy::changedField() {
 		novel->addSentence("継「あれ、おかしいな…」");
 
 		novel->setEndTask();
-		this->addChild(novel, 0, "novel");
+		this->addChild(novel, 10, "novel");
 
 		/*}), NULL)));*/
+	}
+	else if (Control::me->getField("room")->getObject("pass")->getState() == 1 &&
+		!getChildByName("malice")) {
+		mObjectList["malice"]->runAction(FadeIn::create(0.2f));
+		mObjectList["malice"]->runAction(ScaleBy::create(10.0f, 2.0f));
+		addChild(mObjectList["malice"], 3, "malice");
+		mObjectList["garden"]->setMsg("戻っている場合ではない");
+		mObjectList["garden"]->setFieldChangeEvent("");
 	}
 }
 
@@ -195,9 +209,17 @@ void Garden::initField() {
 	}));
 	addObject(girl, "girl", 3, true);
 
+	auto malice = ObjectN::create();
+	malice->setTexture("chara/malice1.png");
+	malice->setScale(0.5f);
+	malice->setPosition(visibleSize / 2);
+	malice->setOpacity(0.0f);
+	addObject(malice, "malice", 3, false);
 
 	auto first = ObjectN::create();
 	addObject(first, "first", 0, true);	//フラグ用
+	auto second = ObjectN::create();
+	addObject(second, "second", 0, true);	//フラグ用
 }
 
 void Garden::changedField() {
@@ -223,6 +245,33 @@ void Garden::changedField() {
 		novel->addSentence("継「早く助けてあげないと…ど、どうしよう…」");
 		novel->addEvent(CallFunc::create([this] {
 			removeChildByName("first");
+		}));
+
+		novel->setEndTask();
+		this->addChild(novel, 10, "novel");
+	}else if (Control::me->getField("room")->getObject("pass")->getState() == 1 &&
+		getChildByName("second")) {
+		auto novel = Novel::create();
+
+		novel->setFontColor(Color3B::BLACK);
+		novel->addSentence("ドカッ");
+		novel->setCharaR("chara/malice1.png");
+		novel->addSentence("モゾモゾモゾ…");
+		novel->setFontColor(Color3B::BLUE);
+		novel->setCharaL("chara/bandana1.png");
+		novel->addSentence("バンダナ「うぐ…ッ」");
+		novel->addSentence("バンダナ「な、なんだコイツ…埒があかねえ…」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->setCharaC("chara/tuguru1.png");
+		novel->addSentence("継「無事かー！バンダナー！！」");
+		novel->addSentence("バンダナ「くッ…遅かったじゃねえか！早くいくぞ！」");
+		novel->addEvent(CallFunc::create([this] {
+			removeChildByName("second");
+			mObjectList["malice"]->runAction(FadeIn::create(0.2f));
+			mObjectList["malice"]->runAction(ScaleBy::create(10.0f, 2.0f));
+			addChild(mObjectList["malice"], 3, "malice");
+			mObjectList["forestD"]->setMsg("戻っている場合ではない");
+			mObjectList["forestD"]->setFieldChangeEvent("");
 		}));
 
 		novel->setEndTask();
@@ -261,6 +310,8 @@ void DeadForest::initField() {
 
 	auto first = ObjectN::create();
 	addObject(first, "first", 0, true);	//フラグ用
+	auto second = ObjectN::create();
+	addObject(second, "second", 0, true);	//フラグ用
 }
 
 void DeadForest::changedField() {
@@ -302,6 +353,55 @@ void DeadForest::changedField() {
 		novel->addSentence("寿甘「うん！」");
 		novel->addEvent(CallFunc::create([this] {
 			removeChildByName("first");
+			Control::me->getField("forest1")->removeChildByName("celine");
+		}));
+
+		novel->setEndTask();
+		this->addChild(novel, 10, "novel");
+	}
+	else if (Control::me->getField("room")->getObject("pass")->getState() == 1 &&
+		getChildByName("second")) {
+		auto novel = Novel::create();
+
+		novel->setFontColor(Color3B::BLUE);
+		novel->setCharaL("chara/tuguru1.png");
+		novel->addSentence("継「クレヨンを見つけて来たよ」");
+		novel->addSentence("継「その子の容態は大丈夫？」");
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaC("chara/celine1.png");
+		novel->addSentence("セリーヌ「ケガは大したことはなくて大丈夫そうです。しかし…」");
+		novel->setCharaR("chara/girl2.png");
+		novel->addSentence("少女「……」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「か、体が…透けて…」");
+		novel->setFontColor(Color3B::RED);
+		novel->addSentence("少女「…マリアちゃんの日記を読んできたのね…」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「うん、全部理解できたよ。君のことも、彼女の過去も。」");
+		novel->setFontColor(Color3B::RED);
+		novel->addSentence("少女「…そう…あなたには…マリアちゃんを救う覚悟はできているのね…これから先も…ずっと……」");
+		novel->addSentence("少女「私には…もう合わせる顔がない……ここから先はあなたたちだけで行って……」");
+		novel->addSentence("少女「マリアちゃんに…色を教えてあげられるのは……もうあなたたちだけ…」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「それは違うよ」");
+		novel->addSentence("継「マリアちゃんに君が教えた色を、思い出をかき消すことなんてできないよ。」");
+		novel->addSentence("継「僕たちには、思い出させて、色褪せないようにすることしかできないんだ。」");
+		novel->addSentence("継「…行こう、一緒に。僕が背負って行くよ」");
+		novel->addSentence("継「う…お」");
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaR("chara/suama1.png");
+		novel->addSentence("寿甘「へーつぐるんまで女の子に重いなんて言っちゃうんだー」");
+		novel->addSentence("寿甘「私がやるよ、こう見えて力はあるし。」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「いや、それじゃあ申し訳ないよ…」");
+		novel->setFontColor(Color3B::RED);
+		novel->addSentence("セリーヌ「状況は察しましたわ、継様。記憶の中を少々拝見させていただきました。」");
+		novel->addSentence("セリーヌ「…私は先に現実世界へ戻っています。少し考えがあるので…」"); 
+		novel->addSentence("セリーヌ「最後まで彼女たちを守ってくださいね。継様。」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「わかったよ…！急ごう、時間がない」");
+		novel->addEvent(CallFunc::create([this] {
+			removeChildByName("second");
 		}));
 
 		novel->setEndTask();

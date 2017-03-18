@@ -263,6 +263,15 @@ void Passward::initField() {
 			s << num;
 			target->setString(s.str());
 
+			if (mObjectList["num1"]->getState() == 2 &&
+				mObjectList["num2"]->getState() == 1 &&
+				mObjectList["num3"]->getState() == 1 &&
+				mObjectList["num4"]->getState() == 4) {
+				runAction(Sequence::create(DelayTime::create(0.5f),
+					CallFunc::create([this] { Control::me->changeField("cliff"); }),
+					NULL));
+			}
+
 			return true;
 		}
 		return false;
@@ -291,6 +300,15 @@ void Passward::initField() {
 			std::stringstream s;
 			s << num;
 			target->setString(s.str());
+
+			if (mObjectList["num1"]->getState() == 2 &&
+				mObjectList["num2"]->getState() == 1 &&
+				mObjectList["num3"]->getState() == 1 &&
+				mObjectList["num4"]->getState() == 4) {
+				runAction(Sequence::create(DelayTime::create(0.5f),
+					CallFunc::create([this] { Control::me->changeField("cliff"); }),
+					NULL));
+			}
 
 			return true;
 		}
@@ -321,6 +339,15 @@ void Passward::initField() {
 			s << num;
 			target->setString(s.str());
 
+			if (mObjectList["num1"]->getState() == 2 &&
+				mObjectList["num2"]->getState() == 1 &&
+				mObjectList["num3"]->getState() == 1 &&
+				mObjectList["num4"]->getState() == 4) {
+				runAction(Sequence::create(DelayTime::create(0.5f),
+					CallFunc::create([this] { Control::me->changeField("cliff"); }),
+					NULL));
+			}
+
 			return true;
 		}
 		return false;
@@ -349,6 +376,15 @@ void Passward::initField() {
 			std::stringstream s;
 			s << num;
 			target->setString(s.str());
+
+			if (mObjectList["num1"]->getState() == 2 &&
+				mObjectList["num2"]->getState() == 1 &&
+				mObjectList["num3"]->getState() == 1 &&
+				mObjectList["num4"]->getState() == 4) {
+				runAction(Sequence::create(DelayTime::create(0.5f),
+					CallFunc::create([this] { Control::me->changeField("cliff"); }),
+					NULL));
+			}
 
 			return true;
 		}

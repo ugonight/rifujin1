@@ -29,7 +29,9 @@ private:
 	} FTask;
 
 	int mNovelNum, mNovelSetNum, mCount, mCharNum;
+	int mTouchTime; bool mHideMsg;
 	bool mEndFlag;
+	bool mLogOnly;
 	std::vector<std::string> mSentense;
 	std::vector<Task> mTask;
 	std::vector<CTask> mColorTask;
@@ -40,7 +42,7 @@ private:
 
 	void func();
 	bool touchEvent(cocos2d::Touch* touch, cocos2d::Event* event);
-	bool logEvent(cocos2d::Touch* touch, cocos2d::Event* event);
+
 
 	void end();
 	bool endCheck();
@@ -57,6 +59,9 @@ public:
 	virtual bool init();
 	virtual void update(float delta);
 
+	//バックログ
+	bool logEvent(cocos2d::Touch* touch, cocos2d::Event* event);
+	
 	//終了フラグ
 	bool getEndFlag();
 
@@ -79,6 +84,9 @@ public:
 
 	//イベントタスク追加
 	void addEvent(cocos2d::CallFunc* func);
+
+	//ログだけ表示するモード
+	void setLogOnly();
 
 	CREATE_FUNC(Novel);
 };

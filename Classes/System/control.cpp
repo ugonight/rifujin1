@@ -5,6 +5,7 @@
 #include "cursor.h"
 #include "field.h"
 #include "item.h"
+#include "novel.h"
 #include "Script/fieldDef.h"
 
 USING_NS_CC;
@@ -24,23 +25,6 @@ bool Control::init() {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-//	auto closeItem = MenuItemImage::create(
-//		"CloseNormal.png",
-//		"CloseSelected.png",
-//		[](Ref*sender) {
-//		Director::getInstance()->end();
-//
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-//		exit(0);
-//#endif
-//	});
-//	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width / 2,
-//		origin.y + closeItem->getContentSize().height / 2));
-//	// create menu, it's an autorelease object
-//	auto menu = Menu::create(closeItem, NULL);
-//	menu->setPosition(Vec2::ZERO);
-//	this->addChild(menu, 1);
-
 	auto cursor = Cursor::create();
 	this->addChild(cursor, 4, "cursor");
 
@@ -56,6 +40,12 @@ bool Control::init() {
 	auto menu = Menu::create(save, NULL);
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 1, "save");
+
+	auto novel = Novel::create();
+	novel->addSentence("");
+	novel->setEndTask();
+	novel->setLogOnly();
+	addChild(novel, 1, "log");
 
 	initField();
 
@@ -90,9 +80,19 @@ void Control::update(float delta) {
 	auto field = getChildByName("field");
 	if (field->getChildByName("novel") && ((MenuItemImage*)getChildByName("save"))->getOpacity() >= 255) {
 		((MenuItemImage*)getChildByName("save"))->setOpacity(0.0f);
+		
+		removeChildByName("log");
 	}
 	else if (!field->getChildByName("novel")) {
 		((MenuItemImage*)getChildByName("save"))->setOpacity(255.0f);
+		
+		if (!getChildByName("log")) {
+			auto novel = Novel::create();
+			novel->addSentence("");
+			novel->setEndTask();
+			novel->setLogOnly();
+			addChild(novel, 1, "log");
+		}
 	}
 }
 

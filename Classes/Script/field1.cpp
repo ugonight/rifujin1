@@ -1,7 +1,10 @@
 ﻿#pragma  execution_character_set("utf-8")
 
 #include "fieldDef.h"
+#include "SimpleAudioEngine.h"
+#include "../Sequence/epilogue.h"
 
+using namespace CocosDenshion;
 USING_NS_CC;
 
 void Field1::initField() {
@@ -151,6 +154,74 @@ void Field1::changedField() {
 
 		/*}), NULL)));*/
 	}
+	else if (Control::me->getExistObject("campus", "red")) {
+		//エンディングへ
+		auto engel = Sprite::create("engel.png");
+		engel->setPosition(visibleSize / 2);
+		engel->setOpacity(0.0f);
+		engel->runAction(FadeIn::create(5.0f));
+		engel->runAction(RepeatForever::create(Sequence::create(
+			EaseSineInOut::create(MoveBy::create(5.0f,Vec2(0,50))),
+			EaseSineInOut::create(MoveBy::create(5.0f, Vec2(0, -50))),
+			NULL)));
+		addChild(engel, 3, "engel");
+		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+
+		auto novel = Novel::create();
+
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaL("chara/suama1.png");
+		novel->addSentence("寿甘「マリアちゃん…？」");
+		novel->addSentence("寿甘「降りて来るよ…天使みたいに…」");
+		novel->setCharaR("chara/tuguru1.png");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「おぉ…と」");
+		novel->setCharaL("");
+		novel->setCharaR("");
+		novel->setBg("chara/scene7.png");
+		novel->addSentence("継「大丈夫かい…？」");
+		novel->setFontColor(Color3B::RED);
+		novel->addSentence("マリア「…」");
+		novel->addSentence("マリア「ここは…」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("継「…君は…どこから来たんだい…？」");
+		novel->setFontColor(Color3B::RED);
+		novel->addSentence("マリア「…私…ずっとここに閉じ籠ってた……外の世界が怖いから……」");
+		novel->addSentence("マリア「…桜ちゃんが……私の世界で唯一…輝いていて……私…それをここからずっと見ていて……」");
+		novel->addSentence("マリア「どんなに手を伸ばしても……遠ざかるばかりで……私…やっぱり一人ぼっちなんだって…思って……悲しくて…悲しくて……」");
+		novel->addSentence("桜「…」");
+		novel->addSentence("桜「…マリア…ちゃん……」");
+		novel->setBg("chara/scene8.png");
+		novel->addSentence("マリア「桜ちゃん…！会いたかった…ッ……うぅ…ううぅ……っ」");
+		novel->addSentence("マリア「私っ…やっぱり桜ちゃんがいなきゃ…ダメなんだよぉ……」");
+		novel->addSentence("桜「…ありがとう。もう長くないから、私の話を聞いて」");
+		novel->addSentence("マリア「桜ちゃん…？身体が消えかかって…」");
+		novel->addSentence("桜「私はずっと戦ってたんだ、二人の思い出だけでも守るために。私も孤独だった。」");
+		novel->addSentence("桜「私がここにいられるのも、あなたが私のことを信じて忘れないでくれたからだと思う。…でもね」");
+		novel->addSentence("桜「一人ぼっちの夜は、もう終わるんだよ。」");
+		novel->addSentence("桜「ううん、終わらせてくれたの。この人達が。私たち二人で描いた景色の色を取り戻してくれたの。」");
+		novel->addSentence("マリア「えっ…うそ……なんで私なんかのために……ありが…とう…？」");
+		novel->addSentence("桜「…もうすぐ朝が来るわ。きっと皆さんが次の太陽になってくれる。だから…」");
+		novel->addSentence("桜「だから…っ…もう私がいなくても大丈夫だよね……っ…消えちゃっても…大丈夫だよね…」");
+		novel->setBg("chara/cry_maria.png");
+		novel->addSentence("マリア「…い…嫌……私は…！…桜ちゃんとも一緒に居たいの…！…代わりなんていない…かけがえの無い存在だから…っ」");
+		novel->addSentence("桜「ごめんね……マリアちゃん……私ももっと一緒に居たかったよ…っ…ごめんね…ごめんね……」");
+		novel->addSentence("マリア「嫌…！！消えちゃダメ！」");
+		novel->addSentence("桜「ごめんね…」");
+		novel->addSentence("マリア「だめ…」");
+		novel->addSentence("桜「…」");
+		novel->addSentence("マリア「桜ちゃぁぁぁぁあん………！！」");
+		novel->addEvent(CallFunc::create([this] {
+			auto bg = Sprite::create("chara/cry_maria.png");
+			bg->setPosition(Director::getInstance()->getVisibleSize() / 2);
+			addChild(bg, 5, "bg");
+			//エンディングへ
+			Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Epilogue::create(), Color3B::WHITE));
+		}));
+
+		novel->setEndTask();
+		this->addChild(novel, 10, "novel");
+	}
 }
 
 void Field2::initField() {
@@ -186,6 +257,11 @@ void Field2::initField() {
 	yellow->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	addObject(yellow, "yellow", 1, false);
 
+	auto red = ObjectN::create();
+	red->setTexture("campus_r.png");
+	red->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	addObject(red, "red", 1, false);
+
 	auto back = ObjectN::create();
 	back->setArea(Rect(0, 400, 854, 80));
 	back->setFieldChangeEvent("forest1");
@@ -220,6 +296,14 @@ void Field2::initField() {
 			Item::sharedItem()->deleteItem("crayon_y");
 
 			Control::me->showMsg("絵に黄のクレヨンで色を塗った");
+		}
+		else if (Item::sharedItem()->getSelectedItem() == "crayon_r") {
+			mObjectList["red"]->setOpacity(0.0f);
+			mObjectList["red"]->runAction(FadeIn::create(0.5f));
+			addChild(mObjectList["red"], 1, "red");
+			Item::sharedItem()->deleteItem("crayon_r");
+
+			Control::me->showMsg("絵に赤のクレヨンで色を塗った");
 		}
 	}));
 	addObject(draw, "draw", 2, 1);

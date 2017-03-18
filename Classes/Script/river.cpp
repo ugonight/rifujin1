@@ -68,6 +68,9 @@ void River::initField() {
 		}
 	}));
 	addObject(fishing, "fishing", 2, false);
+
+	auto second = ObjectN::create();
+	addObject(second, "second", 0, true);	//フラグ用
 }
 
 void River::changedField() {
@@ -96,6 +99,30 @@ void River::changedField() {
 		this->addChild(novel, 0, "novel");
 
 		/*}), NULL)));*/
+	}
+	else if (Control::me->getField("room")->getObject("pass")->getState() == 1 &&
+		getChildByName("second")) {
+		auto novel = Novel::create();
+
+		novel->setFontColor(Color3B::BLUE);
+		novel->setCharaL("chara/bandana1.png");
+		novel->addSentence("バンダナ「なんとか撒けたみたいだな」");
+		novel->setFontColor(Color3B::RED);
+		novel->setCharaR("chara/suama1.png");
+		novel->addSentence("寿甘「はぁ…はぁ…死ぬかと思ったわ……ちょっとあんた代わんなさいよ…！」");
+		novel->setFontColor(Color3B::BLUE);
+		novel->addSentence("バンダナ「ああ悪い悪い…ずっと背負わせたままだったな。よいしょっと」");
+		novel->setCharaC("chara/tuguru1.png");
+		novel->addSentence("継「あともう少しだ。画用紙にクレヨンを塗りに行こう」");
+
+		novel->addEvent(CallFunc::create([this] {
+			removeChildByName("second");
+			mObjectList["waterfalls"]->setMsg("戻っている場合ではない");
+			mObjectList["waterfalls"]->setFieldChangeEvent("");
+		}));
+
+		novel->setEndTask();
+		this->addChild(novel, 10, "novel");
 	}
 }
 
@@ -218,6 +245,12 @@ void WaterFalls::initField() {
 	}));
 	addObject(waterfalls_, "waterfalls_", 3, true);
 
+	auto malice = ObjectN::create();
+	malice->setTexture("chara/malice1.png");
+	malice->setPosition(visibleSize.width, visibleSize.height / 2);
+	malice->setOpacity(0.0f);
+	addObject(malice, "malice", 3, false);
+
 	auto first = ObjectN::create();
 	addObject(first, "first", 0, true);	//フラグ用
 }
@@ -242,6 +275,14 @@ void WaterFalls::changedField() {
 
 		novel->setEndTask();
 		this->addChild(novel, 10, "novel");
+	}
+	else if (Control::me->getField("room")->getObject("pass")->getState() == 1 &&
+		!getChildByName("malice")) {
+		mObjectList["malice"]->runAction(FadeIn::create(0.2f));
+		mObjectList["malice"]->runAction(MoveBy::create(10.0f,Vec2(-100,0)));
+		addChild(mObjectList["malice"], 3, "malice");
+		mObjectList["paddy"]->setMsg("戻っている場合ではない");
+		mObjectList["paddy"]->setFieldChangeEvent("");
 	}
 }
 

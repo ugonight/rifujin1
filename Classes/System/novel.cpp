@@ -20,6 +20,8 @@ bool Novel::init() {
 	mNovelNum  = mCount = 0;
 	mNovelSetNum = 1;
 	mEndFlag = 0;
+	mTouchTime = 0; mHideMsg = 0;
+	mLogOnly = false;
 	
 	mSentense.push_back("");
 
@@ -52,17 +54,9 @@ bool Novel::init() {
 		CallFunc::create(CC_CALLBACK_0(Novel::func,this)),
 		NULL);
 	msg->runAction(seq);
-	this->addChild(msg, 2);
+	this->addChild(msg, 2,"msgBox");
 
 	//文字
-	//for (int i = 0; i < 3; i++) {
-	//	mLabel[i] = Label::createWithTTF("", "fonts/APJapanesefontT.ttf", 24);
-	//	mLabel[i]->setPosition(Vec2(origin.x + 50,
-	//		origin.y + visibleSize.height - 340 - i * 30));
-	//	mLabel[i]->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
-	//	mLabel[i]->setColor(Color3B::BLUE);
-	//	this->addChild(mLabel[i], 3);
-	//}
 	auto label = Label::createWithTTF("", "fonts/APJapanesefontT.ttf", 24);
 	label->setPosition(Vec2(origin.x + 50,
 				origin.y + visibleSize.height - 340));
@@ -75,6 +69,7 @@ bool Novel::init() {
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);
 	listener->onTouchBegan = CC_CALLBACK_2(Novel::touchEvent, this);
+	listener->onTouchEnded = [this](Touch *touch, Event *event) { mTouchTime = 0; };
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
 	//バックログ
@@ -88,9 +83,10 @@ bool Novel::init() {
 	auto log = Sprite::create("log.png");
 	log->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
 	log->setPosition(Vec2(visibleSize.width -15 + origin.x, -15 + origin.y + visibleSize.height));
-	addChild(log, 1, "log");
+	addChild(log, 5, "log");
 
 	listener = EventListenerTouchOneByOne::create();
+	listener->setSwallowTouches(true);
 	listener->onTouchBegan = CC_CALLBACK_2(Novel::logEvent, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, log);
 
@@ -111,7 +107,9 @@ bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	if (touch->getLocation().y < visibleSize.height / 2) {
+	if (mLogOnly == true)
+		return false;
+	if (/*touch->getLocation().y < visibleSize.height / 2 &&*/ !mHideMsg) {
 
 		if (endCheck()) {	//文がすべて表示されていたら
 			//バックログに記録
@@ -150,7 +148,15 @@ bool Novel::touchEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 			}
 		}
 		
+		mTouchTime = 1;
 	}
+	else {
+		getChildByName("msgBox")->setVisible(true);
+		getChildByName("label")->setVisible(true);
+		mHideMsg = false;
+	}
+
+
 
 	return true;
 }
@@ -160,17 +166,12 @@ void Novel::end(){
 }
 
 void Novel::update(float delta) {
-	//int len;
-	//int num = 90;
-	//for (int i = 0; i < 3; i++) {
-	//	len = (mCount > num * (i + 1)) ? num * (i + 1) : mCount - num * i;
-	//	len = len < 0 ? 0 : len;
-	//	if (mSentense[mNovelNum].size() < num * i) break;
-	//	mLabel[i]->setString(mSentense[mNovelNum].substr(num * i, len));
-	//}
-
-
-	//if (mNovelNum > 0) mCount++;
+	if (mTouchTime > 0) mTouchTime++;
+	if (mTouchTime > 60) {
+		getChildByName("msgBox")->setVisible(false);
+		getChildByName("label")->setVisible(false);
+		mHideMsg = true;
+	}
 
 	updateImg();
 	updateColor();
@@ -208,14 +209,14 @@ void Novel::updateImg() {
 		}
 		else if (mTask[num].imgPos == IMG_CENTER) {
 			auto old = this->getChildByName("charaC");
-			old->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(true), NULL));
+			old->runAction(Sequence::create(FadeOut::create(0.3f), RemoveSelf::create(true), NULL));
 
 			if (mTask[num].imgName != "") {
 				auto newOne = Sprite::create(mTask[num].imgName);
 				newOne->setPosition(old->getPosition());
 				newOne->setOpacity(0.0f);
 
-				newOne->runAction(FadeIn::create(0.5f));
+				newOne->runAction(FadeIn::create(0.3f));
 				this->addChild(newOne, 1, "charaC");
 			}
 			else {
@@ -226,14 +227,14 @@ void Novel::updateImg() {
 		}
 		else if (mTask[num].imgPos == IMG_LEFT) {
 			auto old = this->getChildByName("charaL");
-			old->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(true), NULL));
+			old->runAction(Sequence::create(FadeOut::create(0.3f), RemoveSelf::create(true), NULL));
 
 			if (mTask[num].imgName != "") {
 				auto newOne = Sprite::create(mTask[num].imgName);
 				newOne->setPosition(old->getPosition());
 				newOne->setOpacity(0.0f);
 
-				newOne->runAction(FadeIn::create(0.5f));
+				newOne->runAction(FadeIn::create(0.3f));
 				this->addChild(newOne, 1, "charaL");
 			}
 			else {
@@ -244,14 +245,14 @@ void Novel::updateImg() {
 		}
 		else if (mTask[num].imgPos == IMG_RIGHT) {
 			auto old = this->getChildByName("charaR");
-			old->runAction(Sequence::create(FadeOut::create(0.5f), RemoveSelf::create(true), NULL));
+			old->runAction(Sequence::create(FadeOut::create(0.3f), RemoveSelf::create(true), NULL));
 
 			if (mTask[num].imgName != "") {
 				auto newOne = Sprite::create(mTask[num].imgName);
 				newOne->setPosition(old->getPosition());
 				newOne->setOpacity(0.0f);
 
-				newOne->runAction(FadeIn::create(0.5f));
+				newOne->runAction(FadeIn::create(0.3f));
 				this->addChild(newOne, 1, "charaR");
 			}
 			else {
@@ -439,8 +440,18 @@ bool Novel::logEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 
 		//文字
 		std::stringstream str;
-		for (auto s : mLog) {
-			str << s.asString() << "\n";
+		int lineNum = 0;
+		for (auto s : mLog) { lineNum++; }
+		if (lineNum > 100) {	//100行越えなら最新の100行を表示
+			for (int i = 0; i < 100; i++) {
+				auto s = mLog[lineNum - 100 + i];
+				str << s.asString() << "\n";
+			}
+		}
+		else {
+			for (auto s : mLog) {
+				str << s.asString() << "\n";
+			}
 		}
 
 		auto label = Label::createWithTTF(str.str(), "fonts/APJapanesefontT.ttf", 24);
@@ -468,6 +479,17 @@ bool Novel::logEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 			}
 		};
 		this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, close);
+	return true;	
 	}
-	return true;
+	return false;
+}
+
+void Novel::setLogOnly() { 
+	for (auto child : this->getChildren()) {
+		if (child->getName() != "log") {
+			child->setVisible(false);
+		}
+	}
+
+	mLogOnly = true;
 }
