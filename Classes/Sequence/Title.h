@@ -14,6 +14,7 @@ public:
 
 	void startBtnCallback(Ref* pSender);
 	void continueBtnCallback(Ref* pSender);
+	void extraBtnCallback(Ref* pSender);
 
 	CREATE_FUNC(Title);
 };

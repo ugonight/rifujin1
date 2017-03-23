@@ -1,5 +1,6 @@
 #include "Title.h"
 #include "prologue.h"
+#include "extra.h"
 #include "SimpleAudioEngine.h"
 
 #include "System/control.h"
@@ -79,6 +80,17 @@ bool Title::init() {
 	continueBtn->setEnabled(FileUtils::getInstance()->isFileExist(file));
 	menu->addChild(continueBtn);
 
+	//おまけ
+	auto extraBtn = MenuItemImage::create(
+		"title/extra_off.png",
+		"title/extra_on.png",
+		"title/extra_void.png",
+		CC_CALLBACK_1(Title::extraBtnCallback, this)
+	);
+	extraBtn->setPosition(Vec2(700, 260));
+	extraBtn->setEnabled(UserDefault::getInstance()->getBoolForKey("clear"));
+	menu->addChild(extraBtn);
+
 	//キャラクター
 	auto chara = Sprite::create();
 	chara->setPosition(Vec2(854 + 200 + origin.x, 125 + origin.y));
@@ -106,6 +118,7 @@ bool Title::init() {
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/days.ogg");
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/dream.ogg");
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/misery.ogg");
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("BGM/color.ogg");
 	playBGM = 0;
 	
 	//SE
@@ -114,6 +127,7 @@ bool Title::init() {
 	SimpleAudioEngine::getInstance()->preloadEffect("SE/po.ogg");
 	SimpleAudioEngine::getInstance()->preloadEffect("SE/get.ogg");
 	SimpleAudioEngine::getInstance()->preloadEffect("SE/set.ogg");
+
 
 	return true;
 }
@@ -132,6 +146,12 @@ void Title::continueBtnCallback(Ref* pSender) {
 	auto control = Control::create();
 	control->load();
 	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, control, Color3B::WHITE));
+}
+
+void Title::extraBtnCallback(Ref* pSender) {
+	//SE
+	SimpleAudioEngine::getInstance()->playEffect("SE/se1.ogg");
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Extra::create(), Color3B::WHITE));
 }
 
 void Title::update(float delta) {

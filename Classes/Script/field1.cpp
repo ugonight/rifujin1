@@ -200,7 +200,7 @@ void Field1::changedField() {
 		novel->addSentence("桜「私がここにいられるのも、あなたが私のことを信じて忘れないでくれたからだと思う。…でもね」");
 		novel->addSentence("桜「一人ぼっちの夜は、もう終わるんだよ。」");
 		novel->addSentence("桜「ううん、終わらせてくれたの。この人達が。私たち二人で描いた景色の色を取り戻してくれたの。」");
-		novel->addSentence("マリア「えっ…うそ……なんで私なんかのために……ありが…とう…？」");
+		novel->addSentence("マリア「私の…ために…？」");
 		novel->addSentence("桜「…もうすぐ朝が来るわ。きっと皆さんが次の太陽になってくれる。だから…」");
 		novel->addSentence("桜「だから…っ…もう私がいなくても大丈夫だよね……っ…消えちゃっても…大丈夫だよね…」");
 		novel->setBg("chara/cry_maria.png");
@@ -216,7 +216,7 @@ void Field1::changedField() {
 			bg->setPosition(Director::getInstance()->getVisibleSize() / 2);
 			addChild(bg, 5, "bg");
 			//エンディングへ
-			Director::getInstance()->replaceScene(TransitionFade::create(3.0f, Epilogue::create(), Color3B::WHITE));
+			Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Epilogue::create(), Color3B::WHITE));
 		}));
 
 		novel->setEndTask();

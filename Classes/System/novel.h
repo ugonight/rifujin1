@@ -43,6 +43,8 @@ private:
 	void func();
 	bool touchEvent(cocos2d::Touch* touch, cocos2d::Event* event);
 
+	//バックログ
+	bool logEvent(cocos2d::Touch* touch, cocos2d::Event* event);
 
 	void end();
 	bool endCheck();
@@ -59,8 +61,6 @@ public:
 	virtual bool init();
 	virtual void update(float delta);
 
-	//バックログ
-	bool logEvent(cocos2d::Touch* touch, cocos2d::Event* event);
 	
 	//終了フラグ
 	bool getEndFlag();
