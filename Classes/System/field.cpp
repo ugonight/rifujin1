@@ -2,26 +2,11 @@
 
 USING_NS_CC;
 
-//bool Field::init() {
-//	if (!Layer::init())
-//	{
-//		return false;
-//	}
-//
-//	Size visibleSize = Director::getInstance()->getVisibleSize();
-//	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-//
-//	auto bg = Sprite::create("forest1.png");
-//	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-//	this->addChild(bg, 0);
-//
-//	auto area = ObjectN::create();
-//	area->setArea(650, 300, 100, 100);
-//	area->setItemGetEvent("crayon_g");
-//	this->addChild(area, 1, "crayon_g");
-//
-//	return true;
-//}
+Field::~Field() {
+	for (auto obj : mObjectList) {
+		CC_SAFE_RELEASE_NULL(obj.second);
+	}
+}
 
 
 bool Field::init() {

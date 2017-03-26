@@ -7,6 +7,14 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
+Novel::~Novel() {
+	if (mFuncTask.size() > 1) {
+		for (auto tsk : mFuncTask) {
+			CC_SAFE_RELEASE_NULL(tsk.func);
+		}
+	}
+}
+
 bool Novel::init() {
 
 	if (Layer::init() == false)
@@ -437,6 +445,7 @@ bool Novel::logEvent(cocos2d::Touch* touch, cocos2d::Event* event) {
 			mLogScrollX = touch->getLocation().x;
 		};
 		this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, square);
+
 
 		//文字
 		std::stringstream str;

@@ -131,7 +131,7 @@ void Epilogue::update(float delta) {
 			listener->onTouchBegan = [this](Touch* touch, Event* event) {
 				mSkip++;
 				//log("%d,%d", 50 - mSkip, mEnd);
-				if (mSkip > 50) {
+				if (mSkip == 50) {
 					Director::getInstance()->replaceScene(TransitionFade::create(1.0f, Title::createScene(), Color3B::WHITE));
 				}
 				else if (mEnd == true) {

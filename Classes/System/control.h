@@ -12,6 +12,7 @@ private:
 	void save(cocos2d::Ref* pSender);
 
 public:
+	virtual ~Control();
 
 	void setCursor(int num);
 	void changeField(std::string field);

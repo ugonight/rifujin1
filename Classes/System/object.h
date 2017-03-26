@@ -25,6 +25,8 @@ class ObjectN : public cocos2d::Sprite {
 	void touchOff(cocos2d::Touch* touch, cocos2d::Event* event);
 
 public:
+	virtual ~ObjectN();
+
 	virtual bool init();
 	virtual void update(float delta);
 

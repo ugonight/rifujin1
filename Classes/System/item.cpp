@@ -12,6 +12,12 @@ Item* Item::sharedItem() {
 	return instanceOfItem;
 }
 
+Item::~Item() {
+	for (auto item : mItemList) {
+		delete item.second;
+	}
+}
+
 bool Item::init() {
 	if (!Layer::init()) {
 		return false;

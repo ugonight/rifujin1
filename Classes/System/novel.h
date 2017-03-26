@@ -58,6 +58,8 @@ private:
 	void updateFunc();
 
 public:
+	virtual ~Novel();
+
 	virtual bool init();
 	virtual void update(float delta);
 

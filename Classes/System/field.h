@@ -14,10 +14,9 @@ protected:
 	//void pauseEventListener();
 	//void resumeEventListener();
 
-
-
 public:
-	//virtual bool init() override;
+	virtual ~Field();
+
 	virtual bool init();
 	virtual void update(float delta);
 

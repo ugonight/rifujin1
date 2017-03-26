@@ -12,6 +12,12 @@ USING_NS_CC;
 
 Control* Control::me;
 
+Control::~Control() {
+	for (auto field : mFieldList) {
+		CC_SAFE_RELEASE_NULL(field.second);
+	}
+}
+
 bool Control::init() {
 	if (!Scene::init())
 	{

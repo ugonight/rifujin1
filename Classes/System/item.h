@@ -5,6 +5,8 @@
 
 class Item : public cocos2d::Layer {
 public:
+	virtual ~Item();
+
 	virtual bool init();
 	virtual void update(float delta);
 
