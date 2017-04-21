@@ -80,7 +80,7 @@ void Field1::initField() {
 	addObject(river, "river", 2, false);
 
 	auto celine = ObjectN::create();
-	celine->setTexture("chara/celine1.png");
+	celine->setTexture("chara/celine1_.png");
 	celine->setScale(0.7f);	
 	celine->setPosition(Vec2(180, 200));
 	celine->setArea(Rect(celine->getBoundingBox().getMinX(), celine->getBoundingBox().getMinY() + 100, celine->getBoundingBox().getMaxX() - celine->getBoundingBox().getMinX(), celine->getBoundingBox().getMaxY() - celine->getBoundingBox().getMinY()));

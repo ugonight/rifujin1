@@ -120,6 +120,47 @@ void Extra::menu() {
 	};
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, label);
 
+
+	//グラフィック変更
+	std::string name;
+	if (UserDefault::getInstance()->getBoolForKey("graphics")) {
+		name = "グラフィック変更 : ヒミツ ver";
+	} else {
+		name = "グラフィック変更 : ugonight ver";
+	}
+	
+	label = Label::createWithTTF(name, "fonts/APJapanesefontT.ttf", 30);
+	label->setPosition(Vec2(origin.x + display.width / 2, origin.y + 40));
+	label->setTextColor(Color4B::WHITE);
+	label->enableOutline(Color4B::BLACK, 2);
+	layer->addChild(label, 3, "graphics");
+	listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [this](Touch* touch, Event* event) {
+		auto target = (Label*)event->getCurrentTarget();
+		Rect targetBox = target->getBoundingBox();
+		Point touchPoint = Vec2(touch->getLocation().x, touch->getLocation().y);
+		if (targetBox.containsPoint(touchPoint))
+		{
+			if (UserDefault::getInstance()->getBoolForKey("graphics")) {
+				UserDefault::getInstance()->setBoolForKey("graphics", 0);
+				target->setString("グラフィック変更 : ugonight ver");
+			}
+			else {
+				UserDefault::getInstance()->setBoolForKey("graphics", 1);
+				target->setString("グラフィック変更 : ヒミツ ver");
+			}
+			UserDefault::getInstance()->flush();
+
+			return true;
+		}
+		return false;
+	};
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, label);
+
+	label = Label::createWithTTF("※アプリ再起動後、設定が有効になります", "fonts/APJapanesefontT.ttf", 20);
+	label->setPosition(Vec2(origin.x + display.width / 2, origin.y + 20));
+	label->setTextColor(Color4B::BLACK);
+	layer->addChild(label, 3, "graphics_kome");
 }
 
 void Extra::character(){
@@ -476,7 +517,7 @@ void Extra::music(){
 void Extra::afterword(){
 	auto novel = Novel::create();
 	novel->setFontColor(Color3B::BLACK);
-	novel->addSentence("皆さん、こんにちわ。作者のｕｇｏｎｉｇｈｔです");
+	novel->addSentence("皆さん、こんにちは。作者のｕｇｏｎｉｇｈｔです");
 	novel->addSentence("エンドロールがｕｇｏｎｉｇｈｔだらけでイライラしたかもしれませんが、これで最後です。ご安心ください。");
 	novel->addSentence("こんなに手作り感満載なアプリが果たして今まであったのだろうか、っていう感じですね。誰でも作れちゃうものなんです。自分でもびっくりしてます。");
 	novel->addSentence("最後に歌が流れて来たのにもびっくりした方もいらっしゃるかもしれませんが、普段はこういうものを作ってます。書下ろしです。いかがでしたでしょうか。");
@@ -486,7 +527,7 @@ void Extra::afterword(){
 	novel->addSentence("システムの方は、操作が独特で分かりにくかったかもしれません。なるべく探索画面をスッキリさせようとした結果こうなりました。");
 	novel->addSentence("我慢ならねえ！と言ったものがあったら☆１でもいいのでレビューに書いていただけるとありがたいです。次に生かします。");
 	novel->addSentence("シナリオの方は、自分でもバランスが悪かったかなーと思ってます。もうちょっとボリュームがあれば感動ゲームにできたかもしれません…まあ短編なので許してください（泣）これも次頑張ります…");
-	novel->addSentence("マリアちゃんの過去は自分を重ね合わせて作ってしまった部分もあります。自分も高校レビューとともにボッチ生活を満喫してます。でもやっぱり、自分を理解してくれる昔からの付き合いの友達がいると、とても心強いですね。");
+	novel->addSentence("マリアちゃんの過去は自分を重ね合わせて作ってしまった部分もあります。自分も高校デビューとともにボッチ生活を満喫してます。でもやっぱり、自分を理解してくれる昔からの付き合いの友達がいると、とても心強いですね。");
 	novel->addSentence("小説を書いたりするのはあまりやらないので、このあとがきも含め拙い文章になってしまいましたが、ちゃんと言いたいことは伝わりましたでしょうか");
 	novel->addSentence("ぶっちゃけ、私は脱出ゲームはすぐに攻略見ちゃう人なので、ギミックなどは上手くなかったかもしれませんが、できるだけレベルを落としたつもりです。ゲーム自体が理不尽じゃどうしようもありませんからね（苦笑）");
 	novel->addSentence("プログラムはシステムはほとんど自分で考えて書いたのですが、まだまだアマチュアなのでバグなどもあったかもしれません。見つけたら連絡お願いします…");

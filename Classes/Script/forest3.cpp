@@ -134,7 +134,7 @@ void Cliff::initField() {
 	addObject(forest3, "forest3", 2, true);
 
 	auto pen = ObjectN::create();
-	pen->setArea(Rect(440, 340, 60, 20));
+	pen->setArea(Rect(440, 340, 60, 60));
 	pen->setItemGetEvent("pen");
 	pen->setMsg("ペンが落ちていた");
 	addObject(pen, "pen", 2, true);

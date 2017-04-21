@@ -87,8 +87,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	//ŒŸõƒtƒHƒ‹ƒ_‚Ì’Ç‰Á
 	auto fileUtils = FileUtils::sharedFileUtils();
-	fileUtils->addSearchPath("image");
-	fileUtils->addSearchPath("image/obj");
+	if (UserDefault::getInstance()->getBoolForKey("graphics")) {
+		fileUtils->addSearchPath("image_h");
+		fileUtils->addSearchPath("image_h/obj");
+	}
+	else {
+		fileUtils->addSearchPath("image");
+		fileUtils->addSearchPath("image/obj");
+	}
 
     // create a scene. it's an autorelease object
     auto scene = Title::createScene();
